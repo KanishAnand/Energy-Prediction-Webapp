@@ -18,8 +18,10 @@ connection.once("open", function() {
 });
 
 const userRoutes = require("./routes/user");
+const modelRoutes = require("./routes/model");
 
 app.use("/user", userRoutes);
+app.use("/model", modelRoutes);
 
 app.listen(PORT, function() {
   console.log("Server is running on port: " + PORT);
