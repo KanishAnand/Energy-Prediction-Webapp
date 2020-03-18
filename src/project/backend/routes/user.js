@@ -32,7 +32,10 @@ router.route("/exist").post(function(req, res) {
     .then(users => {
       res.status(200).json(users);
     })
-    .catch(err => res.status(400).json(err));
+    .catch(err => {
+      console.log("df");
+      res.status(400).json(err);
+    });
 });
 
 // Login User
