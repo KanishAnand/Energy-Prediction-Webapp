@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import { Link } from "react-router-dom";
-import { Redirect } from "react-router";
 import axios from "axios";
 import { Form, Button, Alert, Navbar, Nav } from "react-bootstrap";
 import { Formik } from "formik";
@@ -77,11 +76,24 @@ export default class Predict extends Component {
         validationSchema={schema}
         initialValues={{
           date: "",
-          time: 0
+          time: ""
         }}
         onSubmit={(values, actions) => {
-          alert(values.date + values.time);
-          alert("200");
+          alert(values.date + " " + values.time + ":00:00");
+          axios
+            .post("http://localhost:4000/model/predict", {
+              dateTime: values.date + " " + values.time + ":00:00"
+            })
+            .then(res => {
+              actions.resetForm();
+              alert(res.data.output);
+            })
+            .catch(err => {
+              this.setState({ showe: err.message, shows: "" });
+            })
+            .finally(() => {
+              actions.setSubmitting(false);
+            });
         }}
       >
         {({
@@ -101,14 +113,12 @@ export default class Predict extends Component {
                 placeholder="Date"
                 aria-describedby="inputGroupPrepend"
                 name="date"
-                value={values.username}
+                value={values.date}
                 onChange={handleChange}
-                isInvalid={
-                  (touched.username || values.username) && errors.username
-                }
+                isInvalid={(touched.date || values.date) && errors.date}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.username}
+                {errors.date}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group md="6" controlId="predictTime">
@@ -120,14 +130,12 @@ export default class Predict extends Component {
                 secureTextEntry
                 placeholder="Time"
                 name="time"
-                value={values.password}
+                value={values.time}
                 onChange={handleChange}
-                isInvalid={
-                  (touched.password || values.password) && errors.password
-                }
+                isInvalid={(touched.time || values.time) && errors.time}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.password}
+                {errors.time}
               </Form.Control.Feedback>
             </Form.Group>
 
