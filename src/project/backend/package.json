@@ -10,10 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.8",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.8.11"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.1",
+    "mongoose-fuzzy-searching": "^1.1.8",
+    "node-gyp": "^6.1.0",
+    "react-async": "^10.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

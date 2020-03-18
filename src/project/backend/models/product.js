@@ -1,25 +1,32 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 
 let Product = new mongoose.Schema({
-    fromdate: {
-        type: Date
-    },
-    fromtime: {
-        type: Number
-    },
-    todate: {
-        type: Date
-    },
-    totime: {
-        type: Number
-    },
-    vendorname: {
-        type: String
-    },
-    productstatus: {
-        type: String
-    }
-
+  username: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  ordered: {
+    type: Number,
+    default: 0
+  },
+  quantity: {
+    type: Number,
+    required: true
+  },
+  status: {
+    type: String,
+    default: "waiting"
+  }
 });
 
-module.exports = mongoose.model('Product', Product, 'product');
+Product.plugin(mongoose_fuzzy_searching, { fields: ["name"] });
+module.exports = mongoose.model("Product", Product);

@@ -1,137 +1,337 @@
-import React, {Component} from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import ls from "local-storage";
+import axios from "axios";
+import {
+  Form,
+  Button,
+  Col,
+  InputGroup,
+  FormGroup,
+  FormControl,
+  ListGroup,
+  Table,
+  Navbar,
+  Nav,
+  Alert,
+  ButtonGroup,
+  Dropdown,
+  DropdownButton,
+  ControlLabel
+} from "react-bootstrap";
 
-export default class CreateUser extends Component {
-    
-    constructor(props) {
-        super(props);
+export default class SearchProduct extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      product: [],
+      vendor: [],
+      search: "",
+      sort: "",
+      asc: 1,
+      shows: "",
+      showe: ""
+    };
+  }
 
-        this.state = {
-            searchname: '',
-            sortby: 'Price',
-            customer_id: this.props.location.id,
-            customername: this.props.location.name,
-            result: []
-        }
-        this.onChangeSearchname = this.onChangeSearchname.bind(this);
-        this.onChangeSortby = this.onChangeSortby.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-    
-    onChangeSearchname(event) {
-        this.setState({ searchname: event.target.value });
-    }
+  fetchInfo = () => {
+    axios
+      .post("http://localhost:4000/product/search", {
+        name: this.state.search
+      })
+      .then(response => {
+        response.data = response.data.filter(row => row.status === "waiting");
+        axios
+          .get("http://localhost:4000/vendor/")
+          .then(res => {
+            this.setState({ product: response.data, vendor: res.data });
+            this.handleSort(this.state.sort, this.state.asc);
+          })
+          .catch(function(error) {
+            console.log(error.message);
+          });
+      })
+      .catch(function(error) {
+        console.log(error.message);
+      });
+  };
 
-    onChangeSortby(event) {
-        this.setState({ sortby: event.target.value });
-    }
+  componentDidMount() {
+    this.fetchInfo();
+    this.interval = setInterval(() => {
+      this.fetchInfo();
+    }, 3000);
+  }
 
-    onSubmit(e) {
-        e.preventDefault();
-        // console.log(this.state.user_type)
-
-        const newUser = {
-            searchname: this.state.searchname,
-            sortby: this.state.sortby
-        }
-
-        axios.post('http://localhost:4000/search', newUser)
+  handleClick = (e, id, quantity) => {
+    const count = parseInt(prompt("Quantity is "));
+    if (isNaN(count)) return;
+    if (count <= 0 || count > quantity) {
+      alert("Please Enter the correct quantity!");
+    } else {
+      axios
+        .post("http://localhost:4000/customer/order", {
+          username: this.props.match.params.id,
+          productId: id,
+          count: count
+        })
         .then(response => {
-            if(newUser.sortby === 'Price'){
-                console.log('hihiii')
-                this.setState({result: response.data.sort((a,b) => a.rate - b.rate)});
-            }
-            else if(newUser.sortby === 'Quantity'){
-                this.setState({result: response.data.sort((a,b) => a.quantity - b.quantity)});
-            }
+          axios
+            .post("http://localhost:4000/product/order", {
+              id: id,
+              order: count,
+              username: this.props.match.params.id
+            })
+            .then(res => {
+              this.fetchInfo();
+              this.setState({
+                shows: "Order Placed Successfully!",
+                showe: ""
+              });
+            })
+            .catch(error => {
+              this.setState({ showe: error.message, shows: "" });
+            });
         })
-        .catch(function(error) {
-            console.log(error);
-        })
-
-        this.setState({
-            searchname: '',
-            sortby: '',
+        .catch(error => {
+          this.setState({ showe: error.message, shows: "" });
         });
     }
+  };
 
-    search = (e) => {
-        this.props.history.push({
-            pathname: '/searchproduct/:id',
-            id: this.state.customer_id,
-            name: this.state.customername
-        })
+  CustomerNavbar = () => {
+    return (
+      <React.Fragment>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#">Home</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link
+              href={"/customer/" + this.props.match.params.id + "/search"}
+            >
+              Search
+            </Nav.Link>
+            <Nav.Link
+              href={"/customer/" + this.props.match.params.id + "/status"}
+            >
+              Status
+            </Nav.Link>
+            <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
+              LogOut
+            </Link>
+          </Nav>
+        </Navbar>
+        <br />
+        <Navbar bg="light" expand="lg">
+          <InputGroup size="lg" className="mb-3">
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="mr-2"
+              onChange={e => {
+                this.handleSearch(e);
+              }}
+            />
+            <Button
+              variant="outline-success"
+              className="mr-2"
+              onClick={e => {
+                this.handleSubmit(e);
+              }}
+            >
+              Search
+            </Button>
+            <DropdownButton
+              id="sort"
+              title="Sort By"
+              size="lg"
+              variant="info"
+              onSelect={e => this.handleSort(e, this.state.asc)}
+            >
+              <Dropdown.Item eventKey="quantity">Quantity</Dropdown.Item>
+              <Dropdown.Item eventKey="price">Price</Dropdown.Item>
+              <Dropdown.Item eventKey="rating">Rating</Dropdown.Item>
+            </DropdownButton>
+            <Dropdown
+              as={ButtonGroup}
+              onSelect={e =>
+                this.handleSort(this.handleSort(this.state.sort, parseInt(e)))
+              }
+            >
+              <Dropdown.Toggle split variant="info" id="asc" />
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1">ASC</Dropdown.Item>
+                <Dropdown.Item eventKey="-1">DESC</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </InputGroup>
+        </Navbar>
+      </React.Fragment>
+    );
+  };
+
+  HandleAlert = () => {
+    return (
+      <React.Fragment>
+        {this.state.showe !== "" && (
+          <Alert
+            key="general"
+            variant={this.state.showe !== "" ? "danger" : "light"}
+            onClose={() => this.setState({ showe: "" })}
+            dismissible
+          >
+            {this.state.showe}
+          </Alert>
+        )}
+
+        {this.state.shows !== "" && (
+          <Alert
+            key="general"
+            variant={this.state.shows !== "" ? "success" : "light"}
+            onClose={() => this.setState({ shows: "" })}
+            dismissible
+          >
+            {this.state.shows}
+          </Alert>
+        )}
+      </React.Fragment>
+    );
+  };
+
+  View = () => {
+    let table = [];
+    let body = [];
+    let row = [];
+    row.push(<th>{"Product Name"}</th>);
+    row.push(<th>{"Vendor Name"}</th>);
+    row.push(<th>{"Price"}</th>);
+    row.push(<th>{"Quantity"}</th>);
+    row.push(<th>{"Rating"}</th>);
+    row.push(<th>{"Order"}</th>);
+    body.push(<tr>{row}</tr>);
+    table.push(<thead>{body}</thead>);
+    body = [];
+    for (let i in this.state.product) {
+      let vendor = { rating: 1 };
+      for (let j in this.state.vendor) {
+        if (this.state.vendor[j].username === this.state.product[i].username) {
+          vendor = this.state.vendor[j];
+          break;
+        }
+      }
+      row = [];
+      row.push(<td>{this.state.product[i]["name"]}</td>);
+      row.push(
+        <td>
+          <a
+            href={"/vendor/" + this.state.product[i]["username"] + "/review"}
+            style={{ color: "#FFF" }}
+            target="_blank"
+          >
+            {this.state.product[i]["username"]}
+          </a>
+        </td>
+      );
+      row.push(<td>{this.state.product[i]["price"]}</td>);
+      row.push(
+        <td>
+          {this.state.product[i]["quantity"] - this.state.product[i]["ordered"]}
+        </td>
+      );
+      row.push(<td>{vendor["rating"]}</td>);
+      row.push(
+        <td>
+          <Button
+            variant="success"
+            value={this.state.product[i]["_id"]}
+            onClick={e =>
+              this.handleClick(
+                e,
+                this.state.product[i]["_id"],
+                this.state.product[i]["quantity"] -
+                  this.state.product[i]["ordered"]
+              )
+            }
+          >
+            Order
+          </Button>
+        </td>
+      );
+      body.push(<tr>{row}</tr>);
     }
+    table.push(<tbody>{body}</tbody>);
+    return (
+      <Table striped bordered hover variant="dark">
+        {table}
+      </Table>
+    );
+  };
 
-    logout = (e) => {
-        this.props.history.push({
-            pathname: '/login',
-        })
+  handleSearch = e => {
+    this.setState({ search: e.target.value });
+  };
+
+  handleSubmit = e => {
+    this.fetchInfo();
+  };
+
+  handleSort = (e, asc) => {
+    if (e === "" || e === undefined) return;
+    if (e === "quantity")
+      this.setState({
+        product: this.state.product.sort((a, b) =>
+          a[e] - a["ordered"] > b[e] - b["ordered"]
+            ? asc
+            : b[e] - b["ordered"] > a[e] - a["ordered"]
+            ? -asc
+            : 0
+        ),
+        sort: e,
+        asc: asc
+      });
+    else if (e === "rating") {
+      this.setState({
+        product: this.state.product.sort((a, b) => {
+          let arating = 1;
+          let brating = 1;
+          for (let j in this.state.vendor) {
+            if (this.state.vendor[j].username === a.username)
+              arating = this.state.vendor[j].rating;
+            if (this.state.vendor[j].username === b.username)
+              brating = this.state.vendor[j].rating;
+          }
+          return arating > brating ? asc : brating > arating ? -asc : 0;
+        }),
+        sort: e,
+        asc: asc
+      });
+    } else {
+      this.setState({
+        product: this.state.product.sort((a, b) =>
+          a[e] > b[e] ? asc : b[e] > a[e] ? -asc : 0
+        ),
+        sort: e,
+        asc: asc
+      });
     }
+  };
 
-    render() {
-        return (
-            <div>
-                <button>SEARCH</button>
-                <button>STATUS</button>
-                <button onClick = {e => this.logout(e)}>LOGOUT</button>
-                
-                <br/>
-                <br/>
+  componentWillMount() {
+    clearInterval(this.interval);
+  }
 
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Search Product: </label>
-                        <input type="text" 
-                               className="form-control" 
-                               value={this.state.searchname}
-                               onChange={this.onChangeSearchname}
-                               />
-                    </div>
-
-                    <div className="form-group">
-                        <label>User Type: </label>
-                        <select 
-                                className="form-control" 
-                                value={this.state.sortby}
-                                onChange={this.onChangeSortby}>
-                            <option value="Price">Price</option>
-                            <option value="Quantity">Quantity</option>
-                        </select> 
-                    </div>
-                    
-                    <div className="form-group">
-                        <input type="submit" value="Find" className="btn btn-primary"/>
-                    </div>
-                </form>
-
-                <div>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Product name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Vendor name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    { 
-                        this.state.result.map((currentUser, i) => {
-                            return (
-                                <tr>
-                                    <td>{currentUser.productname}</td>
-                                    <td>{currentUser.quantity}</td>
-                                    <td>{currentUser.rate}</td>
-                                    <td>{currentUser.vendorname}</td>
-                                </tr>
-                            )
-                        })
-                    }
-                    </tbody>
-                </table>
-            </div>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <React.Fragment>
+        {ls.get("username") === this.props.match.params.id &&
+          ls.get("userType") === "customer" && (
+            <React.Fragment>
+              <this.CustomerNavbar />
+              <br />
+              <this.HandleAlert />
+              <this.View />
+            </React.Fragment>
+          )}
+      </React.Fragment>
+    );
+  }
 }
