@@ -150,15 +150,12 @@ export default class LoginUser extends Component {
 
   render() {
     if (this.state.redirect) {
-      if (this.state.type === "customer") {
-        return (
-          <Redirect push to={"/customer/" + this.state.username + "/search"} />
-        );
-      } else {
-        return (
-          <Redirect push to={"/vendor/" + this.state.username + "/view"} />
-        );
-      }
+      return (
+        <Redirect
+          push
+          to={"/" + this.state.type + "/" + this.state.username + "/predict"}
+        />
+      );
     }
     return (
       <React.Fragment>
