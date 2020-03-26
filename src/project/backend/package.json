@@ -19,6 +19,7 @@
     "mongoose": "^5.9.1",
     "mongoose-fuzzy-searching": "^1.1.8",
     "node-gyp": "^6.1.0",
+    "pickle": "^0.2.0",
     "react-async": "^10.0.0"
   },
   "devDependencies": {
