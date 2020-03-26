@@ -19,8 +19,8 @@ export default class Predict extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shows: "",
-      showe: ""
+      message: "",
+      type: "light"
     };
   }
 
@@ -30,9 +30,7 @@ export default class Predict extends Component {
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#">Home</Navbar.Brand>
           <Nav className="mr-auto">
-            <Nav.Link href={"/vendor/" + this.props.match.params.id + "/add"}>
-              Prediction
-            </Nav.Link>
+            <Nav.Link href={"#"}>Prediction</Nav.Link>
             <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
               Logout
             </Link>
@@ -45,25 +43,14 @@ export default class Predict extends Component {
   HandleAlert = () => {
     return (
       <React.Fragment>
-        {this.state.showe !== "" && (
+        {this.state.message !== "" && (
           <Alert
             key="general"
-            variant={this.state.showe !== "" ? "danger" : "light"}
-            onClose={() => this.setState({ showe: "" })}
+            variant={this.state.type}
+            onClose={() => this.setState({ message: "", type: "light" })}
             dismissible
           >
-            {this.state.showe}
-          </Alert>
-        )}
-
-        {this.state.shows !== "" && (
-          <Alert
-            key="general"
-            variant={this.state.shows !== "" ? "success" : "light"}
-            onClose={() => this.setState({ shows: "" })}
-            dismissible
-          >
-            {this.state.shows}
+            {this.state.message}
           </Alert>
         )}
       </React.Fragment>
@@ -79,17 +66,20 @@ export default class Predict extends Component {
           time: ""
         }}
         onSubmit={(values, actions) => {
-          alert(values.date + " " + values.time + ":00:00");
+          this.setState({
+            message: "Please wait for few seconds!!",
+            type: "warning"
+          });
           axios
             .post("http://localhost:4000/model/predict", {
-              dateTime: values.date + " " + values.time + ":00:00"
+              date: values.date,
+              time: values.time.toString() + ":00:00"
             })
             .then(res => {
-              actions.resetForm();
-              alert(res.data.output);
+              this.setState({ message: res.data, type: "success" });
             })
             .catch(err => {
-              this.setState({ showe: err.message, shows: "" });
+              this.setState({ message: err.message, type: "danger" });
             })
             .finally(() => {
               actions.setSubmitting(false);
@@ -127,7 +117,6 @@ export default class Predict extends Component {
                 type="number"
                 min="0"
                 max="23"
-                secureTextEntry
                 placeholder="Time"
                 name="time"
                 value={values.time}
