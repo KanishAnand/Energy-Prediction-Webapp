@@ -8,11 +8,7 @@ import * as yup from "yup";
 
 const schema = yup.object({
   date: yup.date().required("Please Enter the Date"),
-  time: yup
-    .number()
-    .min(0)
-    .max(23)
-    .required("Please Enter the Time")
+  time: yup.string().required("Please Enter the Time")
 });
 
 export default class Predict extends Component {
@@ -73,7 +69,7 @@ export default class Predict extends Component {
           axios
             .post("http://localhost:4000/model/predict", {
               date: values.date,
-              time: values.time.toString() + ":00:00"
+              time: values.time
             })
             .then(res => {
               this.setState({ message: res.data, type: "success" });
@@ -114,9 +110,7 @@ export default class Predict extends Component {
             <Form.Group md="6" controlId="predictTime">
               <Form.Label>Time</Form.Label>
               <Form.Control
-                type="number"
-                min="0"
-                max="23"
+                type="time"
                 placeholder="Time"
                 name="time"
                 value={values.time}
