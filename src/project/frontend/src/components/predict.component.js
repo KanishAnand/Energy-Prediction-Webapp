@@ -72,7 +72,7 @@ export default class Predict extends Component {
               time: values.time
             })
             .then(res => {
-              this.setState({ message: res.data, type: "success" });
+              this.setState({ message: "Predicted Electricity Consumption is " + res.data + " KW/h", type: "success" });
             })
             .catch(err => {
               this.setState({ message: err.message, type: "danger" });
