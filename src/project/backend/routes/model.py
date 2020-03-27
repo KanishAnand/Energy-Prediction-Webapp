@@ -1,14 +1,13 @@
 import sys
 import pickle
 import pandas as pd
-import os
 
 
 def predict(model):
     data = [[sys.argv[1] + " " + sys.argv[2]]]
     test = pd.DataFrame(data, columns=['ds'])
-    val = model.predict(test)
-    print(val['yhat'])
+    val = model.predict(test).to_dict()
+    print(str(val['yhat'][0]))
     sys.stdout.flush()
 
 
