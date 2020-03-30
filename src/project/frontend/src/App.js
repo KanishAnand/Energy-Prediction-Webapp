@@ -6,6 +6,7 @@ import RegisterUser from "./components/register-user.component";
 import LoginUser from "./components/login-user.component";
 import Predict from "./components/predict.component";
 import Users from "./components/users.component";
+import QueryForm from "./components/query-user.component";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" component={LoginUser} />
         <Route path="/:type/:id/predict" component={Predict} />
         <Route path="/:type/:id/users" component={Users} />
+        <Route path="/:type/:id/query" component={QueryForm} />
       </div>
     </Router>
   );

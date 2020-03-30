@@ -2,16 +2,16 @@ import React, { Component } from "react";
 import ls from "local-storage";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Form, Button, Alert, Navbar, Nav } from "react-bootstrap";
+import { Form, Button, Alert, Navbar, Nav, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 
 const schema = yup.object({
-  date: yup.date().required("Please Enter the Date"),
-  time: yup.string().required("Please Enter the Time")
+  issue: yup.string().required("Please tell us about your issue"),
+  query: yup.string().required("Please tell us about your issue")
 });
 
-export default class Predict extends Component {
+export default class QueryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,6 +69,9 @@ export default class Predict extends Component {
   };
 
   HandleAlert = () => {
+    setTimeout(() => {
+      this.setState({ message: "", type: "light" });
+    }, 10000);
     return (
       <React.Fragment>
         {this.state.message !== "" && (
@@ -90,32 +93,15 @@ export default class Predict extends Component {
       <Formik
         validationSchema={schema}
         initialValues={{
-          date: "",
-          time: ""
+          issue: "",
+          query: ""
         }}
         onSubmit={(values, actions) => {
           this.setState({
-            message: "Please wait for few seconds!!",
-            type: "warning"
+            message: "Form submitted successfully!",
+            type: "success"
           });
-          axios
-            .post("http://localhost:4000/model/predict", {
-              date: values.date,
-              time: values.time
-            })
-            .then(res => {
-              this.setState({
-                message:
-                  "Predicted Electricity Consumption is " + res.data + " KW/h",
-                type: "success"
-              });
-            })
-            .catch(err => {
-              this.setState({ message: err.message, type: "danger" });
-            })
-            .finally(() => {
-              actions.setSubmitting(false);
-            });
+          actions.resetForm();
         }}
       >
         {({
@@ -128,34 +114,58 @@ export default class Predict extends Component {
           errors
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Form.Group md="6" controlId="predictDate">
-              <Form.Label>Date</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="Date"
-                aria-describedby="inputGroupPrepend"
-                name="date"
-                value={values.date}
-                onChange={handleChange}
-                isInvalid={(touched.date || values.date) && errors.date}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.date}
-              </Form.Control.Feedback>
+            <Form.Group md="6" controlId="queryTo">
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="to-label">To</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control type="text" name="to" value="Maintenance Team" />
+              </InputGroup>
             </Form.Group>
 
-            <Form.Group md="6" controlId="predictTime">
-              <Form.Label>Time</Form.Label>
+            <Form.Group md="6" controlId="queryFrom">
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="from-label">From</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  name="from"
+                  value={this.props.match.params.id}
+                />
+              </InputGroup>
+            </Form.Group>
+
+            <Form.Group md="6" controlId="queryIssue">
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="issue-label">Issue</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  name="issue"
+                  placeholder="Subject"
+                  value={values.issue}
+                  onChange={handleChange}
+                  isInvalid={(touched.issue || values.issue) && errors.issue}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.issue}
+                </Form.Control.Feedback>
+              </InputGroup>
+            </Form.Group>
+
+            <Form.Group md="6" controlId="queryTextArea">
               <Form.Control
-                type="time"
-                placeholder="Time"
-                name="time"
-                value={values.time}
+                as="textarea"
+                name="query"
+                placeholder="Write about your issue"
+                value={values.query}
                 onChange={handleChange}
-                isInvalid={(touched.time || values.time) && errors.time}
+                isInvalid={(touched.query || values.query) && errors.query}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.time}
+                {errors.query}
               </Form.Control.Feedback>
             </Form.Group>
 

@@ -42,6 +42,17 @@ export default class Users extends Component {
             >
               Users
             </Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.match.params.type +
+                "/" +
+                this.props.match.params.id +
+                "/query"
+              }
+            >
+              Customer Care
+            </Nav.Link>
             <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
               Logout
             </Link>
