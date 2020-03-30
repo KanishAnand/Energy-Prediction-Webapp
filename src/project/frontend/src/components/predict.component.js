@@ -26,7 +26,28 @@ export default class Predict extends Component {
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#">Home</Navbar.Brand>
           <Nav className="mr-auto">
-            <Nav.Link href={"#"}>Prediction</Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.match.params.type +
+                "/" +
+                this.props.match.params.id +
+                "/predict"
+              }
+            >
+              Prediction
+            </Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.match.params.type +
+                "/" +
+                this.props.match.params.id +
+                "/users"
+              }
+            >
+              Users
+            </Nav.Link>
             <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
               Logout
             </Link>
@@ -72,7 +93,11 @@ export default class Predict extends Component {
               time: values.time
             })
             .then(res => {
-              this.setState({ message: "Predicted Electricity Consumption is " + res.data + " KW/h", type: "success" });
+              this.setState({
+                message:
+                  "Predicted Electricity Consumption is " + res.data + " KW/h",
+                type: "success"
+              });
             })
             .catch(err => {
               this.setState({ message: err.message, type: "danger" });
@@ -132,14 +157,15 @@ export default class Predict extends Component {
   render() {
     return (
       <React.Fragment>
-        {ls.get("username") === this.props.match.params.id && (
-          <React.Fragment>
-            <this.UserNavbar />
-            <br />
-            <this.HandleAlert />
-            <this.View />
-          </React.Fragment>
-        )}
+        {ls.get("username") === this.props.match.params.id &&
+          ls.get("userType") === this.props.match.params.type && (
+            <React.Fragment>
+              <this.UserNavbar />
+              <br />
+              <this.HandleAlert />
+              <this.View />
+            </React.Fragment>
+          )}
       </React.Fragment>
     );
   }
