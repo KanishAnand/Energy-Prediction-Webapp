@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 const schema = yup.object({
-  issue: yup.string().required("Please tell us about your issue"),
+  issue: yup.string().required("Please mention the subject"),
   query: yup.string().required("Please tell us about your issue")
 });
 
