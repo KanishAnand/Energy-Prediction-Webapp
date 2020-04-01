@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
 import axios from "axios";
 import {
   Form,
@@ -228,6 +229,7 @@ export default class Profile extends Component {
             .finally(() => {
               actions.setSubmitting(false);
             });
+          window.location.reload(false);
         }}
       >
         {({
