@@ -18,7 +18,7 @@ router.route("/add").post(function(req, res) {
   user
     .save()
     .then(user => {
-      res.status(200).json({ user: "Registered Successfully!" });
+      res.status(200).json(user);
     })
     .catch(err => {
       res.status(400).json(err);
@@ -27,21 +27,20 @@ router.route("/add").post(function(req, res) {
 
 // Check if username exists
 router.route("/exist").post(function(req, res) {
-  username = req.body.username;
+  let username = req.body.username;
   User.find({ username: username })
     .then(users => {
       res.status(200).json(users);
     })
     .catch(err => {
-      console.log("df");
       res.status(400).json(err);
     });
 });
 
 // Login User
 router.route("/login").post(function(req, res) {
-  username = req.body.username;
-  password = req.body.password;
+  let username = req.body.username;
+  let password = req.body.password;
   User.findOne({ username: username, password: password })
     .then(users => {
       res.status(200).json(users);
@@ -51,16 +50,28 @@ router.route("/login").post(function(req, res) {
     });
 });
 
-// Getting a user by id
-router.route("/:id").get(function(req, res) {
-  let id = req.params.id;
-  User.findById(id, function(err, user) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(user);
-    }
-  });
+// finds user
+router.route("/find").post(function(req, res) {
+  User.findOne(req.body)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+// modify user's info
+router.route("/modify").post(function(req, res) {
+  User.findByIdAndUpdate(req.body.id, {
+    $set: req.body.changes
+  })
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
 
 module.exports = router;

@@ -31,6 +31,10 @@ let User = new mongoose.Schema({
   userType: {
     type: String,
     required: true
+  },
+  notification: {
+    type: Boolean,
+    default: true
   }
 });
 
