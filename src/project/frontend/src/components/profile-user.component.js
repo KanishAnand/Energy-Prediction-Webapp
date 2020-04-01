@@ -275,7 +275,7 @@ export default class Profile extends Component {
 
             <Form.Row>
               <Form.Group as={Col} md="8" controlId="profileEmail">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>Email *</Form.Label>
                 <InputGroup>
                   <InputGroup.Prepend>
                     <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
@@ -307,7 +307,7 @@ export default class Profile extends Component {
               </Form.Group>
 
               <Form.Group as={Col} md="4" controlId="profilePhoneNo">
-                <Form.Label>Phone No.</Form.Label>
+                <Form.Label>Phone No. *</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Phone No."
@@ -336,7 +336,7 @@ export default class Profile extends Component {
 
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="profilePassword">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>Password *</Form.Label>
                 <Form.Control
                   type="password"
                   secureTextEntry
@@ -364,7 +364,7 @@ export default class Profile extends Component {
               </Form.Group>
 
               <Form.Group as={Col} md="6" controlId="profileConfirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
+                <Form.Label>Confirm Password *</Form.Label>
                 <Form.Control
                   type="password"
                   secureTextEntry
@@ -397,7 +397,7 @@ export default class Profile extends Component {
                 <Form.Check
                   defaultChecked={this.state.user.notification}
                   name="notification"
-                  label="Do you wish to receive the notifications"
+                  label="* Do you wish to receive the notifications"
                   onChange={e => {
                     if (!values.email) {
                       values = this.InitializeValues(values);
