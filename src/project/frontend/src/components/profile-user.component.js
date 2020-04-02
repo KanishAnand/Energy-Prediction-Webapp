@@ -170,7 +170,6 @@ export default class Profile extends Component {
             this.state.user !== {} ? this.state.user.password : ""
         }}
         onSubmit={(values, actions) => {
-          console.log(values);
           axios
             .post("http://localhost:4000/user/find", {
               email: values.email
@@ -207,7 +206,6 @@ export default class Profile extends Component {
                             user: user.data,
                             isChanged: false
                           });
-                          console.log("hello", user.data);
                         })
                         .catch(err => {
                           this.setState({
@@ -224,7 +222,6 @@ export default class Profile extends Component {
             })
             .catch(err => {
               this.setState({ message: err.message, type: "danger" });
-              console.log("1");
             })
             .finally(() => {
               actions.setSubmitting(false);
@@ -291,7 +288,6 @@ export default class Profile extends Component {
                         values = this.InitializeValues(values);
                       }
                       handleChange(e);
-                      console.log(values);
                     }}
                     isInvalid={
                       (touched.email || values.email) &&
@@ -319,7 +315,6 @@ export default class Profile extends Component {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
-                    console.log(values);
                   }}
                   isInvalid={
                     (touched.phoneNo || values.phoneNo) &&
@@ -349,7 +344,6 @@ export default class Profile extends Component {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
-                    console.log(values);
                   }}
                   isInvalid={
                     (touched.password || values.password) &&
@@ -377,7 +371,6 @@ export default class Profile extends Component {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
-                    console.log(values);
                   }}
                   isInvalid={
                     (touched.confirmPassword || values.confirmPassword) &&
@@ -402,7 +395,6 @@ export default class Profile extends Component {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
-                    console.log(values);
                   }}
                 />
               </Form.Group>
