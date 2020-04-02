@@ -204,10 +204,10 @@ export default class Profile extends Component {
                           this.setState({
                             message: "Profile updated successfully!!",
                             type: "success",
-                            user: user,
+                            user: user.data,
                             isChanged: false
                           });
-                          console.log(user);
+                          console.log("hello", user.data);
                         })
                         .catch(err => {
                           this.setState({
@@ -229,7 +229,6 @@ export default class Profile extends Component {
             .finally(() => {
               actions.setSubmitting(false);
             });
-          window.location.reload(false);
         }}
       >
         {({
@@ -288,7 +287,7 @@ export default class Profile extends Component {
                       this.state.user !== {} ? this.state.user.email : ""
                     }
                     onChange={e => {
-                      if (!values.email) {
+                      if (!this.state.isChanged) {
                         values = this.InitializeValues(values);
                       }
                       handleChange(e);
@@ -316,7 +315,7 @@ export default class Profile extends Component {
                     this.state.user !== {} ? this.state.user.phoneNo : ""
                   }
                   onChange={e => {
-                    if (!values.email) {
+                    if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
@@ -346,7 +345,7 @@ export default class Profile extends Component {
                     this.state.user !== {} ? this.state.user.password : ""
                   }
                   onChange={e => {
-                    if (!values.email) {
+                    if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
@@ -374,7 +373,7 @@ export default class Profile extends Component {
                     this.state.user !== {} ? this.state.user.password : ""
                   }
                   onChange={e => {
-                    if (!values.email) {
+                    if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
@@ -399,7 +398,7 @@ export default class Profile extends Component {
                   name="notification"
                   label="* Do you wish to receive the notifications"
                   onChange={e => {
-                    if (!values.email) {
+                    if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
                     handleChange(e);
@@ -408,6 +407,10 @@ export default class Profile extends Component {
                 />
               </Form.Group>
             </Form.Row>
+
+            {!this.state.isChanged && (
+              <Button variant="light"> Save Changes </Button>
+            )}
 
             {this.state.isChanged && (
               <Button type="submit" name="submit">
