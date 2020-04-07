@@ -17,6 +17,12 @@
 
 ## Running the program
 
+### Python
+
+- pip3 install fbprophet
+- pip3 install pickle
+- pip3 install matplotlib==3.2.1
+
 ### Node
 
 - sudo apt-get update
