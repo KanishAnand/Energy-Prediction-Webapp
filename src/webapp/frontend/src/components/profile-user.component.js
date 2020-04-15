@@ -10,7 +10,7 @@ import {
   InputGroup,
   Navbar,
   Nav,
-  Alert
+  Alert,
 } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -38,7 +38,7 @@ const schema = yup.object({
     .string()
     .required("Please Enter your password")
     .oneOf([yup.ref("password"), null], "Passwords must match"),
-  notification: yup.bool().required()
+  notification: yup.bool().required(),
 });
 
 export default class Profile extends Component {
@@ -48,19 +48,19 @@ export default class Profile extends Component {
       user: {},
       isChanged: false,
       message: "",
-      type: "light"
+      type: "light",
     };
   }
 
   fetchInfo = () => {
     axios
       .post("http://localhost:4000/user/find", {
-        username: this.props.match.params.id
+        username: this.props.match.params.id,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({ user: response.data, message: "", type: "light" });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ user: {}, message: err.message, type: "danger" });
       });
   };
@@ -119,7 +119,7 @@ export default class Profile extends Component {
             >
               Profile
             </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
+            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
               Logout
             </Link>
           </Nav>
@@ -148,7 +148,7 @@ export default class Profile extends Component {
     );
   };
 
-  InitializeValues = values => {
+  InitializeValues = (values) => {
     this.setState({ isChanged: true });
     values.email = this.state.user.email;
     values.phoneNo = this.state.user.phoneNo;
@@ -167,60 +167,60 @@ export default class Profile extends Component {
           phoneNo: this.state.user !== {} ? this.state.user.phoneNo : "",
           password: this.state.user !== {} ? this.state.user.password : "",
           confirmPassword:
-            this.state.user !== {} ? this.state.user.password : ""
+            this.state.user !== {} ? this.state.user.password : "",
         }}
         onSubmit={(values, actions) => {
           axios
-            .post("http://localhost:4000/user/find", {
-              email: values.email
+            .post("http://localhost:4000/user/exist", {
+              email: values.email,
+              phoneNo: values.phoneNo,
             })
-            .then(res => {
-              if (res.data && res.data._id !== this.state.user._id) {
-                actions.setFieldError("email", "Email already exists!");
-              } else {
+            .then((res) => {
+              let error = res.data;
+              let mod = 1;
+              for (let key in error) {
+                if (error[key]._id !== this.state.user._id) {
+                  mod = 0;
+                  break;
+                }
+              }
+              if (mod === 1) {
                 axios
-                  .post("http://localhost:4000/user/find", {
-                    phoneNo: values.phoneNo
+                  .post("http://localhost:4000/user/modify", {
+                    id: this.state.user._id,
+                    changes: {
+                      email: values.email,
+                      phoneNo: values.phoneNo,
+                      password: values.password,
+                      notification: values.notification,
+                    },
                   })
-                  .then(res => {
-                    if (res.data && res.data._id !== this.state.user._id) {
-                      actions.setFieldError(
-                        "phoneNo",
-                        "Phone No. already exists!"
-                      );
-                    } else {
-                      axios
-                        .post("http://localhost:4000/user/modify", {
-                          id: this.state.user._id,
-                          changes: {
-                            email: values.email,
-                            phoneNo: values.phoneNo,
-                            password: values.password,
-                            notification: values.notification
-                          }
-                        })
-                        .then(user => {
-                          this.setState({
-                            message: "Profile updated successfully!!",
-                            type: "success",
-                            user: user.data,
-                            isChanged: false
-                          });
-                        })
-                        .catch(err => {
-                          this.setState({
-                            message: err.message,
-                            type: "danger"
-                          });
-                        });
-                    }
+                  .then((user) => {
+                    this.setState({
+                      message: "Profile updated successfully!!",
+                      type: "success",
+                      user: user.data,
+                      isChanged: false,
+                    });
                   })
-                  .catch(err => {
-                    this.setState({ message: err.message, type: "danger" });
+                  .catch((err) => {
+                    this.setState({
+                      message: err.message,
+                      type: "danger",
+                    });
                   });
+              } else {
+                for (let key in error) {
+                  if (error[key]._id !== this.state.user._id) {
+                    actions.setFieldError(
+                      key,
+                      "This " + key + " already exists!"
+                    );
+                  }
+                }
               }
             })
-            .catch(err => {
+            .catch((err) => {
               this.setState({ message: err.message, type: "danger" });
             })
             .finally(() => {
@@ -235,7 +235,7 @@ export default class Profile extends Component {
           values,
           touched,
           isValid,
-          errors
+          errors,
         }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Row>
@@ -283,7 +283,7 @@ export default class Profile extends Component {
                     defaultValue={
                       this.state.user !== {} ? this.state.user.email : ""
                     }
-                    onChange={e => {
+                    onChange={(e) => {
                       if (!this.state.isChanged) {
                         values = this.InitializeValues(values);
                       }
@@ -310,7 +310,7 @@ export default class Profile extends Component {
                   defaultValue={
                     this.state.user !== {} ? this.state.user.phoneNo : ""
                   }
-                  onChange={e => {
+                  onChange={(e) => {
                     if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
@@ -339,7 +339,7 @@ export default class Profile extends Component {
                   defaultValue={
                     this.state.user !== {} ? this.state.user.password : ""
                   }
-                  onChange={e => {
+                  onChange={(e) => {
                     if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
@@ -366,7 +366,7 @@ export default class Profile extends Component {
                   defaultValue={
                     this.state.user !== {} ? this.state.user.password : ""
                   }
-                  onChange={e => {
+                  onChange={(e) => {
                     if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }
@@ -390,7 +390,7 @@ export default class Profile extends Component {
                   defaultChecked={this.state.user.notification}
                   name="notification"
                   label="* Do you wish to receive the notifications"
-                  onChange={e => {
+                  onChange={(e) => {
                     if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
                     }

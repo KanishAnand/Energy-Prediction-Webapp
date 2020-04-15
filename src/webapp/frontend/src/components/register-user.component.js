@@ -9,7 +9,7 @@ import {
   InputGroup,
   Navbar,
   Nav,
-  Alert
+  Alert,
 } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -54,7 +54,7 @@ const schema = yup.object({
     .string()
     .required("Please Enter your password")
     .oneOf([yup.ref("password"), null], "Passwords must match"),
-  userType: yup.string().required("Please Select the User type")
+  userType: yup.string().required("Please Select the User type"),
 });
 
 export default class RegisterUser extends Component {
@@ -64,7 +64,7 @@ export default class RegisterUser extends Component {
       redirect: false,
       username: "",
       type: "owner",
-      show: false
+      show: false,
     };
   }
 
@@ -94,39 +94,44 @@ export default class RegisterUser extends Component {
           phoneNo: "",
           password: "",
           confirmPassword: "",
-          userType: "Owner"
+          userType: "Owner",
         }}
         onSubmit={(values, actions) => {
           values.userType = values.userType.toLowerCase();
           axios
             .post("http://localhost:4000/user/exist", {
-              username: values.username
+              username: values.username,
+              email: values.email,
+              phoneNo: values.phoneNo,
             })
-            .then(res => {
-              if (res.data !== null && res.data.length !== 0) {
-                actions.setFieldError(
-                  "username",
-                  "This username already exists!"
-                );
-              } else {
+            .then((res) => {
+              let error = res.data;
+              if (Object.keys(error).length === 0) {
                 axios
                   .post("http://localhost:4000/user/add", values)
-                  .then(res => {
+                  .then((res) => {
                     ls.set("username", values.username);
                     ls.set("userType", values.userType);
                     this.setState({
                       redirect: true,
                       type: values.userType,
-                      username: values.username
+                      username: values.username,
                     });
                   })
-                  .catch(err => {
+                  .catch((err) => {
                     actions.setFieldError("general", err.message);
                     this.setState({ show: true });
                   });
+              } else {
+                for (let key in error) {
+                  actions.setFieldError(
+                    key,
+                    "This " + key + " already exists!"
+                  );
+                }
               }
             })
-            .catch(err => {
+            .catch((err) => {
               actions.setFieldError("general", err.message);
               this.setState({ show: true });
             })
@@ -142,7 +147,7 @@ export default class RegisterUser extends Component {
           values,
           touched,
           isValid,
-          errors
+          errors,
         }) => (
           <Form onSubmit={handleSubmit}>
             {this.state.show && (
