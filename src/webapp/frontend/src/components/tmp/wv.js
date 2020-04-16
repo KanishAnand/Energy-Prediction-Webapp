@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import ls from "local-storage";
 import axios from "axios";
 import { Navbar, Nav, Alert } from "react-bootstrap";
-import ReactWeather from "react-open-weather";
-import "react-open-weather/lib/css/ReactWeather.css";
+import useScript from "/home/akshat/Documents/dass12/src/webapp/frontend/src/components/useScript";
 
 export default class Weather extends Component {
   constructor(props) {
@@ -85,14 +84,32 @@ export default class Weather extends Component {
     );
   };
 
-  // fetchInfo = () => {};
+  fetchInfo = () => {
+    const div = document.createElement("div");
+    div.id = "openweathermap-widget-11";
+    document.body.appendChild(div);
+    const pwd =
+      "/home/akshat/Documents/dass12/src/webapp/frontend/src/components";
+    const scripts = [
+      pwd + "/d3.min.js",
+      pwd + "/usable.js",
+      pwd + "/stripped.js",
+    ];
+    for (const script of scripts) {
+      const elm = document.createElement("script");
+      elm.type = "text/javascript";
+      elm.src = script;
+      elm.async = false;
+      document.body.appendChild(elm);
+    }
+  };
 
-  // componentDidMount() {
-  //   this.fetchInfo();
-  //   this.interval = setInterval(() => {
-  //     this.fetchInfo();
-  //   }, 5000);
-  // }
+  componentDidMount() {
+    // this.fetchInfo();
+    // this.interval = setInterval(() => {
+    //   this.fetchInfo();
+    // }, 5000);
+  }
 
   HandleAlert = () => {
     return (
@@ -111,14 +128,29 @@ export default class Weather extends Component {
     );
   };
 
+  LoadScript = (src) => {
+    let script = document.createElement("script");
+    script.async = false;
+    script.src = src;
+    document.body.appendChild(script);
+  };
+
   View = () => {
+    const pwd =
+      "/home/akshat/Documents/dass12/src/webapp/frontend/src/components";
+    const scripts = [
+      pwd + "/d3.min.js",
+      pwd + "/usable.js",
+      pwd + "/stripped.js",
+    ];
     return (
-      <ReactWeather
-        forecast="today"
-        apikey="95e286bae5647877dbb924f3779736a8"
-        type="city"
-        city="Munich"
-      />
+      <React.Fragment>
+        <div id="openweathermap-widget-11"></div>
+        {useScript(scripts[0])}
+        {useScript(scripts[1])}
+        {useScript(scripts[2])}
+        {/* {scripts.forEach(this.LoadScript)} */}
+      </React.Fragment>
     );
   };
 
