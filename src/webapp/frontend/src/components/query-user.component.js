@@ -7,8 +7,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 const schema = yup.object({
-  issue: yup.string().required("Please mention the subject"),
-  query: yup.string().required("Please tell us about your issue")
+  subject: yup.string().required("Please mention the subject"),
+  text: yup.string().required("Please tell us about your issue"),
 });
 
 export default class QueryForm extends Component {
@@ -16,7 +16,7 @@ export default class QueryForm extends Component {
     super(props);
     this.state = {
       message: "",
-      type: "light"
+      type: "light",
     };
   }
 
@@ -70,7 +70,7 @@ export default class QueryForm extends Component {
             >
               Profile
             </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
+            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
               Logout
             </Link>
           </Nav>
@@ -104,15 +104,29 @@ export default class QueryForm extends Component {
       <Formik
         validationSchema={schema}
         initialValues={{
-          issue: "",
-          query: ""
+          subject: "",
+          text: "",
         }}
         onSubmit={(values, actions) => {
-          this.setState({
-            message: "Form submitted successfully!",
-            type: "success"
-          });
-          actions.resetForm();
+          axios
+            .post("http://localhost:4000/user/form", {
+              subject: values.subject,
+              text: values.text,
+              username: this.props.match.params.id,
+            })
+            .then((res) => {
+              this.setState({
+                message: "Form submitted successfully!",
+                type: "success",
+              });
+              actions.resetForm();
+            })
+            .catch((err) => {
+              this.setState({ message: err.message, type: "danger" });
+            })
+            .finally(() => {
+              actions.setSubmitting(false);
+            });
         }}
       >
         {({
@@ -122,7 +136,7 @@ export default class QueryForm extends Component {
           values,
           touched,
           isValid,
-          errors
+          errors,
         }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group md="6" controlId="queryTo">
@@ -147,36 +161,38 @@ export default class QueryForm extends Component {
               </InputGroup>
             </Form.Group>
 
-            <Form.Group md="6" controlId="queryIssue">
+            <Form.Group md="6" controlId="querySubject">
               <InputGroup className="mb-3">
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="issue-label">Issue</InputGroup.Text>
+                  <InputGroup.Text id="subject-label">Issue</InputGroup.Text>
                 </InputGroup.Prepend>
                 <Form.Control
                   type="text"
-                  name="issue"
+                  name="subject"
                   placeholder="Subject"
-                  value={values.issue}
+                  value={values.subject}
                   onChange={handleChange}
-                  isInvalid={(touched.issue || values.issue) && errors.issue}
+                  isInvalid={
+                    (touched.subject || values.subject) && errors.subject
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors.issue}
+                  {errors.subject}
                 </Form.Control.Feedback>
               </InputGroup>
             </Form.Group>
 
-            <Form.Group md="6" controlId="queryTextArea">
+            <Form.Group md="6" controlId="queryText">
               <Form.Control
                 as="textarea"
-                name="query"
+                name="text"
                 placeholder="Write about your issue"
-                value={values.query}
+                value={values.text}
                 onChange={handleChange}
-                isInvalid={(touched.query || values.query) && errors.query}
+                isInvalid={(touched.text || values.text) && errors.text}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.query}
+                {errors.text}
               </Form.Control.Feedback>
             </Form.Group>
 
