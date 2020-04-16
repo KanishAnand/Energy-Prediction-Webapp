@@ -6,4 +6,7 @@ r = requests.get(url=URL)
 
 data = r.json()
 
-print(data)
+for ind in range(len(data['list'])):
+    print(data['list'][ind]['dt_txt'])
+    print(data['list'][ind]['main']['temp'])
+    print('\n')
