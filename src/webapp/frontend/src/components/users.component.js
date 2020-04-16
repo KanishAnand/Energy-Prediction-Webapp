@@ -10,7 +10,7 @@ export default class Users extends Component {
     this.state = {
       message: "",
       type: "light",
-      users: []
+      users: [],
     };
   }
 
@@ -30,6 +30,17 @@ export default class Users extends Component {
               }
             >
               Prediction
+            </Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.match.params.type +
+                "/" +
+                this.props.match.params.id +
+                "/weather"
+              }
+            >
+              Weather
             </Nav.Link>
             <Nav.Link
               href={
@@ -64,7 +75,7 @@ export default class Users extends Component {
             >
               Profile
             </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={e => ls.clear()}>
+            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
               Logout
             </Link>
           </Nav>
@@ -76,10 +87,10 @@ export default class Users extends Component {
   fetchInfo = () => {
     axios
       .get("http://localhost:4000/user")
-      .then(response => {
+      .then((response) => {
         this.setState({ users: response.data, message: "", type: "light" });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.message);
       });
   };

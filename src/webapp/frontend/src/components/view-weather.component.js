@@ -1,22 +1,16 @@
 import React, { Component } from "react";
-import ls from "local-storage";
 import { Link } from "react-router-dom";
+import ls from "local-storage";
 import axios from "axios";
-import { Form, Button, Alert, Navbar, Nav } from "react-bootstrap";
-import { Formik } from "formik";
-import * as yup from "yup";
+import { Navbar, Nav, Alert } from "react-bootstrap";
 
-const schema = yup.object({
-  date: yup.date().required("Please Enter the Date"),
-  time: yup.string().required("Please Enter the Time"),
-});
-
-export default class Predict extends Component {
+export default class Weather extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: "",
       type: "light",
+      users: [],
     };
   }
 
@@ -90,6 +84,24 @@ export default class Predict extends Component {
     );
   };
 
+  fetchInfo = () => {
+    // axios
+    //   .get("http://localhost:4000/user")
+    //   .then((response) => {
+    //     this.setState({ users: response.data, message: "", type: "light" });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.message);
+    //   });
+  };
+
+  componentDidMount() {
+    this.fetchInfo();
+    // this.interval = setInterval(() => {
+    //   this.fetchInfo();
+    // }, 5000);
+  }
+
   HandleAlert = () => {
     return (
       <React.Fragment>
@@ -107,86 +119,39 @@ export default class Predict extends Component {
     );
   };
 
+  // WeatherScript = () => {
+  // window.myWidgetParam ? window.myWidgetParam : (window.myWidgetParam = []);
+  // window.myWidgetParam.push({
+  //   id: 11,
+  //   cityid: "1269843",
+  //   appid: "95e286bae5647877dbb924f3779736a8",
+  //   units: "metric",
+  //   containerid: "openweathermap-widget-11",
+  // });
+  // var script = document.createElement("script");
+  // script.async = true;
+  // script.charset = "utf-8";
+  // script.src =
+  //   "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+  // var s = document.getElementsByTagName("script")[0];
+  // s.parentNode.insertBefore(script, s);
+  // return (
+  // );
+  // };
+
   View = () => {
     return (
-      <Formik
-        validationSchema={schema}
-        initialValues={{
-          date: "",
-          time: "",
-        }}
-        onSubmit={(values, actions) => {
-          this.setState({
-            message: "Please wait for few seconds!!",
-            type: "warning",
-          });
-          axios
-            .post("http://localhost:4000/model/predict", {
-              date: values.date,
-              time: values.time,
-            })
-            .then((res) => {
-              this.setState({
-                message:
-                  "Predicted Electricity Consumption is " + res.data + " KW/h",
-                type: "success",
-              });
-            })
-            .catch((err) => {
-              this.setState({ message: err.message, type: "danger" });
-            })
-            .finally(() => {
-              actions.setSubmitting(false);
-            });
-        }}
-      >
-        {({
-          handleSubmit,
-          handleChange,
-          handleBlur,
-          values,
-          touched,
-          isValid,
-          errors,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group md="6" controlId="predictDate">
-              <Form.Label>Date</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="Date"
-                aria-describedby="inputGroupPrepend"
-                name="date"
-                value={values.date}
-                onChange={handleChange}
-                isInvalid={(touched.date || values.date) && errors.date}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.date}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group md="6" controlId="predictTime">
-              <Form.Label>Time</Form.Label>
-              <Form.Control
-                type="time"
-                placeholder="Time"
-                name="time"
-                value={values.time}
-                onChange={handleChange}
-                isInvalid={(touched.time || values.time) && errors.time}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.time}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Button type="submit">Submit</Button>
-          </Form>
-        )}
-      </Formik>
+      <React.Fragment>
+        <div id="openweathermap-widget-11"></div>
+        <script src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js"></script>
+        {/* <script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 11,cityid: '1269843',appid: '95e286bae5647877dbb924f3779736a8',units: 'metric',containerid: 'openweathermap-widget-11',  });  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();</script> */}
+      </React.Fragment>
     );
   };
+
+  // componentWillMount() {
+  //   clearInterval(this.interval);
+  // }
 
   render() {
     return (

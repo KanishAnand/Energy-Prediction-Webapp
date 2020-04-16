@@ -91,6 +91,17 @@ export default class Profile extends Component {
                 this.props.match.params.type +
                 "/" +
                 this.props.match.params.id +
+                "/weather"
+              }
+            >
+              Weather
+            </Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.match.params.type +
+                "/" +
+                this.props.match.params.id +
                 "/users"
               }
             >
