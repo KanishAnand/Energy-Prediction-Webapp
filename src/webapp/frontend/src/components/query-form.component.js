@@ -97,14 +97,17 @@ export default class QueryForm extends Component {
     return (
       <React.Fragment>
         {this.state.message !== "" && (
-          <Alert
-            key="general"
-            variant={this.state.type}
-            onClose={() => this.setState({ message: "", type: "light" })}
-            dismissible
-          >
-            {this.state.message}
-          </Alert>
+          <React.Fragment>
+            <br />
+            <Alert
+              key="general"
+              variant={this.state.type}
+              onClose={() => this.setState({ message: "", type: "light" })}
+              dismissible
+            >
+              {this.state.message}
+            </Alert>
+          </React.Fragment>
         )}
       </React.Fragment>
     );
@@ -221,7 +224,6 @@ export default class QueryForm extends Component {
           ls.get("userType") === this.props.match.params.type && (
             <React.Fragment>
               <this.UserNavbar />
-              <br />
               <this.HandleAlert />
               <this.View />
             </React.Fragment>
