@@ -126,21 +126,20 @@ export default class Predict extends Component {
     let table = [];
     let body = [];
     let row = [];
-    row.push(<th>{"Date"}</th>);
-    row.push(<th>{"Time"}</th>);
-    row.push(<th>{"Energy(kWh)"}</th>);
-    body.push(<tr>{row}</tr>);
-    table.push(<thead>{body}</thead>);
+    row.push(<th key="date">{"Date"}</th>);
+    row.push(<th key="time">{"Time"}</th>);
+    row.push(<th key="energy">{"Energy(kWh)"}</th>);
+    body.push(<tr key={0}>{row}</tr>);
+    table.push(<thead key="head">{body}</thead>);
     body = [];
     for (let i in this.state.plist) {
       row = [];
-      console.log(this.state.plist[i]);
-      row.push(<td>{this.state.plist[i]["date"]}</td>);
-      row.push(<td>{this.state.plist[i]["time"]}</td>);
-      row.push(<td>{this.state.plist[i]["yhat"]}</td>);
-      body.push(<tr>{row}</tr>);
+      row.push(<td key={"date" + i}>{this.state.plist[i]["date"]}</td>);
+      row.push(<td key={"time" + i}>{this.state.plist[i]["time"]}</td>);
+      row.push(<td key={"energy" + i}>{this.state.plist[i]["yhat"]}</td>);
+      body.push(<tr key={i}>{row}</tr>);
     }
-    table.push(<tbody>{body}</tbody>);
+    table.push(<tbody key="body">{body}</tbody>);
     return (
       <React.Fragment>
         <br />
@@ -186,7 +185,6 @@ export default class Predict extends Component {
                 toTime: values.toTime,
               })
               .then((res) => {
-                console.log(res.data);
                 this.setState({
                   message: "Energy Prediction Completed Successfully!",
                   type: "success",

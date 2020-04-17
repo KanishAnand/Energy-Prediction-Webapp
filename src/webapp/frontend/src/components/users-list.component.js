@@ -129,36 +129,35 @@ export default class Users extends Component {
     let table = [];
     let body = [];
     let row = [];
-    row.push(<th>{"Name"}</th>);
-    row.push(<th>{"User Name"}</th>);
-    row.push(<th>{"User Type"}</th>);
-    body.push(<tr>{row}</tr>);
-    table.push(<thead>{body}</thead>);
+    row.push(<th key={"name"}>{"Name"}</th>);
+    row.push(<th key="username">{"User Name"}</th>);
+    row.push(<th key="userType">{"User Type"}</th>);
+    body.push(<tr key={0}>{row}</tr>);
+    table.push(<thead key="head">{body}</thead>);
     body = [];
     for (let i in this.state.users) {
       row = [];
       row.push(
-        <td>
+        <td key={"name" + i}>
           {this.state.users[i]["firstName"] +
             " " +
             this.state.users[i]["lastName"]}
         </td>
       );
-      row.push(<td>{this.state.users[i]["username"]}</td>);
-      row.push(<td>{this.state.users[i]["userType"]}</td>);
-      body.push(<tr>{row}</tr>);
+      row.push(<td key={"username" + i}>{this.state.users[i]["username"]}</td>);
+      row.push(<td key={"userType" + i}>{this.state.users[i]["userType"]}</td>);
+      body.push(<tr key={i}>{row}</tr>);
     }
-    table.push(<tbody>{body}</tbody>);
+    table.push(<tbody key="body">{body}</tbody>);
     return (
-      <Table striped bordered hover variant="dark">
-        {table}
-      </Table>
+      <React.Fragment>
+        <br />
+        <Table striped bordered hover variant="dark">
+          {table}
+        </Table>
+      </React.Fragment>
     );
   };
-
-  componentWillMount() {
-    clearInterval(this.interval);
-  }
 
   render() {
     return (

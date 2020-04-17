@@ -153,12 +153,17 @@ export default class QueryForm extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
+            <br />
             <Form.Group md="6" controlId="queryTo">
               <InputGroup className="mb-3">
                 <InputGroup.Prepend>
                   <InputGroup.Text id="to-label">To</InputGroup.Text>
                 </InputGroup.Prepend>
-                <Form.Control type="text" name="to" value="Maintenance Team" />
+                <Form.Control
+                  type="text"
+                  name="to"
+                  defaultValue="Maintenance Team"
+                />
               </InputGroup>
             </Form.Group>
 
@@ -170,7 +175,7 @@ export default class QueryForm extends Component {
                 <Form.Control
                   type="text"
                   name="from"
-                  value={this.props.match.params.id}
+                  defaultValue={this.props.match.params.id}
                 />
               </InputGroup>
             </Form.Group>

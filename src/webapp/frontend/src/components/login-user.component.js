@@ -18,7 +18,7 @@ const schema = yup.object({
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Alphabet, One Number and one special case Character"
-    )
+    ),
 });
 
 export default class LoginUser extends Component {
@@ -28,7 +28,7 @@ export default class LoginUser extends Component {
       redirect: false,
       username: "",
       show: false,
-      type: "customer"
+      type: "customer",
     };
   }
 
@@ -52,19 +52,19 @@ export default class LoginUser extends Component {
         validationSchema={schema}
         initialValues={{
           username: "",
-          password: ""
+          password: "",
         }}
         onSubmit={(values, actions) => {
           axios
             .post("http://localhost:4000/user/login", values)
-            .then(res => {
+            .then((res) => {
               if (res.data !== null && res.data.length !== 0) {
                 ls.set("username", res.data.username);
                 ls.set("userType", res.data.userType);
                 this.setState({
                   type: res.data.userType,
                   username: res.data.username,
-                  redirect: true
+                  redirect: true,
                 });
               } else {
                 actions.setFieldError(
@@ -74,7 +74,7 @@ export default class LoginUser extends Component {
                 this.setState({ show: true });
               }
             })
-            .catch(err => {
+            .catch((err) => {
               actions.setFieldError("general", err.message);
               this.setState({ show: true });
             })
@@ -90,7 +90,7 @@ export default class LoginUser extends Component {
           values,
           touched,
           isValid,
-          errors
+          errors,
         }) => (
           <Form onSubmit={handleSubmit}>
             {this.state.show && (
@@ -127,7 +127,7 @@ export default class LoginUser extends Component {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                secureTextEntry
+                securetextentry="true"
                 placeholder="Password"
                 name="password"
                 value={values.password}
