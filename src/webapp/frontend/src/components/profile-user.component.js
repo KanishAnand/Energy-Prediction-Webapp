@@ -33,10 +33,7 @@ const schema = yup.object({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Alphabet, One Number and one special case Character"
     ),
-  confirmPassword: yup
-    .string()
-    .required("Please Enter your password")
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+  userType: yup.string().required("Please Select the User type"),
   notification: yup.bool().required(),
 });
 
@@ -163,7 +160,7 @@ export default class Profile extends Component {
     values.email = this.state.user.email;
     values.phoneNo = this.state.user.phoneNo;
     values.password = this.state.user.password;
-    values.confirmPassword = this.state.user.password;
+    values.userType = this.state.user.userType;
     values.notification = this.state.user.notification;
     return values;
   };
@@ -176,8 +173,7 @@ export default class Profile extends Component {
           email: this.state.user !== {} ? this.state.user.email : "",
           phoneNo: this.state.user !== {} ? this.state.user.phoneNo : "",
           password: this.state.user !== {} ? this.state.user.password : "",
-          confirmPassword:
-            this.state.user !== {} ? this.state.user.password : "",
+          userType: this.state.user !== {} ? this.state.user.userType : "",
         }}
         onSubmit={(values, actions) => {
           axios
@@ -202,6 +198,7 @@ export default class Profile extends Component {
                       email: values.email,
                       phoneNo: values.phoneNo,
                       password: values.password,
+                      userType: values.userType,
                       notification: values.notification,
                     },
                   })
@@ -339,6 +336,27 @@ export default class Profile extends Component {
             </Form.Row>
 
             <Form.Row>
+              <Form.Group as={Col} md="6" controlId="profileUserType">
+                <Form.Label>User Type *</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="userType"
+                  defaultValue={
+                    this.state.user !== {} ? this.state.user.userType : ""
+                  }
+                  onChange={(e) => {
+                    if (!this.state.isChanged) {
+                      values = this.InitializeValues(values);
+                    }
+                    handleChange(e);
+                  }}
+                >
+                  <option>Owner</option>
+                  <option>Finance Team</option>
+                  <option>Maintenance Team</option>
+                </Form.Control>
+              </Form.Group>
+
               <Form.Group as={Col} md="6" controlId="profilePassword">
                 <Form.Label>Password *</Form.Label>
                 <Form.Control
@@ -363,33 +381,6 @@ export default class Profile extends Component {
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.password}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group as={Col} md="6" controlId="profileConfirmPassword">
-                <Form.Label>Confirm Password *</Form.Label>
-                <Form.Control
-                  type="password"
-                  secureTextEntry
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  defaultValue={
-                    this.state.user !== {} ? this.state.user.password : ""
-                  }
-                  onChange={(e) => {
-                    if (!this.state.isChanged) {
-                      values = this.InitializeValues(values);
-                    }
-                    handleChange(e);
-                  }}
-                  isInvalid={
-                    (touched.confirmPassword || values.confirmPassword) &&
-                    errors.confirmPassword &&
-                    this.state.isChanged
-                  }
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.confirmPassword}
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
