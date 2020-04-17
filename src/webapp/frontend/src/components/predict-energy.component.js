@@ -28,7 +28,7 @@ export default class Predict extends Component {
     this.state = {
       message: "",
       type: "light",
-      plist: [],
+      data: [],
     };
   }
 
@@ -122,21 +122,19 @@ export default class Predict extends Component {
     );
   };
 
-  Plist = () => {
+  Data = () => {
     let table = [];
     let body = [];
     let row = [];
     row.push(<th key="date">{"Date"}</th>);
-    row.push(<th key="time">{"Time"}</th>);
     row.push(<th key="energy">{"Energy(kWh)"}</th>);
     body.push(<tr key={0}>{row}</tr>);
     table.push(<thead key="head">{body}</thead>);
     body = [];
-    for (let i in this.state.plist) {
+    for (let i in this.state.data) {
       row = [];
-      row.push(<td key={"date" + i}>{this.state.plist[i]["date"]}</td>);
-      row.push(<td key={"time" + i}>{this.state.plist[i]["time"]}</td>);
-      row.push(<td key={"energy" + i}>{this.state.plist[i]["yhat"]}</td>);
+      row.push(<td key={"date" + i}>{this.state.data[i]["date"]}</td>);
+      row.push(<td key={"energy" + i}>{this.state.data[i]["yhat"]}</td>);
       body.push(<tr key={i}>{row}</tr>);
     }
     table.push(<tbody key="body">{body}</tbody>);
@@ -145,7 +143,7 @@ export default class Predict extends Component {
         <br />
         <br />
         <Table striped bordered hover variant="dark">
-          {this.state.plist !== null && this.state.plist.length !== 0 && table}
+          {this.state.data !== null && this.state.data.length !== 0 && table}
         </Table>
       </React.Fragment>
     );
@@ -173,9 +171,9 @@ export default class Predict extends Component {
             actions.setSubmitting(false);
           } else {
             this.setState({
-              message: "Please wait for few seconds!!",
+              message: "Please wait for some time!!",
               type: "warning",
-              plist: [],
+              data: [],
             });
             axios
               .post("http://localhost:4000/model/predict", {
@@ -188,7 +186,7 @@ export default class Predict extends Component {
                 this.setState({
                   message: "Energy Prediction Completed Successfully!",
                   type: "success",
-                  plist: res.data,
+                  data: res.data,
                 });
               })
               .catch((err) => {
@@ -210,7 +208,7 @@ export default class Predict extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <br />
+            {this.state.type === "light" && <br />}
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="predictFrom">
                 <Form.Label>From</Form.Label>
@@ -321,7 +319,7 @@ export default class Predict extends Component {
               <this.UserNavbar />
               <this.HandleAlert />
               <this.View />
-              <this.Plist />
+              <this.Data />
             </React.Fragment>
           )}
       </React.Fragment>

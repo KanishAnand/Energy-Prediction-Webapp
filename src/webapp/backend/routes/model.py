@@ -6,30 +6,47 @@ import numpy as np
 import json
 
 
+def getEnergy(dayTime):
+    param = pd.DataFrame([dayTime], columns=['ds'])
+    val = model.predict(param).to_dict()
+    data = {"dateTime": dayTime, "yhat": round(np.exp(val['yhat'][0]), 2)}
+    return data
+
+
+def formatData(From, To, data):
+    output = []
+    date = From
+    value = 0
+    for d in data:
+        if date.strftime('%Y-%m-%d') == d['dateTime'].strftime('%Y-%m-%d'):
+            value += int(d['yhat'])
+        else:
+            output.append({"date": date.strftime('%Y-%m-%d'),
+                           "yhat": value})
+            date += timedelta(days=1)
+            value = int(d['yhat'])
+    output.append({"date": date.strftime('%Y-%m-%d'),
+                   "yhat": value})
+    return output
+
+
 def predict(model):
     From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
     To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
-    plist = []
+    data = []
     dayTime = From
-    data = pd.DataFrame([dayTime], columns=['ds'])
-    val = model.predict(data).to_dict()
-    plist.append(
-        {"date": str(dayTime.strftime('%Y-%m-%d')), "time": str(dayTime.strftime('%H:%M:%S')), "yhat": round(np.exp(val['yhat'][0]), 2)})
+    data.append(getEnergy(dayTime))
     dayTime = dayTime.replace(minute=0) + timedelta(hours=1)
     while dayTime <= To:
-        data = pd.DataFrame([dayTime], columns=['ds'])
-        val = model.predict(data).to_dict()
-        plist.append(
-            {"date": str(dayTime.strftime('%Y-%m-%d')), "time": str(dayTime.strftime('%H:%M:%S')), "yhat": round(np.exp(val['yhat'][0]), 2)})
+        data.append(getEnergy(dayTime))
         dayTime += timedelta(hours=1)
     if To != From and To.minute != 0:
         dayTime = To
-        data = pd.DataFrame([dayTime], columns=['ds'])
-        val = model.predict(data).to_dict()
-        plist.append(
-            {"date": str(dayTime.strftime('%Y-%m-%d')), "time": str(dayTime.strftime('%H:%M:%S')), "yhat": round(np.exp(val['yhat'][0]), 2)})
-    with open("./models/plist.json", "w") as f:
-        json.dump(plist, f)
+        data.append(getEnergy(dayTime))
+    print(data)
+    data = formatData(From, To, data)
+    with open("./models/data.json", "w") as f:
+        json.dump(data, f)
     print("Energy Prediction Completed Successfully!")
     sys.stdout.flush()
     return
