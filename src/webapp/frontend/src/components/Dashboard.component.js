@@ -10,10 +10,8 @@ import ReactFC from "react-fusioncharts";
 import "./charts-theme.js";
 
 import config from "./config";
-// import Dropdown from "react-dropdown";
 import formatNum from "./format-number";
-
-// import UserImg from "../assets/images/user-img-placeholder.jpeg";
+import { UserNavbar } from "./navbar.component";
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, USARegion);
 
@@ -119,6 +117,11 @@ export default class Dashboard extends Component {
 						</Container>
 					</Container>
 				</Nav>
+
+				<UserNavbar
+					username={this.props.match.params.id}
+					userType={this.props.match.params.type}
+				/>
 
 				{/* content area start */}
 				<Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
