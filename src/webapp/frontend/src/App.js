@@ -16,7 +16,7 @@ function App() {
     <Router>
       <Route path="/home" component={Dashboard} />
       <Route path="/:type/:id/home" component={Dashboard} />
-      <div className="container">
+      <div className="container" style={{ color: "white" }}>
         <Route path="/" exact component={LoginUser} />
         <Route path="/register" component={RegisterUser} />
         <Route path="/login" component={LoginUser} />
