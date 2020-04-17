@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import RegisterUser from "./components/register-user.component";
 import LoginUser from "./components/login-user.component";
-import Predict from "./components/predict.component";
-import Users from "./components/users.component";
-import QueryForm from "./components/query-user.component";
+import Predict from "./components/predict-energy.component";
+import Users from "./components/users-list.component";
+import QueryForm from "./components/query-form.component";
 import Profile from "./components/profile-user.component";
 import Weather from "./components/view-weather.component";
 

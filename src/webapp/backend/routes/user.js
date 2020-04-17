@@ -85,7 +85,9 @@ router.route("/form").post(function (req, res) {
         to += users[i]["email"];
       }
       if (to === "") {
-        res.status(400).json({ message: "Maintenance Team not available!" });
+        res.status(400).json({
+          message: "Maintenance Team not available!",
+        });
       }
       User.findOne({ username: req.body.username })
         .then((user) => {
@@ -114,9 +116,9 @@ router.route("/form").post(function (req, res) {
           };
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-              res
-                .status(400)
-                .json({ message: "Username and Password not accepted" });
+              res.status(400).json({
+                message: error.response,
+              });
             } else {
               res.status(200).json("Email sent: " + info.response);
             }
