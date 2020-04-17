@@ -16,7 +16,7 @@ class Card extends React.Component {
 
 		return (
 			<div className="col-auto">
-				<div className="card bg-light">
+				<div className="card bg-light" align="center">
 					<h3 className="card-title">
 						{moment(newDate).format("dddd")}
 					</h3>
