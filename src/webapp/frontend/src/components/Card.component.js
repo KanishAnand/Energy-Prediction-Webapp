@@ -1,6 +1,6 @@
 import React from "react";
-import "./Card.css";
-import "./owfont-master/css/owfont-regular.css";
+import "../css/Card.css";
+import "../css/owfont-master/css/owfont-regular.css";
 var moment = require("moment");
 
 class Card extends React.Component {
