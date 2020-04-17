@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import ls from "local-storage";
 import axios from "axios";
-import { Navbar, Nav, Alert, Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
+import { UserNavbar } from "./navbar.component";
 
 export default class Users extends Component {
   constructor(props) {
@@ -13,76 +13,6 @@ export default class Users extends Component {
       users: [],
     };
   }
-
-  UserNavbar = () => {
-    return (
-      <React.Fragment>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#">Home</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/predict"
-              }
-            >
-              Prediction
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/weather"
-              }
-            >
-              Weather
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/users"
-              }
-            >
-              Users
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/query"
-              }
-            >
-              Customer Care
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/profile"
-              }
-            >
-              Profile
-            </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
-              Logout
-            </Link>
-          </Nav>
-        </Navbar>
-      </React.Fragment>
-    );
-  };
 
   fetchInfo = () => {
     axios
@@ -165,7 +95,10 @@ export default class Users extends Component {
         {ls.get("username") === this.props.match.params.id &&
           ls.get("userType") === this.props.match.params.type && (
             <React.Fragment>
-              <this.UserNavbar />
+              <UserNavbar
+                username={this.props.match.params.id}
+                userType={this.props.match.params.type}
+              />
               <this.HandleAlert />
               <this.View />
             </React.Fragment>

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import ls from "local-storage";
 import { Redirect } from "react-router";
 import axios from "axios";
-import { Form, Button, Alert, Navbar, Nav } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { LoginNavbar } from "./navbar.component";
 
 const schema = yup.object({
   username: yup
@@ -31,20 +32,6 @@ export default class LoginUser extends Component {
       type: "customer",
     };
   }
-
-  UserNavbar = () => {
-    return (
-      <React.Fragment>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#">Home</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="/register">Register</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
-          </Nav>
-        </Navbar>
-      </React.Fragment>
-    );
-  };
 
   LoginForm = () => {
     return (
@@ -159,7 +146,7 @@ export default class LoginUser extends Component {
     }
     return (
       <React.Fragment>
-        <this.UserNavbar />
+        <LoginNavbar />
         <br />
         <this.LoginForm />
       </React.Fragment>

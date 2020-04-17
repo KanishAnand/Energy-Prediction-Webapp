@@ -2,17 +2,10 @@ import React, { Component } from "react";
 import ls from "local-storage";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import {
-  Form,
-  Button,
-  Col,
-  InputGroup,
-  Navbar,
-  Nav,
-  Alert,
-} from "react-bootstrap";
+import { Form, Button, Col, InputGroup, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { LoginNavbar } from "./navbar.component";
 
 const schema = yup.object({
   firstName: yup
@@ -67,20 +60,6 @@ export default class RegisterUser extends Component {
       show: false,
     };
   }
-
-  UserNavbar = () => {
-    return (
-      <React.Fragment>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#">Home</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="/register">Register</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
-          </Nav>
-        </Navbar>
-      </React.Fragment>
-    );
-  };
 
   RegisterForm = () => {
     return (
@@ -328,7 +307,7 @@ export default class RegisterUser extends Component {
     }
     return (
       <React.Fragment>
-        <this.UserNavbar />
+        <LoginNavbar />
         <br />
         <this.RegisterForm />
       </React.Fragment>

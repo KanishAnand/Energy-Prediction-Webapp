@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import ls from "local-storage";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { Form, Button, Alert, Navbar, Nav, InputGroup } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { UserNavbar } from "./navbar.component";
 
 const schema = yup.object({
   subject: yup.string().required("Please mention the subject"),
@@ -19,76 +19,6 @@ export default class QueryForm extends Component {
       type: "light",
     };
   }
-
-  UserNavbar = () => {
-    return (
-      <React.Fragment>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#">Home</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/predict"
-              }
-            >
-              Prediction
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/weather"
-              }
-            >
-              Weather
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/users"
-              }
-            >
-              Users
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/query"
-              }
-            >
-              Customer Care
-            </Nav.Link>
-            <Nav.Link
-              href={
-                "/" +
-                this.props.match.params.type +
-                "/" +
-                this.props.match.params.id +
-                "/profile"
-              }
-            >
-              Profile
-            </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
-              Logout
-            </Link>
-          </Nav>
-        </Navbar>
-      </React.Fragment>
-    );
-  };
 
   HandleAlert = () => {
     setTimeout(() => {
@@ -228,7 +158,10 @@ export default class QueryForm extends Component {
         {ls.get("username") === this.props.match.params.id &&
           ls.get("userType") === this.props.match.params.type && (
             <React.Fragment>
-              <this.UserNavbar />
+              <UserNavbar
+                username={this.props.match.params.id}
+                userType={this.props.match.params.type}
+              />
               <this.HandleAlert />
               <this.View />
             </React.Fragment>
