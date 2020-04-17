@@ -6,9 +6,9 @@ let nodemailer = require("nodemailer");
 router.route("/").get(function (req, res) {
   User.find(function (err, users) {
     if (err) {
-      console.log(err);
+      res.status(400).json(err);
     } else {
-      res.json(users);
+      res.status(200).json(users);
     }
   });
 });
@@ -75,7 +75,7 @@ router.route("/exist").post(function (req, res) {
 
 // sends query form to all the maintainers
 router.route("/form").post(function (req, res) {
-  User.find({ userType: "maintenance team" })
+  User.find({ userType: "Maintenance Team" })
     .then((users) => {
       let to = "";
       for (let i = 0; i < users.length; i++) {
@@ -88,6 +88,7 @@ router.route("/form").post(function (req, res) {
         res.status(400).json({
           message: "Maintenance Team not available!",
         });
+        return;
       }
       User.findOne({ username: req.body.username })
         .then((user) => {
@@ -95,6 +96,7 @@ router.route("/form").post(function (req, res) {
             res.status(400).json({
               message: "Username: " + req.body.username + " does not exist!",
             });
+            return;
           }
           let text = req.body.text;
           text += "\n\nSend By:";
@@ -117,7 +119,7 @@ router.route("/form").post(function (req, res) {
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
               res.status(400).json({
-                message: error.response,
+                message: error.message,
               });
             } else {
               res.status(200).json("Email sent: " + info.response);

@@ -58,7 +58,7 @@ export default class LoginUser extends Component {
           axios
             .post("http://localhost:4000/user/login", values)
             .then((res) => {
-              if (res.data !== null && res.data.length !== 0) {
+              if (res.data !== null) {
                 ls.set("username", res.data.username);
                 ls.set("userType", res.data.userType);
                 this.setState({
