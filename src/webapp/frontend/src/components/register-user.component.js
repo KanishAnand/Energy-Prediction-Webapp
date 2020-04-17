@@ -260,7 +260,7 @@ export default class RegisterUser extends Component {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
-                  secureTextEntry
+                  securetextentry="true"
                   placeholder="Password"
                   name="password"
                   value={values.password}
@@ -278,7 +278,7 @@ export default class RegisterUser extends Component {
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
-                  secureTextEntry
+                  securetextentry="true"
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   value={values.confirmPassword}

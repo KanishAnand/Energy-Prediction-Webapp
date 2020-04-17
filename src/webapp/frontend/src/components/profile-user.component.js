@@ -254,7 +254,7 @@ export default class Profile extends Component {
                 <Form.Control
                   type="text"
                   name="firstName"
-                  value={
+                  defaultValue={
                     this.state.user !== {} ? this.state.user.firstName : ""
                   }
                 />
@@ -265,7 +265,9 @@ export default class Profile extends Component {
                 <Form.Control
                   type="text"
                   name="lastName"
-                  value={this.state.user !== {} ? this.state.user.lastName : ""}
+                  defaultValue={
+                    this.state.user !== {} ? this.state.user.lastName : ""
+                  }
                 />
               </Form.Group>
 
@@ -274,7 +276,9 @@ export default class Profile extends Component {
                 <Form.Control
                   type="text"
                   name="username"
-                  value={this.state.user !== {} ? this.state.user.username : ""}
+                  defaultValue={
+                    this.state.user !== {} ? this.state.user.username : ""
+                  }
                 />
               </Form.Group>
             </Form.Row>
@@ -381,7 +385,7 @@ export default class Profile extends Component {
                 <Form.Label>Password *</Form.Label>
                 <Form.Control
                   type="password"
-                  secureTextEntry
+                  securetextentry="true"
                   placeholder="Password"
                   name="password"
                   defaultValue={
