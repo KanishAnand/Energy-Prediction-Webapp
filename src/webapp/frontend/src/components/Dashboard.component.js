@@ -89,37 +89,6 @@ export default class Dashboard extends Component {
 					{
 						totalenergy: 8000,
 						totalexpenditure: 8000,
-						// myDataSource: {
-						// 	chart: {
-						// 		caption: "Harry's SuperMart",
-						// 		subCaption:
-						// 			"Top 5 stores in last month by revenue",
-						// 		numberPrefix: "$",
-						// 	},
-						// 	data: [
-						// 		{
-						// 			label: "Bakersfield Central",
-						// 			value: "880000",
-						// 		},
-						// 		{
-						// 			label: "Garden Groove harbour",
-						// 			value: "730000",
-						// 		},
-						// 		{
-						// 			label: "Los Angeles Topanga",
-						// 			value: "590000",
-						// 		},
-						// 		{
-						// 			label: "Compton-Rancho Dom",
-						// 			value: "520000",
-						// 		},
-						// 		{
-						// 			label: "Daly City Serramonte",
-						// 			value: "330000",
-						// 		},
-						// 	],
-						// },
-
 						items: rows,
 						dropdownOptions: dropdownOptions,
 						selectedValue: "Jan 2018",
@@ -235,81 +204,44 @@ export default class Dashboard extends Component {
 					</Container>
 
 					<Container className="row">
-						<ReactFC
-							{...{
-								id: "revenue-chart",
-								renderAt: "revenue-chart-container",
-								type: "column2d",
-								width: 600,
-								height: 400,
-								// dataFormat: "json",
-								dataSource: {
-									chart: {
-										caption: "Harry's SuperMart",
-										subCaption:
-											"Top 5 stores in last month by revenue",
-										numberPrefix: "$",
-									},
-									data: [
-										{
-											label: "Bakersfield Central",
-											value: "880000",
-										},
-										{
-											label: "Garden Groove harbour",
-											value: "730000",
-										},
-										{
-											label: "Los Angeles Topanga",
-											value: "590000",
-										},
-										{
-											label: "Compton-Rancho Dom",
-											value: "520000",
-										},
-										{
-											label: "Daly City Serramonte",
-											value: "330000",
-										},
-									],
-								},
-							}}
-						/>
-						,
-						{/* <Container className="col-md-8 col-lg-9 is-light-text mb-4">
+						<Container className="col-md-8 col-lg-9 is-light-text mb-4">
 							<Container className="card is-card-dark chart-card">
 								<Container className="row full-height">
 									<Container className="col-sm-4 full height">
 										<Container className="chart-container full-height">
 											<ReactFC
 												{...{
-													type: "doughnut2d",
-													width: "100%",
-													height: "100%",
+													type: "column2d",
+													width: 600,
+													height: 400,
 													dataFormat: "json",
 													containerBackgroundOpacity:
 														"0",
 													dataSource: {
 														chart: {
 															caption:
-																"Purchase Rate",
-															theme: "ecommerce",
-															defaultCenterLabel: 43,
-															paletteColors:
-																"#3B70C4, #000000",
+																"Yearly Energy Consumption",
+															numberSuffix:
+																"Kw/hr",
 														},
 														data: [
 															{
-																label: "active",
-																value: 43,
+																label:
+																	"January",
+																value: "800",
 															},
 															{
 																label:
-																	"inactive",
-																alpha: 5,
-																value: `${
-																	100 - 43
-																}`,
+																	"February",
+																value: "730",
+															},
+															{
+																label: "March",
+																value: "590",
+															},
+															{
+																label: "April",
+																value: "520",
 															},
 														],
 													},
@@ -317,75 +249,41 @@ export default class Dashboard extends Component {
 											/>
 										</Container>
 									</Container>
-									<Container className="col-sm-4 full-height border-left border-right">
+									<Container className="col-sm-4 full height">
 										<Container className="chart-container full-height">
 											<ReactFC
 												{...{
 													type: "doughnut2d",
-													width: "100%",
-													height: "100%",
+													width: 600,
+													height: 400,
 													dataFormat: "json",
 													containerBackgroundOpacity:
 														"0",
 													dataSource: {
 														chart: {
 															caption:
-																"Checkout Rate",
-															theme: "ecommerce",
-															defaultCenterLabel: 43,
-															paletteColors:
-																"#41B6C4, #000000",
+																"Yearly Energy Consumption",
+															numberSuffix:
+																"Kw/hr",
 														},
 														data: [
 															{
-																label: "active",
-																value: 43,
+																label:
+																	"January",
+																value: "800",
 															},
 															{
 																label:
-																	"inactive",
-																alpha: 5,
-																value: `${
-																	100 - 43
-																}`,
-															},
-														],
-													},
-												}}
-											/>
-										</Container>
-									</Container>
-									<Container className="col-sm-4 full-height">
-										<Container className="chart-container full-height">
-											<ReactFC
-												{...{
-													type: "doughnut2d",
-													width: "100%",
-													height: "100%",
-													dataFormat: "json",
-													containerBackgroundOpacity:
-														"0",
-													dataSource: {
-														chart: {
-															caption:
-																"Abandoned Cart Rate",
-															theme: "ecommerce",
-															defaultCenterLabel: 43,
-															paletteColors:
-																"#EDF8B1, #000000",
-														},
-														data: [
-															{
-																label: "active",
-																value: 43,
+																	"February",
+																value: "730",
 															},
 															{
-																label:
-																	"inactive",
-																alpha: 5,
-																value: `${
-																	100 - 43
-																}`,
+																label: "March",
+																value: "590",
+															},
+															{
+																label: "April",
+																value: "520",
 															},
 														],
 													},
@@ -395,7 +293,7 @@ export default class Dashboard extends Component {
 									</Container>
 								</Container>
 							</Container>
-						</Container> */}
+						</Container>
 					</Container>
 				</Container>
 			</Container>
