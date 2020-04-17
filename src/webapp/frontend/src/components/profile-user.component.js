@@ -248,6 +248,7 @@ export default class Profile extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
+            <br />
             <Form.Row>
               <Form.Group as={Col} md="4" controlId="profileFirstName">
                 <Form.Label>First Name</Form.Label>

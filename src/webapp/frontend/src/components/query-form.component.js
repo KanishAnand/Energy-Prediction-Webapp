@@ -153,6 +153,7 @@ export default class QueryForm extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
+            <br />
             <Form.Group md="6" controlId="queryTo">
               <InputGroup className="mb-3">
                 <InputGroup.Prepend>

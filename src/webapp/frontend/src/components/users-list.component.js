@@ -150,9 +150,12 @@ export default class Users extends Component {
     }
     table.push(<tbody key="body">{body}</tbody>);
     return (
-      <Table striped bordered hover variant="dark">
-        {table}
-      </Table>
+      <React.Fragment>
+        <br />
+        <Table striped bordered hover variant="dark">
+          {table}
+        </Table>
+      </React.Fragment>
     );
   };
 
