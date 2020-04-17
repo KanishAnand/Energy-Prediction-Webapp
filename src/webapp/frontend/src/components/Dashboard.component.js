@@ -26,6 +26,7 @@ export default class Dashboard extends Component {
 			amRevenue: null,
 			totalenergy: null,
 			totalexpenditure: null,
+			myDataSource: null,
 		};
 	}
 
@@ -103,7 +104,7 @@ export default class Dashboard extends Component {
 				{/* static navbar - top */}
 				<Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
 					<Container className="navbar-brand h1 mb-0 text-large font-medium">
-						Online Retail Dashboard
+						Energy Consumption Dashboard
 					</Container>
 					<Container className="navbar-nav ml-auto">
 						<Container className="user-detail-section">
@@ -146,7 +147,6 @@ export default class Dashboard extends Component {
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
 									{this.state.totalenergy}
 								</Container>
 							</Container>
@@ -164,7 +164,7 @@ export default class Dashboard extends Component {
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
+									<span className="text-large pr-1">₹</span>
 									{this.state.totalexpenditure}
 								</Container>
 							</Container>
@@ -174,16 +174,12 @@ export default class Dashboard extends Component {
 							<Container className="card grid-card is-card-dark">
 								<Container className="card-heading">
 									<Container className="is-dark-text-light letter-spacing text-small">
-										Revenue from Ebay
-									</Container>
-									<Container className="card-heading-brand">
-										<i className="fab fa-ebay text-x-large logo-adjust" />
+										Total Energy Consumption
 									</Container>
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
-									{this.state.ebRevenue}
+									{this.state.totalenergy}
 								</Container>
 							</Container>
 						</Container>
@@ -192,16 +188,109 @@ export default class Dashboard extends Component {
 							<Container className="card grid-card is-card-dark">
 								<Container className="card-heading">
 									<Container className="is-dark-text-light letter-spacing text-small">
-										Revenue from Etsy
+										Total Expenditure
 									</Container>
 									<Container className="card-heading-brand">
-										<i className="fab fa-etsy text-medium" />
+										<i className="fab fa-amazon text-large" />
 									</Container>
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
-									{this.state.etRevenue}
+									<span className="text-large pr-1">₹</span>
+									{this.state.totalexpenditure}
+								</Container>
+							</Container>
+						</Container>
+					</Container>
+
+					<Container className="row">
+						<Container className="col-md-8 col-lg-9 is-light-text mb-4">
+							<Container className="card is-card-dark chart-card">
+								<Container className="row full-height">
+									<Container className="col-sm-4 full height">
+										<Container className="chart-container full-height">
+											<ReactFC
+												{...{
+													type: "column2d",
+													width: 600,
+													height: 400,
+													dataFormat: "json",
+													containerBackgroundOpacity:
+														"0",
+													dataSource: {
+														chart: {
+															caption:
+																"Yearly Energy Consumption",
+															numberSuffix:
+																"Kw/hr",
+														},
+														data: [
+															{
+																label:
+																	"January",
+																value: "800",
+															},
+															{
+																label:
+																	"February",
+																value: "730",
+															},
+															{
+																label: "March",
+																value: "590",
+															},
+															{
+																label: "April",
+																value: "520",
+															},
+														],
+													},
+												}}
+											/>
+										</Container>
+									</Container>
+									<Container className="col-sm-4 full height">
+										<Container className="chart-container full-height">
+											<ReactFC
+												{...{
+													type: "doughnut2d",
+													width: 600,
+													height: 400,
+													dataFormat: "json",
+													containerBackgroundOpacity:
+														"0",
+													dataSource: {
+														chart: {
+															caption:
+																"Yearly Energy Consumption",
+															numberSuffix:
+																"Kw/hr",
+														},
+														data: [
+															{
+																label:
+																	"January",
+																value: "800",
+															},
+															{
+																label:
+																	"February",
+																value: "730",
+															},
+															{
+																label: "March",
+																value: "590",
+															},
+															{
+																label: "April",
+																value: "520",
+															},
+														],
+													},
+												}}
+											/>
+										</Container>
+									</Container>
 								</Container>
 							</Container>
 						</Container>
