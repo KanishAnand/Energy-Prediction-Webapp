@@ -10,6 +10,7 @@ import {
   Nav,
   InputGroup,
   Table,
+  Col,
 } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -211,97 +212,100 @@ export default class Predict extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="predictFrom">
-              <Form.Label>From</Form.Label>
-              <Form.Group md="6" controlId="predictFromDate">
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text id="fromDate">Date</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    type="date"
-                    placeholder="Date"
-                    aria-describedby="fromDate"
-                    name="fromDate"
-                    value={values.fromDate}
-                    onChange={handleChange}
-                    isInvalid={
-                      (touched.fromDate || values.fromDate) && errors.fromDate
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.fromDate}
-                  </Form.Control.Feedback>
-                </InputGroup>
+            <br />
+            <Form.Row>
+              <Form.Group as={Col} md="6" controlId="predictFrom">
+                <Form.Label>From</Form.Label>
+                <Form.Group md="6" controlId="predictFromDate">
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="fromDate">Date</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      type="date"
+                      placeholder="Date"
+                      aria-describedby="fromDate"
+                      name="fromDate"
+                      value={values.fromDate}
+                      onChange={handleChange}
+                      isInvalid={
+                        (touched.fromDate || values.fromDate) && errors.fromDate
+                      }
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.fromDate}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+
+                <Form.Group md="6" controlId="predictFromTime">
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="fromTime">Time</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      type="time"
+                      placeholder="Time"
+                      name="fromTime"
+                      value={values.fromTime}
+                      onChange={handleChange}
+                      isInvalid={
+                        (touched.fromTime || values.fromTime) && errors.fromTime
+                      }
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.fromTime}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
               </Form.Group>
 
-              <Form.Group md="6" controlId="predictFromTime">
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text id="fromTime">Time</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    type="time"
-                    placeholder="Time"
-                    name="fromTime"
-                    value={values.fromTime}
-                    onChange={handleChange}
-                    isInvalid={
-                      (touched.fromTime || values.fromTime) && errors.fromTime
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.fromTime}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Form.Group>
+              <Form.Group as={Col} md="6" controlId="predictTo">
+                <Form.Label>To</Form.Label>
+                <Form.Group md="6" controlId="predictToDate">
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="toDate">Date</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      type="date"
+                      placeholder="Date"
+                      aria-describedby="toDate"
+                      name="toDate"
+                      value={values.toDate}
+                      onChange={handleChange}
+                      isInvalid={
+                        (touched.toDate || values.toDate) && errors.toDate
+                      }
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.toDate}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
 
-            <Form.Group controlId="predictTo">
-              <Form.Label>To</Form.Label>
-              <Form.Group md="6" controlId="predictToDate">
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text id="toDate">Date</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    type="date"
-                    placeholder="Date"
-                    aria-describedby="toDate"
-                    name="toDate"
-                    value={values.toDate}
-                    onChange={handleChange}
-                    isInvalid={
-                      (touched.toDate || values.toDate) && errors.toDate
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.toDate}
-                  </Form.Control.Feedback>
-                </InputGroup>
+                <Form.Group md="6" controlId="predictToTime">
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="toTime">Time</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      type="time"
+                      placeholder="Time"
+                      name="toTime"
+                      value={values.toTime}
+                      onChange={handleChange}
+                      isInvalid={
+                        (touched.toTime || values.toTime) && errors.toTime
+                      }
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.toTime}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
               </Form.Group>
-
-              <Form.Group md="6" controlId="predictToTime">
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text id="toTime">Time</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    type="time"
-                    placeholder="Time"
-                    name="toTime"
-                    value={values.toTime}
-                    onChange={handleChange}
-                    isInvalid={
-                      (touched.toTime || values.toTime) && errors.toTime
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.toTime}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Form.Group>
+            </Form.Row>
 
             <Button type="submit">Submit</Button>
           </Form>
