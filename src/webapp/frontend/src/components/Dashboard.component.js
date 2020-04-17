@@ -249,48 +249,6 @@ export default class Dashboard extends Component {
 											/>
 										</Container>
 									</Container>
-									<Container className="col-sm-4 full height">
-										<Container className="chart-container full-height">
-											<ReactFC
-												{...{
-													type: "doughnut2d",
-													width: 600,
-													height: 400,
-													dataFormat: "json",
-													containerBackgroundOpacity:
-														"0",
-													dataSource: {
-														chart: {
-															caption:
-																"Yearly Energy Consumption",
-															numberSuffix:
-																"Kw/hr",
-														},
-														data: [
-															{
-																label:
-																	"January",
-																value: "800",
-															},
-															{
-																label:
-																	"February",
-																value: "730",
-															},
-															{
-																label: "March",
-																value: "590",
-															},
-															{
-																label: "April",
-																value: "520",
-															},
-														],
-													},
-												}}
-											/>
-										</Container>
-									</Container>
 								</Container>
 							</Container>
 						</Container>
