@@ -10,9 +10,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connection to mongodb
-mongoose.connect("mongodb://127.0.0.1:27017/", { useNewUrlParser: true });
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
+mongoose.connect("mongodb://127.0.0.1:27017/");
 const connection = mongoose.connection;
-connection.once("open", function() {
+connection.once("open", function () {
   // connection.dropDatabase();
   console.log("MongoDB database connection established succesfully.");
 });
@@ -23,6 +27,6 @@ const modelRoutes = require("./routes/model");
 app.use("/user", userRoutes);
 app.use("/model", modelRoutes);
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Server is running on port: " + PORT);
 });
