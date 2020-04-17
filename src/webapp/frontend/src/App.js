@@ -12,21 +12,22 @@ import Weather from "./components/view-weather.component";
 import Dashboard from "./components/Dashboard.component";
 
 function App() {
-	return (
-		<Router>
-			<Route path="/:type/:id/home" component={Dashboard} />
-			<div className="container">
-				<Route path="/" exact component={LoginUser} />
-				<Route path="/register" component={RegisterUser} />
-				<Route path="/login" component={LoginUser} />
-				<Route path="/:type/:id/predict" component={Predict} />
-				<Route path="/:type/:id/users" component={Users} />
-				<Route path="/:type/:id/query" component={QueryForm} />
-				<Route path="/:type/:id/profile" component={Profile} />
-				<Route path="/:type/:id/weather" component={Weather} />
-			</div>
-		</Router>
-	);
+  return (
+    <Router>
+      <Route path="/home" component={Dashboard} />
+      <Route path="/:type/:id/home" component={Dashboard} />
+      <div className="container">
+        <Route path="/" exact component={LoginUser} />
+        <Route path="/register" component={RegisterUser} />
+        <Route path="/login" component={LoginUser} />
+        <Route path="/:type/:id/predict" component={Predict} />
+        <Route path="/:type/:id/users" component={Users} />
+        <Route path="/:type/:id/query" component={QueryForm} />
+        <Route path="/:type/:id/profile" component={Profile} />
+        <Route path="/:type/:id/weather" component={Weather} />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
