@@ -17,7 +17,7 @@ function App() {
 			<Route path="/" exact component={LoginUser} />
 			<Route path="/register" component={RegisterUser} />
 			<Route path="/login" component={LoginUser} />
-			<Route path="/:type/:id/home" component={Dashboard} />
+			<Route path="/home" component={Dashboard} />
 			<Route path="/:type/:id/predict" component={Predict} />
 			<Route path="/:type/:id/users" component={Users} />
 			<Route path="/:type/:id/query" component={QueryForm} />
