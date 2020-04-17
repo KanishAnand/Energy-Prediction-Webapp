@@ -1,4 +1,5 @@
-/* font faces @font-face {
+/* font faces */
+@font-face {
 	font-family: "basefont-regular";
 	src: local("basefont-regular"),
 		url("./assets/fonts/circular/CircularStd-Book.otf") format("opentype");
@@ -14,7 +15,7 @@
 	font-family: "basefont-bold";
 	src: local("basefont-bold"),
 		url("./assets/fonts/circular/CircularStd-Bold.otf") format("opentype");
-} */
+}
 
 /* typography styles */
 .is-dark-text {
