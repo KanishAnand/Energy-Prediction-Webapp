@@ -63,7 +63,7 @@ export default class RegisterUser extends Component {
     this.state = {
       redirect: false,
       username: "",
-      type: "owner",
+      type: "Owner",
       show: false,
     };
   }
@@ -97,7 +97,6 @@ export default class RegisterUser extends Component {
           userType: "Owner",
         }}
         onSubmit={(values, actions) => {
-          values.userType = values.userType.toLowerCase();
           axios
             .post("http://localhost:4000/user/exist", {
               username: values.username,

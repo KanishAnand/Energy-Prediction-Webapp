@@ -173,7 +173,7 @@ export default class Profile extends Component {
           email: this.state.user !== {} ? this.state.user.email : "",
           phoneNo: this.state.user !== {} ? this.state.user.phoneNo : "",
           password: this.state.user !== {} ? this.state.user.password : "",
-          userType: this.state.user !== {} ? this.state.user.userType : "",
+          userType: this.state.user !== {} ? this.state.user.userType : "Owner",
         }}
         onSubmit={(values, actions) => {
           axios
@@ -341,9 +341,6 @@ export default class Profile extends Component {
                 <Form.Control
                   as="select"
                   name="userType"
-                  defaultValue={
-                    this.state.user !== {} ? this.state.user.userType : ""
-                  }
                   onChange={(e) => {
                     if (!this.state.isChanged) {
                       values = this.InitializeValues(values);
@@ -351,9 +348,29 @@ export default class Profile extends Component {
                     handleChange(e);
                   }}
                 >
-                  <option>Owner</option>
-                  <option>Finance Team</option>
-                  <option>Maintenance Team</option>
+                  <option
+                    selected={
+                      this.state.user.userType === "Owner" ? true : false
+                    }
+                  >
+                    Owner
+                  </option>
+                  <option
+                    selected={
+                      this.state.user.userType === "Finance Team" ? true : false
+                    }
+                  >
+                    Finance Team
+                  </option>
+                  <option
+                    selected={
+                      this.state.user.userType === "Maintenance Team"
+                        ? true
+                        : false
+                    }
+                  >
+                    Maintenance Team
+                  </option>
                 </Form.Control>
               </Form.Group>
 
