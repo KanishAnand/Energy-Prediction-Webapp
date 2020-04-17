@@ -26,6 +26,7 @@ export default class Dashboard extends Component {
 			amRevenue: null,
 			totalenergy: null,
 			totalexpenditure: null,
+			myDataSource: null,
 		};
 	}
 
@@ -88,6 +89,37 @@ export default class Dashboard extends Component {
 					{
 						totalenergy: 8000,
 						totalexpenditure: 8000,
+						// myDataSource: {
+						// 	chart: {
+						// 		caption: "Harry's SuperMart",
+						// 		subCaption:
+						// 			"Top 5 stores in last month by revenue",
+						// 		numberPrefix: "$",
+						// 	},
+						// 	data: [
+						// 		{
+						// 			label: "Bakersfield Central",
+						// 			value: "880000",
+						// 		},
+						// 		{
+						// 			label: "Garden Groove harbour",
+						// 			value: "730000",
+						// 		},
+						// 		{
+						// 			label: "Los Angeles Topanga",
+						// 			value: "590000",
+						// 		},
+						// 		{
+						// 			label: "Compton-Rancho Dom",
+						// 			value: "520000",
+						// 		},
+						// 		{
+						// 			label: "Daly City Serramonte",
+						// 			value: "330000",
+						// 		},
+						// 	],
+						// },
+
 						items: rows,
 						dropdownOptions: dropdownOptions,
 						selectedValue: "Jan 2018",
@@ -103,7 +135,7 @@ export default class Dashboard extends Component {
 				{/* static navbar - top */}
 				<Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
 					<Container className="navbar-brand h1 mb-0 text-large font-medium">
-						Online Retail Dashboard
+						Energy Consumption Dashboard
 					</Container>
 					<Container className="navbar-nav ml-auto">
 						<Container className="user-detail-section">
@@ -146,7 +178,6 @@ export default class Dashboard extends Component {
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
 									{this.state.totalenergy}
 								</Container>
 							</Container>
@@ -164,7 +195,7 @@ export default class Dashboard extends Component {
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
+									<span className="text-large pr-1">₹</span>
 									{this.state.totalexpenditure}
 								</Container>
 							</Container>
@@ -174,16 +205,12 @@ export default class Dashboard extends Component {
 							<Container className="card grid-card is-card-dark">
 								<Container className="card-heading">
 									<Container className="is-dark-text-light letter-spacing text-small">
-										Revenue from Ebay
-									</Container>
-									<Container className="card-heading-brand">
-										<i className="fab fa-ebay text-x-large logo-adjust" />
+										Total Energy Consumption
 									</Container>
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
-									{this.state.ebRevenue}
+									{this.state.totalenergy}
 								</Container>
 							</Container>
 						</Container>
@@ -192,19 +219,183 @@ export default class Dashboard extends Component {
 							<Container className="card grid-card is-card-dark">
 								<Container className="card-heading">
 									<Container className="is-dark-text-light letter-spacing text-small">
-										Revenue from Etsy
+										Total Expenditure
 									</Container>
 									<Container className="card-heading-brand">
-										<i className="fab fa-etsy text-medium" />
+										<i className="fab fa-amazon text-large" />
 									</Container>
 								</Container>
 
 								<Container className="card-value pt-4 text-x-large">
-									<span className="text-large pr-1">$</span>
-									{this.state.etRevenue}
+									<span className="text-large pr-1">₹</span>
+									{this.state.totalexpenditure}
 								</Container>
 							</Container>
 						</Container>
+					</Container>
+
+					<Container className="row">
+						<ReactFC
+							{...{
+								id: "revenue-chart",
+								renderAt: "revenue-chart-container",
+								type: "column2d",
+								width: 600,
+								height: 400,
+								// dataFormat: "json",
+								dataSource: {
+									chart: {
+										caption: "Harry's SuperMart",
+										subCaption:
+											"Top 5 stores in last month by revenue",
+										numberPrefix: "$",
+									},
+									data: [
+										{
+											label: "Bakersfield Central",
+											value: "880000",
+										},
+										{
+											label: "Garden Groove harbour",
+											value: "730000",
+										},
+										{
+											label: "Los Angeles Topanga",
+											value: "590000",
+										},
+										{
+											label: "Compton-Rancho Dom",
+											value: "520000",
+										},
+										{
+											label: "Daly City Serramonte",
+											value: "330000",
+										},
+									],
+								},
+							}}
+						/>
+						,
+						{/* <Container className="col-md-8 col-lg-9 is-light-text mb-4">
+							<Container className="card is-card-dark chart-card">
+								<Container className="row full-height">
+									<Container className="col-sm-4 full height">
+										<Container className="chart-container full-height">
+											<ReactFC
+												{...{
+													type: "doughnut2d",
+													width: "100%",
+													height: "100%",
+													dataFormat: "json",
+													containerBackgroundOpacity:
+														"0",
+													dataSource: {
+														chart: {
+															caption:
+																"Purchase Rate",
+															theme: "ecommerce",
+															defaultCenterLabel: 43,
+															paletteColors:
+																"#3B70C4, #000000",
+														},
+														data: [
+															{
+																label: "active",
+																value: 43,
+															},
+															{
+																label:
+																	"inactive",
+																alpha: 5,
+																value: `${
+																	100 - 43
+																}`,
+															},
+														],
+													},
+												}}
+											/>
+										</Container>
+									</Container>
+									<Container className="col-sm-4 full-height border-left border-right">
+										<Container className="chart-container full-height">
+											<ReactFC
+												{...{
+													type: "doughnut2d",
+													width: "100%",
+													height: "100%",
+													dataFormat: "json",
+													containerBackgroundOpacity:
+														"0",
+													dataSource: {
+														chart: {
+															caption:
+																"Checkout Rate",
+															theme: "ecommerce",
+															defaultCenterLabel: 43,
+															paletteColors:
+																"#41B6C4, #000000",
+														},
+														data: [
+															{
+																label: "active",
+																value: 43,
+															},
+															{
+																label:
+																	"inactive",
+																alpha: 5,
+																value: `${
+																	100 - 43
+																}`,
+															},
+														],
+													},
+												}}
+											/>
+										</Container>
+									</Container>
+									<Container className="col-sm-4 full-height">
+										<Container className="chart-container full-height">
+											<ReactFC
+												{...{
+													type: "doughnut2d",
+													width: "100%",
+													height: "100%",
+													dataFormat: "json",
+													containerBackgroundOpacity:
+														"0",
+													dataSource: {
+														chart: {
+															caption:
+																"Abandoned Cart Rate",
+															theme: "ecommerce",
+															defaultCenterLabel: 43,
+															paletteColors:
+																"#EDF8B1, #000000",
+														},
+														data: [
+															{
+																label: "active",
+																value: 43,
+															},
+															{
+																label:
+																	"inactive",
+																alpha: 5,
+																value: `${
+																	100 - 43
+																}`,
+															},
+														],
+													},
+												}}
+											/>
+										</Container>
+									</Container>
+								</Container>
+							</Container>
+						</Container> */}
 					</Container>
 				</Container>
 			</Container>
