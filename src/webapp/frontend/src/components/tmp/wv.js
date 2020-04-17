@@ -85,19 +85,13 @@ export default class Weather extends Component {
   };
 
   fetchInfo = () => {
-    const div = document.createElement("div");
-    div.id = "openweathermap-widget-11";
-    document.body.appendChild(div);
-    const pwd =
-      "/home/akshat/Documents/dass12/src/webapp/frontend/src/components";
     const scripts = [
-      pwd + "/d3.min.js",
-      pwd + "/usable.js",
-      pwd + "/stripped.js",
+      pwd + "./src/components/d3.min.js",
+      pwd + "./src/component/usable.js",
+      pwd + "./src/components/stripped.js",
     ];
     for (const script of scripts) {
       const elm = document.createElement("script");
-      elm.type = "text/javascript";
       elm.src = script;
       elm.async = false;
       document.body.appendChild(elm);
@@ -105,7 +99,7 @@ export default class Weather extends Component {
   };
 
   componentDidMount() {
-    // this.fetchInfo();
+    this.fetchInfo();
     // this.interval = setInterval(() => {
     //   this.fetchInfo();
     // }, 5000);
@@ -136,20 +130,9 @@ export default class Weather extends Component {
   };
 
   View = () => {
-    const pwd =
-      "/home/akshat/Documents/dass12/src/webapp/frontend/src/components";
-    const scripts = [
-      pwd + "/d3.min.js",
-      pwd + "/usable.js",
-      pwd + "/stripped.js",
-    ];
     return (
       <React.Fragment>
         <div id="openweathermap-widget-11"></div>
-        {useScript(scripts[0])}
-        {useScript(scripts[1])}
-        {useScript(scripts[2])}
-        {/* {scripts.forEach(this.LoadScript)} */}
       </React.Fragment>
     );
   };
