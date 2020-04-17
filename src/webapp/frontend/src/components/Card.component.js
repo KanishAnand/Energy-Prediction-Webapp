@@ -29,9 +29,6 @@ class Card extends React.Component {
 						<p className="card-text">
 							{this.props.day.weather[0].description}
 						</p>
-						{/* <button className="btn btn-dark btn-outline-light">
-							See Hourly Forecast
-						</button> */}
 					</div>
 				</div>
 			</div>
