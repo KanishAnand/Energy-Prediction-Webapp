@@ -120,20 +120,6 @@ export default class Dashboard extends Component {
 					</Container>
 				</Nav>
 
-				{/* static navbar - bottom */}
-				<Nav className="navbar fixed-top nav-secondary is-dark is-light-text">
-					<Container className="text-medium">Summary</Container>
-					<Container className="navbar-nav ml-auto">
-						{/* <Dropdown
-							className="pr-2 custom-dropdown"
-							options={this.state.dropdownOptions}
-							onChange={this.updateDashboard}
-							value={this.state.selectedValue}
-							placeholder="Select an option"
-						/> */}
-					</Container>
-				</Nav>
-
 				{/* content area start */}
 				<Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
 					{/* row 1 - revenue */}
