@@ -102,7 +102,7 @@ export default class Dashboard extends Component {
             ls.get("userType") === this.props.match.params.type)) && (
           <Container>
             {/* static navbar - top */}
-            <Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
+            {/* <Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
               <Container className="navbar-brand h1 mb-0 text-large font-medium">
                 Energy Consumption Dashboard
               </Container>
@@ -110,15 +110,15 @@ export default class Dashboard extends Component {
                 <Container className="user-detail-section">
                   <span className="pr-2">Hi, Sean</span>
                   <span className="img-container">
-                    {/* <img
+                    <img
 										src={UserImg}
 										className="rounded-circle"
 										alt="user"
-									/> */}
+									/>
                   </span>
                 </Container>
               </Container>
-            </Nav>
+            </Nav> */}
 
             <div className="container-fluid pr-5 pl-5 pt-5 pb-5">
               {this.props.match.params.id && (

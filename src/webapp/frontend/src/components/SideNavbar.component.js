@@ -39,15 +39,21 @@ class SideNavbar extends Component {
 								<center>
 									<div>
 										<p className="initial">
-											W<span className="name">ebapp</span>
+											E
+											<span className="name">
+												nergy Consumption
+											</span>
 										</p>
 									</div>
-									<div>
+									{/* <div>
 										<p className="initial">
-											W
-											<span className="name">webapp</span>
+											C
+											<span className="name">
+												{" "}
+												onsumption
+											</span>
 										</p>
-									</div>
+									</div> */}
 								</center>
 
 								<br />
@@ -55,7 +61,7 @@ class SideNavbar extends Component {
 								<div>
 									<FlatButton
 										style={styles.tabLink}
-										label="Bio"
+										label="Prediction"
 										labelStyle={styles.tabLabel}
 										disableTouchRipple
 										fullWidth
@@ -64,7 +70,7 @@ class SideNavbar extends Component {
 								<div>
 									<FlatButton
 										style={styles.tabLink}
-										label="Social"
+										label="Weather"
 										labelStyle={styles.tabLabel}
 										disableTouchRipple
 										fullWidth
@@ -73,7 +79,7 @@ class SideNavbar extends Component {
 								<div>
 									<FlatButton
 										style={styles.tabLink}
-										label="Projects"
+										label="Users"
 										labelStyle={styles.tabLabel}
 										disableTouchRipple
 										fullWidth

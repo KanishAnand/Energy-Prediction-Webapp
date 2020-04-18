@@ -72,10 +72,10 @@
 }
 
 body {
-	background: rgb(23, 32, 46) !important;
+	/* background: rgb(23, 32, 46) !important; */
 	font-family: "basefont-regular" !important;
 	color: rgb(255, 255, 255);
-	padding-top: 125px;
+	/* padding-top: 125px; */
 }
 
 .container-fluid {
