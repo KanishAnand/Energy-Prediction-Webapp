@@ -14,6 +14,7 @@ router.route("/predict").post(function (req, res) {
     ]);
     process.stdout.on("data", (data) => {
       let output = require("../models/data.json");
+      delete require.cache[require.resolve("../models/data.json")];
       res.status(200).send(output);
     });
   } catch (err) {
