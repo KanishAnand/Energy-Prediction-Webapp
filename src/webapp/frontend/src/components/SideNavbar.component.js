@@ -58,6 +58,14 @@ class SideNavbar extends Component {
                   "/predict"
                 }
               >
+                {" "}
+                <i
+                  class="fa fa-bar-chart"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Prediction
               </a>
               <a
@@ -69,6 +77,14 @@ class SideNavbar extends Component {
                   "/weather"
                 }
               >
+                {" "}
+                <i
+                  class="fas fa-cloud-sun-rain"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Weather
               </a>
               <a
@@ -80,6 +96,14 @@ class SideNavbar extends Component {
                   "/profile"
                 }
               >
+                {" "}
+                <i
+                  class="fa fa-user"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Profile
               </a>
               <a
@@ -91,6 +115,14 @@ class SideNavbar extends Component {
                   "/users"
                 }
               >
+                {" "}
+                <i
+                  class="fa fa-users"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Users
               </a>
               <a
@@ -102,6 +134,14 @@ class SideNavbar extends Component {
                   "/query"
                 }
               >
+                {" "}
+                <i
+                  class="fa fa-envelope"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Customer Care
               </a>
               <a
@@ -111,6 +151,14 @@ class SideNavbar extends Component {
                   window.location.href = "/login";
                 }}
               >
+                {" "}
+                <i
+                  class="fa fa-sign-out"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
                 Logout
               </a>
             </React.Fragment>
@@ -124,8 +172,28 @@ class SideNavbar extends Component {
                 ></i>
                 Home
               </a>
-              <a href={"/register"}>Register</a>
-              <a href={"/login"}>Login</a>
+              <a href={"/register"}>
+                {" "}
+                <i
+                  class="fas fa-user-plus"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>{" "}
+                Register
+              </a>
+              <a href={"/login"}>
+                {" "}
+                <i
+                  class="fa fa-sign-in"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>{" "}
+                Login
+              </a>
             </React.Fragment>
           )}
         </div>
