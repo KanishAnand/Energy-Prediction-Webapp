@@ -71,12 +71,14 @@ export default class Weather extends Component {
                   username={this.props.match.params.id}
                   userType={this.props.match.params.type}
                 />
-                <this.HandleAlert />
-                <br />
-                <h1 className="display-3 jumbotron">5-Day Forecast</h1>
-                <h5 className="display-5 text-muted">Hyderabad, India</h5>
-                <div className="row justify-content-center">
-                  {this.formatCards()}
+                <div className="container">
+                  <this.HandleAlert />
+                  <br />
+                  <h1 className="display-3 jumbotron">5-Day Forecast</h1>
+                  <h5 className="display-5 text-muted">Hyderabad, India</h5>
+                  <div className="row justify-content-center">
+                    {this.formatCards()}
+                  </div>
                 </div>
               </div>
             </React.Fragment>
