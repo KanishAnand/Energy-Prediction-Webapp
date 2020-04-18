@@ -4,7 +4,6 @@ import axios from "axios";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { UserNavbar } from "./navbar.component";
 
 const schema = yup.object({
   subject: yup.string().required("Please mention the subject"),
@@ -96,7 +95,6 @@ export default class QueryForm extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <br />
             <Form.Group md="6" controlId="queryTo">
               <InputGroup className="mb-3">
                 <InputGroup.Prepend>
@@ -168,16 +166,11 @@ export default class QueryForm extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <UserNavbar
-          username={this.props.match.params.id}
-          userType={this.props.match.params.type}
-        />
-        <div className="container">
-          <this.HandleAlert />
-          <this.View />
-        </div>
-      </React.Fragment>
+      <div className="container">
+        <this.HandleAlert />
+        <br />
+        <this.View />
+      </div>
     );
   }
 }

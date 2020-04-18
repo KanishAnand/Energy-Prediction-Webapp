@@ -4,7 +4,6 @@ import axios from "axios";
 import { Form, Button, Col, InputGroup, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { UserNavbar } from "./navbar.component";
 
 const schema = yup.object({
   email: yup
@@ -188,7 +187,6 @@ export default class Profile extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <br />
             <Form.Row>
               <Form.Group as={Col} md="4" controlId="profileFirstName">
                 <Form.Label>First Name</Form.Label>
@@ -381,16 +379,11 @@ export default class Profile extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <UserNavbar
-          username={this.props.match.params.id}
-          userType={this.props.match.params.type}
-        />
-        <div className="container">
-          <this.HandleAlert />
-          <this.View />
-        </div>
-      </React.Fragment>
+      <div className="container">
+        <this.HandleAlert />
+        <br />
+        <this.View />
+      </div>
     );
   }
 }

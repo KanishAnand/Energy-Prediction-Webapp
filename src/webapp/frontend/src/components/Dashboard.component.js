@@ -11,7 +11,6 @@ import "./charts-theme.js";
 
 import config from "./config";
 import formatNum from "./format-number";
-import { UserNavbar, LoginNavbar } from "./navbar.component";
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, USARegion);
 
@@ -132,16 +131,6 @@ export default class Dashboard extends Component {
                 </Container>
               </Container>
             </Nav> */}
-
-        <div>
-          {this.props.match.params.id && (
-            <UserNavbar
-              username={this.props.match.params.id}
-              userType={this.props.match.params.type}
-            />
-          )}
-          {!this.props.match.params.id && <LoginNavbar />}
-        </div>
 
         {/* content area start */}
         <Container className="container-fluid pr-5 pl-5 pt-5 pb-5">

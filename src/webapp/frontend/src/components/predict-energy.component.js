@@ -4,7 +4,6 @@ import axios from "axios";
 import { Form, Button, Alert, InputGroup, Table, Col } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { UserNavbar } from "./navbar.component";
 
 const schema = yup.object({
   fromDate: yup.date().required("Please Enter the Date"),
@@ -70,13 +69,9 @@ export default class Predict extends Component {
     }
     table.push(<tbody key="body">{body}</tbody>);
     return (
-      <React.Fragment>
-        <br />
-        <br />
-        <Table striped bordered hover variant="light">
-          {this.state.data !== null && this.state.data.length !== 0 && table}
-        </Table>
-      </React.Fragment>
+      <Table striped bordered hover variant="light">
+        {this.state.data !== null && this.state.data.length !== 0 && table}
+      </Table>
     );
   };
 
@@ -139,7 +134,6 @@ export default class Predict extends Component {
           errors,
         }) => (
           <Form onSubmit={handleSubmit}>
-            {this.state.type === "light" && <br />}
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="predictFrom">
                 <Form.Label>From</Form.Label>
@@ -243,17 +237,14 @@ export default class Predict extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <UserNavbar
-          username={this.props.match.params.id}
-          userType={this.props.match.params.type}
-        />
-        <div className="container">
-          <this.HandleAlert />
-          <this.View />
-          <this.Data />
-        </div>
-      </React.Fragment>
+      <div className="container">
+        <this.HandleAlert />
+        <br />
+        <this.View />
+        <br />
+        <br />
+        <this.Data />
+      </div>
     );
   }
 }

@@ -4,7 +4,6 @@ import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { LoginNavbar } from "./navbar.component";
 
 const schema = yup.object({
   username: yup
@@ -150,21 +149,11 @@ export default class LoginUser extends Component {
   };
 
   render() {
-    // if (this.state.redirect) {
-    //   return (
-    //     <Router
-    //       to={"/" + this.state.type + "/" + this.state.username + "/home"}
-    //     ></Router>
-    //   );
-    // }
     return (
-      <React.Fragment>
-        <LoginNavbar />
+      <div className="container">
         <br />
-        <div className="container">
-          <this.LoginForm />
-        </div>
-      </React.Fragment>
+        <this.LoginForm />
+      </div>
     );
   }
 }

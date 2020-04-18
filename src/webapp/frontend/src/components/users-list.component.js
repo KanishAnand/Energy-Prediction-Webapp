@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
 import { Alert, Table } from "react-bootstrap";
-import { UserNavbar } from "./navbar.component";
 
 export default class Users extends Component {
   constructor(props) {
@@ -91,27 +90,19 @@ export default class Users extends Component {
     }
     table.push(<tbody key="body">{body}</tbody>);
     return (
-      <React.Fragment>
-        <br />
-        <Table striped bordered hover variant="light">
-          {table}
-        </Table>
-      </React.Fragment>
+      <Table striped bordered hover variant="light">
+        {table}
+      </Table>
     );
   };
 
   render() {
     return (
-      <React.Fragment>
-        <UserNavbar
-          username={this.props.match.params.id}
-          userType={this.props.match.params.type}
-        />
-        <div className="container">
-          <this.HandleAlert />
-          <this.View />
-        </div>
-      </React.Fragment>
+      <div className="container">
+        <this.HandleAlert />
+        <br />
+        <this.View />
+      </div>
     );
   }
 }

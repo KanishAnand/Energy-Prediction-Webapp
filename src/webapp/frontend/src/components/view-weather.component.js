@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Card from "./Card.component";
 import ls from "local-storage";
 import { Alert } from "react-bootstrap";
-import { UserNavbar } from "./navbar.component";
 import "../css/SideNavbar.css";
 
 const weatherURL =
@@ -69,23 +68,13 @@ export default class Weather extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div align="center">
-          <UserNavbar
-            username={this.props.match.params.id}
-            userType={this.props.match.params.type}
-          />
-          <div className="container">
-            <this.HandleAlert />
-            <br />
-            <h1 className="display-3 jumbotron">5-Day Forecast</h1>
-            <h5 className="display-5 text-muted">Hyderabad, India</h5>
-            <div className="row justify-content-center">
-              {this.formatCards()}
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
+      <div align="center" className="container">
+        <this.HandleAlert />
+        <br />
+        <h1 className="display-3 jumbotron">5-Day Forecast</h1>
+        <h5 className="display-5 text-muted">Hyderabad, India</h5>
+        <div className="row justify-content-center">{this.formatCards()}</div>
+      </div>
     );
   }
 }

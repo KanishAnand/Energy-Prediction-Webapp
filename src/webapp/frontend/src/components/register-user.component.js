@@ -4,7 +4,6 @@ import axios from "axios";
 import { Form, Button, Col, InputGroup, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { LoginNavbar } from "./navbar.component";
 
 const schema = yup.object({
   firstName: yup
@@ -311,13 +310,10 @@ export default class RegisterUser extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <LoginNavbar />
+      <div className="container">
         <br />
-        <div className="container">
-          <this.RegisterForm />
-        </div>
-      </React.Fragment>
+        <this.RegisterForm />
+      </div>
     );
   }
 }
