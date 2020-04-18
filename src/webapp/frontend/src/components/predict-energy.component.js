@@ -241,9 +241,11 @@ export default class Predict extends Component {
                 username={this.props.match.params.id}
                 userType={this.props.match.params.type}
               />
-              <this.HandleAlert />
-              <this.View />
-              <this.Data />
+              <div className="container">
+                <this.HandleAlert />
+                <this.View />
+                <this.Data />
+              </div>
             </React.Fragment>
           )}
       </React.Fragment>

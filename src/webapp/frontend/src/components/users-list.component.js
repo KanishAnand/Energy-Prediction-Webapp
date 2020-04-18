@@ -99,8 +99,10 @@ export default class Users extends Component {
                 username={this.props.match.params.id}
                 userType={this.props.match.params.type}
               />
-              <this.HandleAlert />
-              <this.View />
+              <div className="container">
+                <this.HandleAlert />
+                <this.View />
+              </div>
             </React.Fragment>
           )}
       </React.Fragment>
