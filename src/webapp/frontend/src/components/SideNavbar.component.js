@@ -54,6 +54,10 @@ class SideNavbar extends Component {
                   "/home"
                 }
               >
+                <i
+                  class="fa fa-home"
+                  style={{ fontsize: "16px", marginRight: "10px" }}
+                ></i>
                 Home
               </a>
               <a
