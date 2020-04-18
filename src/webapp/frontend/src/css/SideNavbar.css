@@ -1,0 +1,72 @@
+/* SideNav.css */
+.content {
+	width: 75%;
+	margin: auto;
+}
+
+.sidenav {
+	position: relative;
+	background: linear-gradient(
+		to right,
+		rgba(15, 0, 45, 0.9),
+		rgba(15, 0, 45, 0.8)
+	) !important;
+	padding: 50px;
+	padding-bottom: 100%;
+	height: 100%;
+}
+.content-wrapper {
+	position: relative;
+	height: 100%;
+}
+.relative-avi-wrapper {
+	position: relative;
+	height: 200px;
+	width: 200px;
+}
+.relative-nav-wrapper {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+.avatar {
+	position: absolute;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.avi-border {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: #360033; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to right,
+		#0b8793,
+		#360033
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to right,
+		#0b8793,
+		#360033
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	animation: border-spin infinite 10s linear;
+}
+.initial {
+	font-size: 50px;
+	height: 50px;
+	color: white;
+	font-family: "Helvetica";
+}
+.name {
+	font-size: 32px;
+	color: white;
+}
+@keyframes border-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
