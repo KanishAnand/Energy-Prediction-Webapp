@@ -63,7 +63,7 @@ export default class Predict extends Component {
       <React.Fragment>
         <br />
         <br />
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
           {this.state.data !== null && this.state.data.length !== 0 && table}
         </Table>
       </React.Fragment>

@@ -14,31 +14,29 @@ import Dashboard from "./components/Dashboard.component";
 import { SideNavbar } from "./components/SideNavbar.component";
 
 function App() {
-	return (
-		<Router>
-			{/* <div className="container"> */}
-			<div className="row" style={{ height: "100%" }}>
-				<div className="col-md-2" style={{ padding: "0" }}>
-					<SideNavbar></SideNavbar>
-				</div>
-				<div className="col-md-10" style={{ padding: "0" }}>
-					<Route path="/home" component={Dashboard} />
-					<Route path="/:type/:id/home" component={Dashboard} />
-					<div>
-						<Route path="/" exact component={LoginUser} />
-						<Route path="/register" component={RegisterUser} />
-						<Route path="/login" component={LoginUser} />
-						<Route path="/:type/:id/predict" component={Predict} />
-						<Route path="/:type/:id/users" component={Users} />
-						<Route path="/:type/:id/query" component={QueryForm} />
-						<Route path="/:type/:id/profile" component={Profile} />
-						<Route path="/:type/:id/weather" component={Weather} />
-					</div>
-				</div>
-			</div>
-			{/* </div> */}
-		</Router>
-	);
+  return (
+    <Router>
+      <div className="row" style={{ height: "100%" }}>
+        <div className="col-md-2" style={{ padding: "0" }}>
+          <SideNavbar></SideNavbar>
+        </div>
+        <div className="col-md-10" style={{ padding: "0" }}>
+          <Route path="/" exact component={Dashboard} />
+          <Route path="/home" component={Dashboard} />
+          <Route path="/:type/:id/home" component={Dashboard} />
+          <div>
+            <Route path="/register" component={RegisterUser} />
+            <Route path="/login" component={LoginUser} />
+            <Route path="/:type/:id/predict" component={Predict} />
+            <Route path="/:type/:id/users" component={Users} />
+            <Route path="/:type/:id/query" component={QueryForm} />
+            <Route path="/:type/:id/profile" component={Profile} />
+            <Route path="/:type/:id/weather" component={Weather} />
+          </div>
+        </div>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
