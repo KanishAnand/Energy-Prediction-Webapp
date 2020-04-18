@@ -16,13 +16,14 @@ import { SideNavbar } from "./components/SideNavbar.component";
 function App() {
 	return (
 		<Router>
-			<div className="row">
-				<div className="col-md-3">
-					<MuiThemeProvider>
-						<SideNavbar />
-					</MuiThemeProvider>
+			{/* <div className="container"> */}
+			<div className="row" style={{ height: "100%" }}>
+				<div className="col-md-2">
+					{/* <MuiThemeProvider> */}
+					<SideNavbar></SideNavbar>
+					{/* </MuiThemeProvider> */}
 				</div>
-				<div className="col-md-9">
+				<div className="col-md-10">
 					<Route path="/home" component={Dashboard} />
 					<Route path="/:type/:id/home" component={Dashboard} />
 					<div>
@@ -37,6 +38,7 @@ function App() {
 					</div>
 				</div>
 			</div>
+			{/* </div> */}
 		</Router>
 	);
 }
