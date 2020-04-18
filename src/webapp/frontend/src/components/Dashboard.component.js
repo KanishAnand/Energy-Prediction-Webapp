@@ -56,11 +56,10 @@ export default class Dashboard extends Component {
   // 	this.setState({ selectedValue: event.value });
   // };
 
-  componentDidMount() {
+  fetchInfo = () => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         let batchRowValues = data.valueRanges[0].values;
 
         const rows = [];
@@ -92,17 +91,31 @@ export default class Dashboard extends Component {
           () => this.getData("Jan 2018")
         );
       });
+  };
+
+  componentDidMount() {
+    if (this.props.match.params.id) {
+      if (
+        ls.get("username") !== this.props.match.params.id ||
+        ls.get("userType") !== this.props.match.params.type
+      ) {
+        ls.clear();
+        window.location.href = "/login";
+      }
+    } else {
+      if (ls.get("username") !== null) {
+        window.location.href =
+          "/" + ls.get("userType") + "/" + ls.get("username") + "/home";
+      }
+    }
+    this.fetchInfo();
   }
 
   render() {
     return (
-      <React.Fragment>
-        {(!this.props.match.params.id ||
-          (ls.get("username") === this.props.match.params.id &&
-            ls.get("userType") === this.props.match.params.type)) && (
-          <Container>
-            {/* static navbar - top */}
-            {/* <Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
+      <Container>
+        {/* static navbar - top */}
+        {/* <Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
               <Container className="navbar-brand h1 mb-0 text-large font-medium">
                 Energy Consumption Dashboard
               </Container>
@@ -120,243 +133,241 @@ export default class Dashboard extends Component {
               </Container>
             </Nav> */}
 
-            <div>
-              {this.props.match.params.id && (
-                <UserNavbar
-                  username={this.props.match.params.id}
-                  userType={this.props.match.params.type}
-                />
-              )}
-              {!this.props.match.params.id && <LoginNavbar />}
-            </div>
+        <div>
+          {this.props.match.params.id && (
+            <UserNavbar
+              username={this.props.match.params.id}
+              userType={this.props.match.params.type}
+            />
+          )}
+          {!this.props.match.params.id && <LoginNavbar />}
+        </div>
 
-            {/* content area start */}
-            <Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
-              {/* row 1 - revenue */}
-              <Container className="row">
-                <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
-                  <Container className="card grid-card is-card-dark">
-                    <Container className="card-heading">
-                      <Container className="is-dark-text-light letter-spacing text-small">
-                        Total Energy Consumption
-                      </Container>
-                    </Container>
-
-                    <Container className="card-value pt-4 text-x-large">
-                      <span className="text-large pr-1">$</span>
-                      {this.state.totalenergy}
-                    </Container>
+        {/* content area start */}
+        <Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
+          {/* row 1 - revenue */}
+          <Container className="row">
+            <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
+              <Container className="card grid-card is-card-dark">
+                <Container className="card-heading">
+                  <Container className="is-dark-text-light letter-spacing text-small">
+                    Total Energy Consumption
                   </Container>
                 </Container>
 
-                <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
-                  <Container className="card grid-card is-card-dark">
-                    <Container className="card-heading">
-                      <Container className="is-dark-text-light letter-spacing text-small">
-                        Total Expenditure
-                      </Container>
-                      {/* <Container className="card-heading-brand">
-											<i className="fab fa-amazon text-large" />
-										</Container> */}
-                    </Container>
-
-                    <Container className="card-value pt-4 text-x-large">
-                      <span className="text-large pr-1">$</span>
-                      {this.state.totalexpenditure}
-                    </Container>
-                  </Container>
-                </Container>
-
-                <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
-                  <Container className="card grid-card is-card-dark">
-                    <Container className="card-heading">
-                      <Container className="is-dark-text-light letter-spacing text-small">
-                        Total Energy Consumption
-                      </Container>
-                      {/* <Container className="card-heading-brand">
-											<i className="fab fa-ebay text-x-large logo-adjust" />
-										</Container> */}
-                    </Container>
-
-                    <Container className="card-value pt-4 text-x-large">
-                      <span className="text-large pr-1">$</span>
-                      {this.state.totalenergy}
-                    </Container>
-                  </Container>
-                </Container>
-
-                <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
-                  <Container className="card grid-card is-card-dark">
-                    <Container className="card-heading">
-                      <Container className="is-dark-text-light letter-spacing text-small">
-                        Total Expenditure
-                      </Container>
-                      {/* <Container className="card-heading-brand">
-											<i className="fab fa-etsy text-medium" />
-										</Container> */}
-                    </Container>
-
-                    <Container className="card-value pt-4 text-x-large">
-                      <span className="text-large pr-1">$</span>
-                      {this.state.totalexpenditure}
-                    </Container>
-                  </Container>
-                </Container>
-              </Container>
-
-              {/* row 3 - orders trend */}
-              <Container className="row" style={{ minHeight: "600px" }}>
-                <Container className="col-md-6 mb-4">
-                  <Container className="card is-card-dark chart-card">
-                    <Container className="chart-container large full-height">
-                      <ReactFC
-                        {...{
-                          type: "column2d",
-                          width: "100%",
-                          height: "100%",
-                          dataFormat: "json",
-                          containerBackgroundOpacity: "0",
-                          dataEmptyMessage: "Loading Data...",
-                          dataSource: {
-                            chart: {
-                              caption: "Yearly Energy Consumption",
-                              numberSuffix: "Kw/hr",
-                            },
-                            data: [
-                              {
-                                label: "January",
-                                value: "800",
-                              },
-                              {
-                                label: "February",
-                                value: "730",
-                              },
-                              {
-                                label: "March",
-                                value: "590",
-                              },
-                              {
-                                label: "April",
-                                value: "520",
-                              },
-                              {
-                                label: "May",
-                                value: "800",
-                              },
-                              {
-                                label: "June",
-                                value: "730",
-                              },
-                              {
-                                label: "July",
-                                value: "590",
-                              },
-                              {
-                                label: "August",
-                                value: "520",
-                              },
-                              {
-                                label: "September",
-                                value: "800",
-                              },
-                              {
-                                label: "October",
-                                value: "730",
-                              },
-                              {
-                                label: "November",
-                                value: "590",
-                              },
-                              {
-                                label: "December",
-                                value: "520",
-                              },
-                            ],
-                          },
-                        }}
-                      />
-                    </Container>
-                  </Container>
-                </Container>
-
-                <Container className="col-md-6 mb-4">
-                  <Container className="card is-card-dark chart-card">
-                    <Container className="chart-container large full-height">
-                      <ReactFC
-                        {...{
-                          type: "pie3d",
-                          width: "100%",
-                          height: "100%",
-                          dataFormat: "json",
-                          containerBackgroundOpacity: "0",
-                          dataEmptyMessage: "Loading Data...",
-                          dataSource: {
-                            chart: {
-                              caption: "Yearly Energy Consumption",
-                              numberSuffix: "Kw/hr",
-                            },
-                            data: [
-                              {
-                                label: "January",
-                                value: "800",
-                              },
-                              {
-                                label: "February",
-                                value: "730",
-                              },
-                              {
-                                label: "March",
-                                value: "590",
-                              },
-                              {
-                                label: "April",
-                                value: "520",
-                              },
-                              {
-                                label: "May",
-                                value: "800",
-                              },
-                              {
-                                label: "June",
-                                value: "730",
-                              },
-                              {
-                                label: "July",
-                                value: "590",
-                              },
-                              {
-                                label: "August",
-                                value: "520",
-                              },
-                              {
-                                label: "September",
-                                value: "800",
-                              },
-                              {
-                                label: "October",
-                                value: "730",
-                              },
-                              {
-                                label: "November",
-                                value: "590",
-                              },
-                              {
-                                label: "December",
-                                value: "520",
-                              },
-                            ],
-                          },
-                        }}
-                      />
-                    </Container>
-                  </Container>
+                <Container className="card-value pt-4 text-x-large">
+                  <span className="text-large pr-1">$</span>
+                  {this.state.totalenergy}
                 </Container>
               </Container>
             </Container>
-            {/* content area end */}
+
+            <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
+              <Container className="card grid-card is-card-dark">
+                <Container className="card-heading">
+                  <Container className="is-dark-text-light letter-spacing text-small">
+                    Total Expenditure
+                  </Container>
+                  {/* <Container className="card-heading-brand">
+											<i className="fab fa-amazon text-large" />
+										</Container> */}
+                </Container>
+
+                <Container className="card-value pt-4 text-x-large">
+                  <span className="text-large pr-1">$</span>
+                  {this.state.totalexpenditure}
+                </Container>
+              </Container>
+            </Container>
+
+            <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
+              <Container className="card grid-card is-card-dark">
+                <Container className="card-heading">
+                  <Container className="is-dark-text-light letter-spacing text-small">
+                    Total Energy Consumption
+                  </Container>
+                  {/* <Container className="card-heading-brand">
+											<i className="fab fa-ebay text-x-large logo-adjust" />
+										</Container> */}
+                </Container>
+
+                <Container className="card-value pt-4 text-x-large">
+                  <span className="text-large pr-1">$</span>
+                  {this.state.totalenergy}
+                </Container>
+              </Container>
+            </Container>
+
+            <Container className="col-lg-3 col-sm-6 is-light-text mb-4">
+              <Container className="card grid-card is-card-dark">
+                <Container className="card-heading">
+                  <Container className="is-dark-text-light letter-spacing text-small">
+                    Total Expenditure
+                  </Container>
+                  {/* <Container className="card-heading-brand">
+											<i className="fab fa-etsy text-medium" />
+										</Container> */}
+                </Container>
+
+                <Container className="card-value pt-4 text-x-large">
+                  <span className="text-large pr-1">$</span>
+                  {this.state.totalexpenditure}
+                </Container>
+              </Container>
+            </Container>
           </Container>
-        )}
-      </React.Fragment>
+
+          {/* row 3 - orders trend */}
+          <Container className="row" style={{ minHeight: "600px" }}>
+            <Container className="col-md-6 mb-4">
+              <Container className="card is-card-dark chart-card">
+                <Container className="chart-container large full-height">
+                  <ReactFC
+                    {...{
+                      type: "column2d",
+                      width: "100%",
+                      height: "100%",
+                      dataFormat: "json",
+                      containerBackgroundOpacity: "0",
+                      dataEmptyMessage: "Loading Data...",
+                      dataSource: {
+                        chart: {
+                          caption: "Yearly Energy Consumption",
+                          numberSuffix: "Kw/hr",
+                        },
+                        data: [
+                          {
+                            label: "January",
+                            value: "800",
+                          },
+                          {
+                            label: "February",
+                            value: "730",
+                          },
+                          {
+                            label: "March",
+                            value: "590",
+                          },
+                          {
+                            label: "April",
+                            value: "520",
+                          },
+                          {
+                            label: "May",
+                            value: "800",
+                          },
+                          {
+                            label: "June",
+                            value: "730",
+                          },
+                          {
+                            label: "July",
+                            value: "590",
+                          },
+                          {
+                            label: "August",
+                            value: "520",
+                          },
+                          {
+                            label: "September",
+                            value: "800",
+                          },
+                          {
+                            label: "October",
+                            value: "730",
+                          },
+                          {
+                            label: "November",
+                            value: "590",
+                          },
+                          {
+                            label: "December",
+                            value: "520",
+                          },
+                        ],
+                      },
+                    }}
+                  />
+                </Container>
+              </Container>
+            </Container>
+
+            <Container className="col-md-6 mb-4">
+              <Container className="card is-card-dark chart-card">
+                <Container className="chart-container large full-height">
+                  <ReactFC
+                    {...{
+                      type: "pie3d",
+                      width: "100%",
+                      height: "100%",
+                      dataFormat: "json",
+                      containerBackgroundOpacity: "0",
+                      dataEmptyMessage: "Loading Data...",
+                      dataSource: {
+                        chart: {
+                          caption: "Yearly Energy Consumption",
+                          numberSuffix: "Kw/hr",
+                        },
+                        data: [
+                          {
+                            label: "January",
+                            value: "800",
+                          },
+                          {
+                            label: "February",
+                            value: "730",
+                          },
+                          {
+                            label: "March",
+                            value: "590",
+                          },
+                          {
+                            label: "April",
+                            value: "520",
+                          },
+                          {
+                            label: "May",
+                            value: "800",
+                          },
+                          {
+                            label: "June",
+                            value: "730",
+                          },
+                          {
+                            label: "July",
+                            value: "590",
+                          },
+                          {
+                            label: "August",
+                            value: "520",
+                          },
+                          {
+                            label: "September",
+                            value: "800",
+                          },
+                          {
+                            label: "October",
+                            value: "730",
+                          },
+                          {
+                            label: "November",
+                            value: "590",
+                          },
+                          {
+                            label: "December",
+                            value: "520",
+                          },
+                        ],
+                      },
+                    }}
+                  />
+                </Container>
+              </Container>
+            </Container>
+          </Container>
+        </Container>
+        {/* content area end */}
+      </Container>
     );
   }
 }

@@ -23,6 +23,16 @@ export default class Predict extends Component {
     };
   }
 
+  componentDidMount() {
+    if (
+      ls.get("username") !== this.props.match.params.id ||
+      ls.get("userType") !== this.props.match.params.type
+    ) {
+      ls.clear();
+      window.location.href = "/login";
+    }
+  }
+
   HandleAlert = () => {
     return (
       <React.Fragment>
@@ -234,20 +244,15 @@ export default class Predict extends Component {
   render() {
     return (
       <React.Fragment>
-        {ls.get("username") === this.props.match.params.id &&
-          ls.get("userType") === this.props.match.params.type && (
-            <React.Fragment>
-              <UserNavbar
-                username={this.props.match.params.id}
-                userType={this.props.match.params.type}
-              />
-              <div className="container">
-                <this.HandleAlert />
-                <this.View />
-                <this.Data />
-              </div>
-            </React.Fragment>
-          )}
+        <UserNavbar
+          username={this.props.match.params.id}
+          userType={this.props.match.params.type}
+        />
+        <div className="container">
+          <this.HandleAlert />
+          <this.View />
+          <this.Data />
+        </div>
       </React.Fragment>
     );
   }

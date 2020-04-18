@@ -63,7 +63,14 @@ class UserNavbar extends Component {
             >
               Profile
             </Nav.Link>
-            <Link className="nav-link" to="/login" onClick={(e) => ls.clear()}>
+            <Link
+              className="nav-link"
+              to="/login"
+              onClick={(e) => {
+                ls.clear();
+                window.location.href = "/login";
+              }}
+            >
               Logout
             </Link>
           </Nav>

@@ -62,6 +62,13 @@ export default class Profile extends Component {
   };
 
   componentDidMount() {
+    if (
+      ls.get("username") !== this.props.match.params.id ||
+      ls.get("userType") !== this.props.match.params.type
+    ) {
+      ls.clear();
+      window.location.href = "/login";
+    }
     this.fetchInfo();
   }
 
@@ -375,19 +382,14 @@ export default class Profile extends Component {
   render() {
     return (
       <React.Fragment>
-        {ls.get("username") === this.props.match.params.id &&
-          ls.get("userType") === this.props.match.params.type && (
-            <React.Fragment>
-              <UserNavbar
-                username={this.props.match.params.id}
-                userType={this.props.match.params.type}
-              />
-              <div className="container">
-                <this.HandleAlert />
-                <this.View />
-              </div>
-            </React.Fragment>
-          )}
+        <UserNavbar
+          username={this.props.match.params.id}
+          userType={this.props.match.params.type}
+        />
+        <div className="container">
+          <this.HandleAlert />
+          <this.View />
+        </div>
       </React.Fragment>
     );
   }

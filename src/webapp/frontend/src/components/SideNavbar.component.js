@@ -14,27 +14,16 @@ class SideNavbar extends Component {
     };
   }
 
-  fetchInfo = () => {
-    if (ls.get("username") === null) {
-      if (this.state.loggedIn === true) {
-        this.setState({ loggedIn: false });
-      }
-    } else {
-      if (this.state.loggedIn === false) {
-        this.setState({
-          loggedIn: true,
-          username: this.state.username,
-          userType: this.state.userType,
-        });
-      }
-    }
-  };
-
   componentDidMount() {
-    this.fetchInfo();
-    this.interval = setInterval(() => {
-      this.fetchInfo();
-    }, 500);
+    if (ls.get("username") === null) {
+      this.setState({ loggedIn: false });
+    } else {
+      this.setState({
+        loggedIn: true,
+        username: ls.get("username"),
+        userType: ls.get("userType"),
+      });
+    }
   }
 
   render() {
@@ -119,7 +108,7 @@ class SideNavbar extends Component {
                 href={"/login"}
                 onClick={(e) => {
                   ls.clear();
-                  this.setState({ loggedIn: false });
+                  window.location.href = "/login";
                 }}
               >
                 Logout
@@ -129,6 +118,10 @@ class SideNavbar extends Component {
           {!this.state.loggedIn && (
             <React.Fragment>
               <a style={{ paddingTop: "15%" }} href={"/home"}>
+                <i
+                  class="fa fa-home"
+                  style={{ fontsize: "16px", marginRight: "10px" }}
+                ></i>
                 Home
               </a>
               <a href={"/register"}>Register</a>

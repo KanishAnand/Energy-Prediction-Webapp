@@ -20,6 +20,16 @@ export default class QueryForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (
+      ls.get("username") !== this.props.match.params.id ||
+      ls.get("userType") !== this.props.match.params.type
+    ) {
+      ls.clear();
+      window.location.href = "/login";
+    }
+  }
+
   HandleAlert = () => {
     setTimeout(() => {
       this.setState({ message: "", type: "light" });
@@ -159,19 +169,14 @@ export default class QueryForm extends Component {
   render() {
     return (
       <React.Fragment>
-        {ls.get("username") === this.props.match.params.id &&
-          ls.get("userType") === this.props.match.params.type && (
-            <React.Fragment>
-              <UserNavbar
-                username={this.props.match.params.id}
-                userType={this.props.match.params.type}
-              />
-              <div className="container">
-                <this.HandleAlert />
-                <this.View />
-              </div>
-            </React.Fragment>
-          )}
+        <UserNavbar
+          username={this.props.match.params.id}
+          userType={this.props.match.params.type}
+        />
+        <div className="container">
+          <this.HandleAlert />
+          <this.View />
+        </div>
       </React.Fragment>
     );
   }

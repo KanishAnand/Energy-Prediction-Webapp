@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ls from "local-storage";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { Form, Button, Col, InputGroup, Alert } from "react-bootstrap";
 import { Formik } from "formik";
@@ -56,9 +55,23 @@ export default class RegisterUser extends Component {
     this.state = {
       redirect: false,
       username: "",
-      type: "Owner",
+      type: "",
       show: false,
     };
+  }
+
+  componentDidMount() {
+    if (ls.get("username") !== null) {
+      window.location.href =
+        "/" + ls.get("userType") + "/" + ls.get("username") + "/home";
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.redirect === true) {
+      window.location.href =
+        "/" + this.state.type + "/" + this.state.username + "/home";
+    }
   }
 
   RegisterForm = () => {
@@ -297,14 +310,6 @@ export default class RegisterUser extends Component {
   };
 
   render() {
-    if (this.state.redirect) {
-      return (
-        <Redirect
-          push
-          to={"/" + this.state.type + "/" + this.state.username + "/home"}
-        />
-      );
-    }
     return (
       <React.Fragment>
         <LoginNavbar />

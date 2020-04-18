@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ls from "local-storage";
-import { Redirect } from "react-router";
 import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Formik } from "formik";
@@ -29,8 +28,22 @@ export default class LoginUser extends Component {
       redirect: false,
       username: "",
       show: false,
-      type: "customer",
+      type: "",
     };
+  }
+
+  componentDidMount() {
+    if (ls.get("username") !== null) {
+      window.location.href =
+        "/" + ls.get("userType") + "/" + ls.get("username") + "/home";
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.redirect === true) {
+      window.location.href =
+        "/" + this.state.type + "/" + this.state.username + "/home";
+    }
   }
 
   LoginForm = () => {
@@ -53,6 +66,7 @@ export default class LoginUser extends Component {
                   username: res.data.username,
                   redirect: true,
                 });
+                console.log(this.state);
               } else {
                 actions.setFieldError(
                   "general",
@@ -136,14 +150,13 @@ export default class LoginUser extends Component {
   };
 
   render() {
-    if (this.state.redirect) {
-      return (
-        <Redirect
-          push
-          to={"/" + this.state.type + "/" + this.state.username + "/home"}
-        />
-      );
-    }
+    // if (this.state.redirect) {
+    //   return (
+    //     <Router
+    //       to={"/" + this.state.type + "/" + this.state.username + "/home"}
+    //     ></Router>
+    //   );
+    // }
     return (
       <React.Fragment>
         <LoginNavbar />
