@@ -32,9 +32,7 @@ def formatData(From, data):
     return output
 
 
-def predict(model):
-    From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
-    To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
+def getData(From, To):
     data = []
     dayTime = From
     while True:
@@ -49,11 +47,40 @@ def predict(model):
         else:
             data.append(getEnergy(dayTime))
             dayTime += timedelta(hours=1)
+    return data
+
+
+def predict(model):
+    From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
+    To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
+    data = getData(From, To)
     data = formatData(From, data)
-    with open("./models/data.json", "w") as f:
+    with open("./outputs/data.json", "w") as f:
         json.dump(data, f)
     print("Energy Prediction Completed Successfully!")
-    sys.stdout.flush()
+    return
+
+
+def graph(model):
+    import matplotlib.pyplot as plt
+    From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
+    To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
+    data = getData(From, To)
+    x, y = [], []
+    x_ticks = []
+    for i in data:
+        x.append(i['dateTime'])
+        x_ticks.append(i['dateTime'].strftime('%y-%m-%d %H:%M'))
+        y.append(i['yhat'])
+    plt.figure(figsize=(12, 5))
+    plt.xticks(x, x_ticks)
+    plt.plot(x, y)
+    plt.xlabel('DateTime')
+    plt.ylabel('Predicted Value')
+    plt.title('Graphical Analysis')
+    plt.savefig('./outputs/graph.png')
+    plt.close()
+    print("Graph plotted and saved!")
     return
 
 
@@ -62,3 +89,8 @@ if __name__ == "__main__":
         model = pickle.load(f)
         if sys.argv[1] == "predict":
             predict(model)
+        elif sys.argv[1] == "graph":
+            graph(model)
+        else:
+            print("Error: " + sys.argv[1] + " method not allowed!")
+        sys.stdout.flush()
