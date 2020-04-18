@@ -3,8 +3,6 @@ import Card from "./Card.component";
 import ls from "local-storage";
 import { Alert } from "react-bootstrap";
 import { UserNavbar } from "./navbar.component";
-import { SideNavbar } from "./SideNavbar.component";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "../css/SideNavbar.css";
 
 const weatherURL =
@@ -68,80 +66,29 @@ export default class Weather extends Component {
 
 	render() {
 		return (
-			<div className="row">
-				<div className="col-md-3">
-					<MuiThemeProvider>
-						<SideNavbar />
-					</MuiThemeProvider>
-				</div>
-				<div className="col-md-9">
-					<React.Fragment>
-						{ls.get("username") === this.props.match.params.id &&
-							ls.get("userType") ===
-								this.props.match.params.type && (
-								<React.Fragment>
-									<div align="center">
-										<UserNavbar
-											username={
-												this.props.match.params.id
-											}
-											userType={
-												this.props.match.params.type
-											}
-										/>
-										<this.HandleAlert />
-										<h1 className="display-3 jumbotron">
-											5-Day Forecast
-										</h1>
-										<h5 className="display-5 text-muted">
-											Hyderabad, India
-										</h5>
-										<div className="row justify-content-center">
-											{this.formatCards()}
-										</div>
-									</div>
-								</React.Fragment>
-							)}
-					</React.Fragment>
-				</div>
-			</div>
+			<React.Fragment>
+				{ls.get("username") === this.props.match.params.id &&
+					ls.get("userType") === this.props.match.params.type && (
+						<React.Fragment>
+							<div align="center">
+								<UserNavbar
+									username={this.props.match.params.id}
+									userType={this.props.match.params.type}
+								/>
+								<this.HandleAlert />
+								<h1 className="display-3 jumbotron">
+									5-Day Forecast
+								</h1>
+								<h5 className="display-5 text-muted">
+									Hyderabad, India
+								</h5>
+								<div className="row justify-content-center">
+									{this.formatCards()}
+								</div>
+							</div>
+						</React.Fragment>
+					)}
+			</React.Fragment>
 		);
 	}
-	// render() {
-	// 	return (
-	// 		<div className="row">
-	// 			<div className="col-md-3">
-	// 				<SideNavbar />
-	// 			</div>
-	// 			<div className="col-md-9">
-	// 				<p>dfsfddfs</p>
-	// 				{/* //this is where the main content will go */}
-	// 			</div>
-	// 		</div>
-	// 		// <React.Fragment>
-	// 		// 	{ls.get("username") === this.props.match.params.id &&
-	// 		// 		ls.get("userType") === this.props.match.params.type && (
-	// 		// 			<React.Fragment>
-	// 		// 				<SideNavbar></SideNavbar>
-	// 		// 				<div align="center">
-	// 		// 					{/* <UserNavbar
-	// 		// 						username={this.props.match.params.id}
-	// 		// 						userType={this.props.match.params.type}
-	// 		// 					/> */}
-	// 		// 					<this.HandleAlert />
-	// 		// 					<h1 className="display-3 jumbotron">
-	// 		// 						5-Day Forecast
-	// 		// 					</h1>
-	// 		// 					<h5 className="display-5 text-muted">
-	// 		// 						Hyderabad, India
-	// 		// 					</h5>
-	// 		// 					<div className="row justify-content-center">
-	// 		// 						{this.formatCards()}
-	// 		// 					</div>
-	// 		// 				</div>
-	// 		// 			</React.Fragment>
-	// 		// 		)}
-	// 		// </React.Fragment>
-	// 	);
-	// }
 }
