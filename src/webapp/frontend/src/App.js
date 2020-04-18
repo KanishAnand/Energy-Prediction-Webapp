@@ -18,12 +18,12 @@ function App() {
 		<Router>
 			{/* <div className="container"> */}
 			<div className="row" style={{ height: "100%" }}>
-				<div className="col-md-2">
+				<div className="col-md-2" style={{ padding: "0" }}>
 					{/* <MuiThemeProvider> */}
 					<SideNavbar></SideNavbar>
 					{/* </MuiThemeProvider> */}
 				</div>
-				<div className="col-md-10">
+				<div className="col-md-10" style={{ padding: "0" }}>
 					<Route path="/home" component={Dashboard} />
 					<Route path="/:type/:id/home" component={Dashboard} />
 					<div>
