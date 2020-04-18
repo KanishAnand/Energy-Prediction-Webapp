@@ -10,14 +10,54 @@ class SideNavbar extends Component {
 				<div className="sideContent">
 					<img src={logo} alt="Organisation"></img>
 					<a style={{ paddingTop: "15%" }} href="#">
+						<i
+							class="fa fa-home"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
 						Home
 					</a>
-					<a href="#">Prediction</a>
-					<a href="#">Weather</a>
-					<a href="#">Profile</a>
-					<a href="#">Users</a>
-					<a href="#">Customer Care</a>
-					<a href="#">Logout</a>
+					<a href="#">
+						<i
+							class="fa fa-bar-chart"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Prediction
+					</a>
+					<a href="#">
+						<i
+							class="fas fa-cloud-sun-rain"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Weather
+					</a>
+					<a href="#">
+						<i
+							class="fa fa-user"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Profile
+					</a>
+					<a href="#">
+						<i
+							class="fa fa-users"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Users
+					</a>
+					<a href="#">
+						<i
+							class="fa fa-envelope"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Customer Care
+					</a>
+					<a href="#">
+						<i
+							class="fa fa-sign-out"
+							style={{ fontsize: "16px", marginRight: "10px" }}
+						></i>
+						Logout
+					</a>
 				</div>
 			</div>
 		);
