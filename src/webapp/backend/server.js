@@ -8,6 +8,7 @@ const PORT = 4000;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static("./outputs"));
 
 // Connection to mongodb
 mongoose.set("useNewUrlParser", true);

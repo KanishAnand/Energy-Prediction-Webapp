@@ -10,6 +10,7 @@
 		"formik": "^2.1.4",
 		"fusioncharts": "^3.15.1-sr.1",
 		"fusionmaps": "^3.15.1",
+		"image-downloader": "^3.5.0",
 		"local-storage": "^2.0.0",
 		"material-ui": "^0.20.2",
 		"moment": "^2.24.0",
