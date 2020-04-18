@@ -14,7 +14,7 @@ export default class Weather extends Component {
     days: [],
   };
 
-  componentDidMount = () => {
+  fetchInfo = () => {
     fetch(weatherURL)
       .then((res) => res.json())
       .then((data) => {
@@ -26,6 +26,10 @@ export default class Weather extends Component {
       .catch((err) => {
         this.setState({ message: err.message, type: "danger" });
       });
+  };
+
+  componentDidMount = () => {
+    this.fetchInfo();
   };
 
   HandleAlert = () => {

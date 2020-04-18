@@ -86,7 +86,7 @@ export default class Predict extends Component {
             actions.setSubmitting(false);
           } else if (
             values.fromDate.localeCompare(values.toDate) === 0 &&
-            values.fromTime.localeCompare(values.toTime) > 0
+            values.fromTime.localeCompare(values.toTime) >= 0
           ) {
             actions.setFieldError("toTime", "Invalid Time!");
             actions.setSubmitting(false);
