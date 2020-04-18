@@ -146,11 +146,9 @@ export default class LoginUser extends Component {
     }
     return (
       <React.Fragment>
-        <div className="container">
-          <LoginNavbar />
-          <br />
-          <this.LoginForm />
-        </div>
+        <LoginNavbar />
+        <br />
+        <this.LoginForm />
       </React.Fragment>
     );
   }
