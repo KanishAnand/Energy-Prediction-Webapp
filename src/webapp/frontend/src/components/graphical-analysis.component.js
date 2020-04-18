@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
-import { Form, Button, Alert, InputGroup, Table, Col } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup, Col, Image } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+
+const download = require("image-downloader");
+const options = {
+  url: "http://localhost:4000/graph.png",
+  dest: "./",
+};
 
 const schema = yup.object({
   fromDate: yup.date().required("Please Enter the Date"),
@@ -18,7 +24,7 @@ export default class Graphs extends Component {
     this.state = {
       message: "",
       type: "light",
-      graph: [],
+      graph: "",
     };
   }
 
@@ -52,29 +58,6 @@ export default class Graphs extends Component {
     );
   };
 
-  //   Graph = () => {
-  //     let table = [];
-  //     let body = [];
-  //     let row = [];
-  //     row.push(<th key="date">{"Date"}</th>);
-  //     row.push(<th key="energy">{"Energy(kWh)"}</th>);
-  //     body.push(<tr key={0}>{row}</tr>);
-  //     table.push(<thead key="head">{body}</thead>);
-  //     body = [];
-  //     for (let i in this.state.graph) {
-  //       row = [];
-  //       row.push(<td key={"date" + i}>{this.state.graph[i]["date"]}</td>);
-  //       row.push(<td key={"energy" + i}>{this.state.graph[i]["yhat"]}</td>);
-  //       body.push(<tr key={i}>{row}</tr>);
-  //     }
-  //     table.push(<tbody key="body">{body}</tbody>);
-  //     return (
-  //       <Table striped bordered hover variant="light">
-  //         {this.state.graph !== null && this.state.graph.length !== 0 && table}
-  //       </Table>
-  //     );
-  //   };
-
   View = () => {
     return (
       <Formik
@@ -99,7 +82,7 @@ export default class Graphs extends Component {
             this.setState({
               message: "Please wait for some time!!",
               type: "warning",
-              graph: [],
+              graph: "",
             });
             axios
               .post("http://localhost:4000/model/graph", {
@@ -109,11 +92,22 @@ export default class Graphs extends Component {
                 toTime: values.toTime,
               })
               .then((res) => {
-                this.setState({
-                  message: "Energy Prediction Completed Successfully!",
-                  type: "success",
-                  graph: res.data,
-                });
+                download
+                  .image(options)
+                  .then(({ filename, image }) => {
+                    this.setState({
+                      message: "Graph Uploaded!!",
+                      type: "success",
+                      graph: filename,
+                    });
+                  })
+                  .catch((err) => {
+                    this.setState({
+                      message: err.message,
+                      type: "danger",
+                      graph: "",
+                    });
+                  });
               })
               .catch((err) => {
                 this.setState({ message: err.message, type: "danger" });
@@ -243,7 +237,7 @@ export default class Graphs extends Component {
         <this.View />
         <br />
         <br />
-        {/* <this.Graph /> */}
+        {this.state.graph !== "" && <Image src={this.state.graph} fluid />}
       </div>
     );
   }
