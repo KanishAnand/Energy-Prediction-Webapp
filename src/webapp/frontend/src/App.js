@@ -6,6 +6,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RegisterUser from "./components/register-user.component";
 import LoginUser from "./components/login-user.component";
 import Predict from "./components/predict-energy.component";
+import Graphs from "./components/graphical-analysis.component";
 import Users from "./components/users-list.component";
 import QueryForm from "./components/query-form.component";
 import Profile from "./components/profile-user.component";
@@ -28,6 +29,7 @@ function App() {
             <Route path="/register" component={RegisterUser} />
             <Route path="/login" component={LoginUser} />
             <Route path="/:type/:id/predict" component={Predict} />
+            <Route path="/:type/:id/graphs" component={Graphs} />
             <Route path="/:type/:id/users" component={Users} />
             <Route path="/:type/:id/query" component={QueryForm} />
             <Route path="/:type/:id/profile" component={Profile} />
