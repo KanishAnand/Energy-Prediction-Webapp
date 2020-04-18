@@ -14,31 +14,31 @@ import Dashboard from "./components/Dashboard.component";
 import { SideNavbar } from "./components/SideNavbar.component";
 
 function App() {
-	return (
-		<Router>
-			<div className="row">
-				<div className="col-md-3">
-					<MuiThemeProvider>
-						<SideNavbar />
-					</MuiThemeProvider>
-				</div>
-				<div className="col-md-9">
-					<Route path="/home" component={Dashboard} />
-					<Route path="/:type/:id/home" component={Dashboard} />
-					<div>
-						<Route path="/" exact component={LoginUser} />
-						<Route path="/register" component={RegisterUser} />
-						<Route path="/login" component={LoginUser} />
-						<Route path="/:type/:id/predict" component={Predict} />
-						<Route path="/:type/:id/users" component={Users} />
-						<Route path="/:type/:id/query" component={QueryForm} />
-						<Route path="/:type/:id/profile" component={Profile} />
-						<Route path="/:type/:id/weather" component={Weather} />
-					</div>
-				</div>
-			</div>
-		</Router>
-	);
+  return (
+    <Router>
+      <div className="row">
+        <div className="col-md-3">
+          <MuiThemeProvider>
+            <SideNavbar />
+          </MuiThemeProvider>
+        </div>
+        <div className="col-md-9">
+          <Route path="/home" component={Dashboard} />
+          <Route path="/:type/:id/home" component={Dashboard} />
+          <div className="container-fluid pt-5 pb-5 pr-5 pl-5">
+            <Route path="/" exact component={LoginUser} />
+            <Route path="/register" component={RegisterUser} />
+            <Route path="/login" component={LoginUser} />
+            <Route path="/:type/:id/predict" component={Predict} />
+            <Route path="/:type/:id/users" component={Users} />
+            <Route path="/:type/:id/query" component={QueryForm} />
+            <Route path="/:type/:id/profile" component={Profile} />
+            <Route path="/:type/:id/weather" component={Weather} />
+          </div>
+        </div>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
