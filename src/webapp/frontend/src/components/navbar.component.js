@@ -33,6 +33,17 @@ class UserNavbar extends Component {
                 this.props.userType +
                 "/" +
                 this.props.username +
+                "/graphs"
+              }
+            >
+              Graphs
+            </Nav.Link>
+            <Nav.Link
+              href={
+                "/" +
+                this.props.userType +
+                "/" +
+                this.props.username +
                 "/weather"
               }
             >

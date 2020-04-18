@@ -74,6 +74,25 @@ class SideNavbar extends Component {
                   this.state.userType +
                   "/" +
                   this.state.username +
+                  "/graphs"
+                }
+              >
+                {" "}
+                <i
+                  class="fa fa-line-chart"
+                  style={{
+                    fontsize: "16px",
+                    marginRight: "10px",
+                  }}
+                ></i>
+                Graphs
+              </a>
+              <a
+                href={
+                  "/" +
+                  this.state.userType +
+                  "/" +
+                  this.state.username +
                   "/weather"
                 }
               >
