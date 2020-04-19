@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
-import { Form, Button, Alert, InputGroup, Col, Image } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup, Col } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-const download = require("image-downloader");
-const options = {
-  url: "http://localhost:4000/graph.png",
-  dest: "./",
-};
 
 const schema = yup.object({
   fromDate: yup.date().required("Please Enter the Date"),
@@ -24,7 +19,7 @@ export default class Graphs extends Component {
     this.state = {
       message: "",
       type: "light",
-      graph: "",
+      graph: false,
     };
   }
 
@@ -82,7 +77,7 @@ export default class Graphs extends Component {
             this.setState({
               message: "Please wait for some time!!",
               type: "warning",
-              graph: "",
+              graph: false
             });
             axios
               .post("http://localhost:4000/model/graph", {
@@ -92,25 +87,14 @@ export default class Graphs extends Component {
                 toTime: values.toTime,
               })
               .then((res) => {
-                download
-                  .image(options)
-                  .then(({ filename, image }) => {
-                    this.setState({
-                      message: "Graph Uploaded!!",
-                      type: "success",
-                      graph: filename,
-                    });
-                  })
-                  .catch((err) => {
-                    this.setState({
-                      message: err.message,
-                      type: "danger",
-                      graph: "",
-                    });
-                  });
+                this.setState({
+                  message: "Graph Uploaded!!",
+                  type: "success",
+                  graph: true
+                });
               })
               .catch((err) => {
-                this.setState({ message: err.message, type: "danger" });
+                this.setState({ message: err.message, type: "danger", graph: false });
               })
               .finally(() => {
                 actions.setSubmitting(false);
@@ -237,7 +221,7 @@ export default class Graphs extends Component {
         <this.View />
         <br />
         <br />
-        {this.state.graph !== "" && <Image src={this.state.graph} fluid />}
+        {this.state.graph === true && <img src="http://localhost:4000/graph.png" />}
       </div>
     );
   }
