@@ -72,20 +72,19 @@ export default class Dashboard extends Component {
 				console.log(rows);
 
 				// dropdown options
-				let dropdownOptions = [];
+				let dropdownOptions = [],
+					expenditure = 0,
+					consumption = 0;
 
 				for (let i = 0; i < rows.length; i++) {
-					dropdownOptions.push(rows[i].month);
+					expenditure += parseInt(rows[i].expenditure);
+					consumption += parseInt(rows[i].consumption);
 				}
-
-				dropdownOptions = Array.from(
-					new Set(dropdownOptions)
-				).reverse();
 
 				this.setState(
 					{
-						totalenergy: 8000,
-						totalexpenditure: 20000,
+						totalenergy: consumption,
+						totalexpenditure: expenditure,
 						items: rows,
 						dropdownOptions: dropdownOptions,
 						selectedValue: "Jan 2018",
