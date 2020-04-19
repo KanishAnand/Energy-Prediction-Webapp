@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
-import { Alert, Table, Card } from "react-bootstrap";
+import { Alert, Table} from "react-bootstrap";
 
 export default class Users extends Component {
   constructor(props) {
@@ -95,33 +95,6 @@ export default class Users extends Component {
       </Table>
     );
   };
-
-  // View = () => {
-  //   let array = [];
-  //   for (let i in this.state.users) {
-  //     array.push(
-  //       <div>
-  //         <Card>
-  //           <Card.Header></Card.Header>
-  //           <Card.Body>
-  //             <Card.Title>User Details</Card.Title>
-  //             <Card.Text>
-  //               Name:{" "}
-  //               {this.state.users[i]["firstName"] +
-  //                 " " +
-  //                 this.state.users[i]["lastName"]}
-  //               <br />
-  //               Username: {this.state.users[i]["username"]}
-  //               <br />
-  //               User Type: {this.state.users[i]["userType"]}
-  //             </Card.Text>
-  //           </Card.Body>
-  //         </Card>
-  //       </div>
-  //     );
-  //   }
-  //   return <div>{array}</div>;
-  // };
 
   render() {
     return (
