@@ -56,6 +56,7 @@ export default class RegisterUser extends Component {
       username: "",
       type: "",
       show: false,
+      hidden: true,
     };
   }
 
@@ -249,39 +250,73 @@ export default class RegisterUser extends Component {
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="registerPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  securetextentry="true"
-                  placeholder="Password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  isInvalid={
-                    (touched.password || values.password) && errors.password
-                  }
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.password}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={this.state.hidden ? "password" : "text"}
+                    securetextentry="true"
+                    placeholder="Password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                    isInvalid={
+                      (touched.password || values.password) && errors.password
+                    }
+                  />
+                  <InputGroup.Prepend
+                    onClick={(e) =>
+                      this.setState({ hidden: !this.state.hidden })
+                    }
+                  >
+                    <InputGroup.Text id="inputGroupPrepend">
+                      <i
+                        class="fa fa-eye"
+                        style={{
+                          fontsize: "16px",
+                          marginRight: "10px",
+                        }}
+                      ></i>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Form.Group as={Col} md="6" controlId="registerConfirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  securetextentry="true"
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  value={values.confirmPassword}
-                  onChange={handleChange}
-                  isInvalid={
-                    (touched.confirmPassword || values.confirmPassword) &&
-                    errors.confirmPassword
-                  }
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.confirmPassword}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={this.state.hidden ? "password" : "text"}
+                    securetextentry="true"
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    isInvalid={
+                      (touched.confirmPassword || values.confirmPassword) &&
+                      errors.confirmPassword
+                    }
+                  />
+                  <InputGroup.Prepend
+                    onClick={(e) =>
+                      this.setState({ hidden: !this.state.hidden })
+                    }
+                  >
+                    <InputGroup.Text id="inputGroupPrepend">
+                      <i
+                        class="fa fa-eye"
+                        style={{
+                          fontsize: "16px",
+                          marginRight: "10px",
+                        }}
+                      ></i>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.confirmPassword}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
             </Form.Row>
 

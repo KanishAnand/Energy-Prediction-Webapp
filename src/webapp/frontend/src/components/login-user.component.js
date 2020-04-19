@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -28,6 +28,7 @@ export default class LoginUser extends Component {
       username: "",
       show: false,
       type: "",
+      hidden: true,
     };
   }
 
@@ -125,20 +126,35 @@ export default class LoginUser extends Component {
             </Form.Group>
             <Form.Group md="6" controlId="loginPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                securetextentry="true"
-                placeholder="Password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-                isInvalid={
-                  (touched.password || values.password) && errors.password
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.password}
-              </Form.Control.Feedback>
+              <InputGroup>
+                <Form.Control
+                  type={this.state.hidden ? "password" : "text"}
+                  securetextentry="true"
+                  placeholder="Password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  isInvalid={
+                    (touched.password || values.password) && errors.password
+                  }
+                />
+                <InputGroup.Prepend
+                  onClick={(e) => this.setState({ hidden: !this.state.hidden })}
+                >
+                  <InputGroup.Text id="inputGroupPrepend">
+                    <i
+                      class="fa fa-eye"
+                      style={{
+                        fontsize: "16px",
+                        marginRight: "10px",
+                      }}
+                    ></i>
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
+              </InputGroup>
             </Form.Group>
 
             <Button type="submit">Submit</Button>

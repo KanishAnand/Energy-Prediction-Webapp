@@ -36,6 +36,7 @@ export default class Profile extends Component {
       isChanged: false,
       message: "",
       type: "light",
+      hidden: true,
     };
   }
 
@@ -147,6 +148,7 @@ export default class Profile extends Component {
                       type: "success",
                       user: user.data,
                       isChanged: false,
+                      hidden: true,
                     });
                   })
                   .catch((err) => {
@@ -322,29 +324,46 @@ export default class Profile extends Component {
 
               <Form.Group as={Col} md="6" controlId="profilePassword">
                 <Form.Label>Password *</Form.Label>
-                <Form.Control
-                  type="password"
-                  securetextentry="true"
-                  placeholder="Password"
-                  name="password"
-                  defaultValue={
-                    this.state.user !== {} ? this.state.user.password : ""
-                  }
-                  onChange={(e) => {
-                    if (!this.state.isChanged) {
-                      values = this.InitializeValues(values);
+                <InputGroup>
+                  <Form.Control
+                    type={this.state.hidden ? "password" : "text"}
+                    securetextentry="true"
+                    placeholder="Password"
+                    name="password"
+                    defaultValue={
+                      this.state.user !== {} ? this.state.user.password : ""
                     }
-                    handleChange(e);
-                  }}
-                  isInvalid={
-                    (touched.password || values.password) &&
-                    errors.password &&
-                    this.state.isChanged
-                  }
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.password}
-                </Form.Control.Feedback>
+                    onChange={(e) => {
+                      if (!this.state.isChanged) {
+                        values = this.InitializeValues(values);
+                      }
+                      handleChange(e);
+                    }}
+                    isInvalid={
+                      (touched.password || values.password) &&
+                      errors.password &&
+                      this.state.isChanged
+                    }
+                  />
+                  <InputGroup.Prepend
+                    onClick={(e) =>
+                      this.setState({ hidden: !this.state.hidden })
+                    }
+                  >
+                    <InputGroup.Text id="inputGroupPrepend">
+                      <i
+                        class="fa fa-eye"
+                        style={{
+                          fontsize: "16px",
+                          marginRight: "10px",
+                        }}
+                      ></i>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
             </Form.Row>
 
