@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Nav } from "./styled.component";
+import { Container } from "./styled.component";
 import ls from "local-storage";
 // fusioncharts
 import FusionCharts from "fusioncharts";
@@ -10,7 +10,6 @@ import ReactFC from "react-fusioncharts";
 import "./charts-theme.js";
 
 import config from "./config";
-import formatNum from "./format-number";
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, USARegion);
 
@@ -67,9 +66,6 @@ export default class Dashboard extends Component {
 						value: rows[i].consumption,
 					});
 				}
-
-				// console.log(consumptionArr);
-				// console.log(expenditureArr);
 
 				this.setState({
 					totalenergy: consumption,
