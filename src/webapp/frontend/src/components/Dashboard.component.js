@@ -69,6 +69,7 @@ export default class Dashboard extends Component {
 					}
 					rows.push(rowObject);
 				}
+				console.log(rows);
 
 				// dropdown options
 				let dropdownOptions = [];
@@ -233,7 +234,7 @@ export default class Dashboard extends Component {
 											width: "100%",
 											height: "100%",
 											dataFormat: "json",
-											containerBackgroundOpacity: "0",
+											// containerBackgroundOpacity: "0",
 											dataEmptyMessage: "Loading Data...",
 											dataSource: {
 												chart: {
@@ -307,7 +308,7 @@ export default class Dashboard extends Component {
 											width: "100%",
 											height: "100%",
 											dataFormat: "json",
-											containerBackgroundOpacity: "0",
+											// containerBackgroundOpacity: "0",
 											dataEmptyMessage: "Loading Data...",
 											dataSource: {
 												chart: {
