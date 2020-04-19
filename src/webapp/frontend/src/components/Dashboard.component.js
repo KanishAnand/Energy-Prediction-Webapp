@@ -20,40 +20,12 @@ export default class Dashboard extends Component {
 	constructor() {
 		super();
 		this.state = {
-			amRevenue: null,
 			totalenergy: null,
 			totalexpenditure: null,
-			myDataSource: null,
+			consumptionAr: null,
+			expenditureArr: null,
 		};
 	}
-
-	getData = (arg) => {
-		// google sheets data
-		const arr = this.state.items;
-		const arrLen = arr.length;
-
-		// kpi's
-		// amazon revenue
-		let amRevenue = 0;
-
-		for (let i = 0; i < arrLen; i++) {
-			if (arg === arr[i]["month"]) {
-				if (arr[i]["source"] === "AM") {
-					amRevenue += parseInt(arr[i].revenue);
-				}
-			}
-		}
-
-		// setting state
-		this.setState({
-			amRevenue: formatNum(amRevenue),
-		});
-	};
-
-	// updateDashboard = (event) => {
-	// 	this.getData(event.value);
-	// 	this.setState({ selectedValue: event.value });
-	// };
 
 	fetchInfo = () => {
 		fetch(url)
@@ -69,11 +41,9 @@ export default class Dashboard extends Component {
 					}
 					rows.push(rowObject);
 				}
-				console.log(rows);
+				// console.log(rows);
 
-				// dropdown options
-				let dropdownOptions = [],
-					expenditure = 0,
+				let expenditure = 0,
 					consumption = 0;
 
 				for (let i = 0; i < rows.length; i++) {
@@ -81,16 +51,27 @@ export default class Dashboard extends Component {
 					consumption += parseInt(rows[i].consumption);
 				}
 
-				this.setState(
-					{
-						totalenergy: consumption,
-						totalexpenditure: expenditure,
-						items: rows,
-						dropdownOptions: dropdownOptions,
-						selectedValue: "Jan 2018",
-					},
-					() => this.getData("Jan 2018")
-				);
+				let consumptionArr = [],
+					expenditureArr = [];
+
+				for (let i = 0; i < rows.length; i++) {
+					consumptionArr.push({
+						label: rows[i].month,
+						value: rows[i].consumption,
+					});
+					expenditureArr.push({
+						label: rows[i].month,
+						value: rows[i].expenditure,
+					});
+				}
+
+				console.log(consumptionArr);
+				this.setState({
+					totalenergy: consumption,
+					totalexpenditure: expenditure,
+					consumptionArr: consumptionArr,
+					expenditureArr: expenditureArr,
+				});
 			});
 	};
 
@@ -242,6 +223,7 @@ export default class Dashboard extends Component {
 													numberSuffix: "Kw/hr",
 												},
 												data: [
+													// this.consumptionArr,
 													{
 														label: "January",
 														value: "800",
