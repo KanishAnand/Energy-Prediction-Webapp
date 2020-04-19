@@ -20,10 +20,10 @@ export default class Dashboard extends Component {
 	constructor() {
 		super();
 		this.state = {
-			totalenergy: null,
-			totalexpenditure: null,
-			consumptionAr: null,
-			expenditureArr: null,
+			totalenergy: 0,
+			totalexpenditure: 0,
+			consumptionArr: [],
+			expenditureArr: [],
 		};
 	}
 
@@ -51,26 +51,31 @@ export default class Dashboard extends Component {
 					consumption += parseInt(rows[i].consumption);
 				}
 
-				let consumptionArr = [],
-					expenditureArr = [];
+				let consumptionArr = [];
+				let expenditureArr = [];
 
 				for (let i = 0; i < rows.length; i++) {
-					consumptionArr.push({
-						label: rows[i].month,
-						value: rows[i].consumption,
-					});
 					expenditureArr.push({
 						label: rows[i].month,
 						value: rows[i].expenditure,
 					});
 				}
 
-				console.log(consumptionArr);
+				for (let i = 0; i < rows.length; i++) {
+					consumptionArr.push({
+						label: rows[i].month,
+						value: rows[i].consumption,
+					});
+				}
+
+				// console.log(consumptionArr);
+				// console.log(expenditureArr);
+
 				this.setState({
 					totalenergy: consumption,
 					totalexpenditure: expenditure,
-					consumptionArr: consumptionArr,
 					expenditureArr: expenditureArr,
+					consumptionArr: consumptionArr,
 				});
 			});
 	};
@@ -222,57 +227,7 @@ export default class Dashboard extends Component {
 														"Yearly Energy Consumption",
 													numberSuffix: "Kw/hr",
 												},
-												data: [
-													// this.consumptionArr,
-													{
-														label: "January",
-														value: "800",
-													},
-													{
-														label: "February",
-														value: "730",
-													},
-													{
-														label: "March",
-														value: "590",
-													},
-													{
-														label: "April",
-														value: "520",
-													},
-													{
-														label: "May",
-														value: "800",
-													},
-													{
-														label: "June",
-														value: "730",
-													},
-													{
-														label: "July",
-														value: "590",
-													},
-													{
-														label: "August",
-														value: "520",
-													},
-													{
-														label: "September",
-														value: "800",
-													},
-													{
-														label: "October",
-														value: "730",
-													},
-													{
-														label: "November",
-														value: "590",
-													},
-													{
-														label: "December",
-														value: "520",
-													},
-												],
+												data: this.state.consumptionArr,
 											},
 										}}
 									/>
@@ -293,60 +248,11 @@ export default class Dashboard extends Component {
 											dataEmptyMessage: "Loading Data...",
 											dataSource: {
 												chart: {
+													numberPrefix: "₹",
 													caption:
-														"Yearly Energy Consumption",
-													numberSuffix: "Kw/hr",
+														"Yearly Expenditure",
 												},
-												data: [
-													{
-														label: "January",
-														value: "800",
-													},
-													{
-														label: "February",
-														value: "730",
-													},
-													{
-														label: "March",
-														value: "590",
-													},
-													{
-														label: "April",
-														value: "520",
-													},
-													{
-														label: "May",
-														value: "800",
-													},
-													{
-														label: "June",
-														value: "730",
-													},
-													{
-														label: "July",
-														value: "590",
-													},
-													{
-														label: "August",
-														value: "520",
-													},
-													{
-														label: "September",
-														value: "800",
-													},
-													{
-														label: "October",
-														value: "730",
-													},
-													{
-														label: "November",
-														value: "590",
-													},
-													{
-														label: "December",
-														value: "520",
-													},
-												],
+												data: this.state.expenditureArr,
 											},
 										}}
 									/>
