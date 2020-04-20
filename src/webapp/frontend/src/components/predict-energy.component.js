@@ -61,12 +61,18 @@ export default class Predict extends Component {
     body.push(<tr key={0}>{row}</tr>);
     table.push(<thead key="head">{body}</thead>);
     body = [];
+    let total = 0;
     for (let i in this.state.data) {
       row = [];
+      total += this.state.data[i]["yhat"];
       row.push(<td key={"date" + i}>{this.state.data[i]["date"]}</td>);
       row.push(<td key={"energy" + i}>{this.state.data[i]["yhat"]}</td>);
       body.push(<tr key={i}>{row}</tr>);
     }
+    row = [];
+    row.push(<td key={"ttotal"}>{"Total"}</td>);
+    row.push(<td key={"tenergy"}>{total}</td>);
+    body.push(<tr key={"tbody"}>{row}</tr>);
     table.push(<tbody key="body">{body}</tbody>);
     return (
       <Table striped bordered hover variant="light">
@@ -240,7 +246,9 @@ export default class Predict extends Component {
       <div className="container">
         <this.HandleAlert />
         <br />
-        <h1 className="display-3 jumbotron" align="center">Predict Energy Consumption</h1>
+        <h1 className="display-3 jumbotron" align="center">
+          Predict Energy Consumption
+        </h1>
         <this.View />
         <br />
         <br />
