@@ -241,6 +241,7 @@ export default class Graphs extends Component {
 			<div className="container">
 				<this.HandleAlert />
 				<br />
+				<h1 className="display-3 jumbotron" align="center">Graphical Analysis For Predicted Values</h1>
 				<this.View />
 				<br />
 				<br />

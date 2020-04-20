@@ -240,6 +240,7 @@ export default class Predict extends Component {
       <div className="container">
         <this.HandleAlert />
         <br />
+        <h1 className="display-3 jumbotron" align="center">Predict Energy Consumption</h1>
         <this.View />
         <br />
         <br />
