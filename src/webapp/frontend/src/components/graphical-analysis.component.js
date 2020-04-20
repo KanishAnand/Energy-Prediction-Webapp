@@ -89,7 +89,7 @@ export default class Graphs extends Component {
 							})
 							.then((res) => {
 								this.setState({
-									message: "Graph Uploaded!!",
+									message: "Graph Made Successfully!!",
 									type: "success",
 									graph: true,
 								});
