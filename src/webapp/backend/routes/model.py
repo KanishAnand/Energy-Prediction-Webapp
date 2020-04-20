@@ -175,7 +175,7 @@ def plotGraph(x, y):
     ax.xaxis_date()
     fig.autofmt_xdate()
     fileName = 'graph' + datetime.today().strftime('%S.%f')[:-3] + '.png'
-    plt.savefig("./outputs/" + fileName)
+    plt.savefig("./images/" + fileName)
     plt.close()
     return fileName
 
