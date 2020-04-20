@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
 import json
-import requests
+import os.path
 
 URL = "http://api.openweathermap.org/data/2.5/forecast?id=1269843&appid=95e286bae5647877dbb924f3779736a8&units=imperial"
 
@@ -42,6 +42,12 @@ def formatData(From, data):
 
 
 def getTemp():
+    if os.path.exists('./outputs/temp.json'):
+        with open("./outputs/temp.json", "r") as f:
+            temp = json.load(f)
+            if datetime.today().strftime('%Y-%m-%d %H') in temp:
+                return temp
+    import requests
     r = requests.get(url=URL)
     data = r.json()
     Temp = {}
@@ -63,6 +69,8 @@ def getTemp():
             avg[key] = (Temp[i], 1)
     for i in avg:
         Temp[i] = round(avg[i][0] / avg[i][1], 2)
+    with open("./outputs/temp.json", "w") as f:
+        json.dump(Temp, f)
     return Temp
 
 
