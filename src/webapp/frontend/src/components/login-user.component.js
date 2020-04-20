@@ -166,7 +166,7 @@ export default class LoginUser extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{width: '40%'}}>
         <br />
         <this.LoginForm />
       </div>
