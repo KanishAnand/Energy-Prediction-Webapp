@@ -72,7 +72,7 @@ def graph(model):
         x.append(i['dateTime'])
         x_ticks.append(i['dateTime'].strftime('%y-%m-%d %H:%M'))
         y.append(i['yhat'])
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=(11, 5))
     plt.xticks(x, x_ticks)
     plt.plot(x, y)
     plt.xlabel('DateTime')
