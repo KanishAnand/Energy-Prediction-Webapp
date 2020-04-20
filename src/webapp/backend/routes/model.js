@@ -13,8 +13,8 @@ router.route("/predict").post(function (req, res) {
       req.body.toTime,
     ]);
     process.stdout.on("data", (data) => {
-      let output = require("../outputs/data.json");
-      delete require.cache[require.resolve("../outputs/data.json")];
+      let output = require("../models/data.json");
+      delete require.cache[require.resolve("../models/data.json")];
       res.status(200).send(output);
     });
   } catch (err) {
