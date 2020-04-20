@@ -57,7 +57,7 @@ export default class Predict extends Component {
     let body = [];
     let row = [];
     row.push(<th key="date">{"Date"}</th>);
-    row.push(<th key="energy">{"Energy(kWh)"}</th>);
+    row.push(<th key="energy">{"Energy (kWh)"}</th>);
     body.push(<tr key={0}>{row}</tr>);
     table.push(<thead key="head">{body}</thead>);
     body = [];
