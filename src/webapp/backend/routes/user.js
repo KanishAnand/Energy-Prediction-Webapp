@@ -1,6 +1,14 @@
 const router = require("express").Router();
 let User = require("./../models/user");
-let nodemailer = require("nodemailer");
+const axios = require("axios");
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "",
+    pass: "",
+  },
+});
 
 // Gets all the users
 router.route("/").get(function (req, res) {
@@ -103,18 +111,106 @@ router.route("/form").post(function (req, res) {
           text += "\nName: " + user["firstName"] + " " + user["lastName"];
           text += "\nEmail: " + user["email"];
           text += "\nUser Type: " + user["userType"];
-          let transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: "",
-              pass: "",
-            },
-          });
           let mailOptions = {
             from: "",
             to: to,
             subject: req.body.subject,
             text: text,
+          };
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              res.status(400).json({
+                message: error.message,
+              });
+            } else {
+              res.status(200).json("Email sent: " + info.response);
+            }
+          });
+        })
+        .catch((err) => {
+          res.status(400).json(err);
+        });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+// sends notification to all the users
+router.route("/notify").post(function (req, res) {
+  let date = new Date(Date.now());
+  date =
+    date.getFullYear().toString() +
+    "-" +
+    date.getMonth().toString() +
+    "-" +
+    date.getDate().toString();
+  axios
+    .post("http://localhost:4000/model/predict", {
+      fromDate: date,
+      fromTime: "08:00",
+      toDate: date,
+      toTime: "21:00",
+    })
+    .then((data) => {
+      User.findOne({ notification: true })
+        .then((users) => {
+          let total = 0;
+          for (let i in data.data) {
+            total += data.data[i]["yhat"];
+          }
+          let to = "";
+          for (let i = 0; i < users.length; i++) {
+            if (i) {
+              to += ", ";
+            }
+            to += users[i]["email"];
+          }
+          if (to === "") {
+            res.status(200).json({
+              message: "No user accepts notification!!",
+            });
+            return;
+          }
+          let mailOptions = {
+            from: "",
+            to: to,
+            subject: "today's expected energy consumption",
+            text:
+              "Dear User,\n Today's energy consumption is expected to be about " +
+              total.toString() +
+              "\n\nThank You\nEnergy Prediction Team\n",
+            attachments: [
+              {
+                filename: "logo.png",
+                path: "./images/logo.png",
+                cid: "logo",
+              },
+            ],
+            html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset="utf-8" />
+              <body>
+                <p>
+                  <img src="cid:logo" width="10%" height="15%" style="border-radius: 50%"/>
+                </p>
+                <p>
+                  Dear User,
+                </p>
+                <p>
+                  Today's energy consumption is expected to be about ${total.toString()} kWh.
+                </p>
+                <br />
+                <p>
+                  Thank You
+                </p>
+                <p>
+                  Energy Prediction Team
+                </p>
+              </body>
+            </html>`,
           };
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
