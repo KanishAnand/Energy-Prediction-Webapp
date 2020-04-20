@@ -63,6 +63,7 @@ def predict(model):
 
 def graph(model):
     import matplotlib.pyplot as plt
+    from matplotlib.dates import DateFormatter
     From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
     To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
     data = getData(From, To)
@@ -72,12 +73,16 @@ def graph(model):
         x.append(i['dateTime'])
         x_ticks.append(i['dateTime'].strftime('%y-%m-%d %H:%M'))
         y.append(i['yhat'])
-    plt.figure(figsize=(11, 5))
+    # plt.figure(figsize=(11, 5))
     plt.xticks(x, x_ticks)
-    plt.plot(x, y)
+    fig, ax = plt.subplots(figsize=(11, 5))
+    ax.plot(x, y)
+    # plt.plot(x, y)
     plt.xlabel('DateTime')
     plt.ylabel('Predicted Value')
     plt.title('Graphical Analysis')
+    ax.xaxis_date()
+    fig.autofmt_xdate()
     plt.savefig('./outputs/graph.png')
     plt.close()
     print("Graph plotted and saved!")
