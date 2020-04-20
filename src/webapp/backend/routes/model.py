@@ -174,8 +174,10 @@ def plotGraph(x, y):
     plt.title('Graphical Analysis')
     ax.xaxis_date()
     fig.autofmt_xdate()
-    plt.savefig('./outputs/graph.png')
+    fileName = 'graph' + datetime.today().strftime('%S.%f')[:-3] + '.png'
+    plt.savefig("./outputs/" + fileName)
     plt.close()
+    return fileName
 
 
 def getGraph():
@@ -188,8 +190,7 @@ def getGraph():
     for i in data:
         x.append(i['dateTime'])
         y.append(i['yhat'])
-    plotGraph(x, y)
-    print("Graph plotted and saved!")
+    print(plotGraph(x, y))
     return
 
 

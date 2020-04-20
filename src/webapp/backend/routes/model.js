@@ -35,7 +35,7 @@ router.route("/graph").post(function (req, res) {
       req.body.toTime,
     ]);
     process.stdout.on("data", (data) => {
-      res.status(200).send(data);
+      res.status(200).send(data.toString());
     });
   } catch (err) {
     res.status(404).json(err);
