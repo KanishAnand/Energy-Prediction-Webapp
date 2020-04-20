@@ -5,6 +5,8 @@ import { Form, Button, Alert, InputGroup, Col } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+const imageURL = "http://localhost:4000/graph.png"
+
 const schema = yup.object({
 	fromDate: yup.date().required("Please Enter the Date"),
 	fromTime: yup.string().required("Please Enter the Time"),
@@ -243,7 +245,7 @@ export default class Graphs extends Component {
 				<br />
 				<br />
 				{this.state.graph === true && (
-					<img src="http://localhost:4000/graph.png" alt="Graph" />
+					<img key={Date.now()} src={imageURL + '?' + Date.now()} alt="Graph" />
 				)}
 			</div>
 		);
