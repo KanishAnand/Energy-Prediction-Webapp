@@ -30,7 +30,7 @@ class SideNavbar extends Component {
 		return (
 			<div className="sidenav" align="center">
 				<div className="sideContent">
-					<img src={logo} alt="Organisation"></img>
+					<img className="logo" src={logo} alt="Organisation"></img>
 					{this.state.loggedIn && (
 						<React.Fragment>
 							<a
