@@ -26,6 +26,37 @@ class SideNavbar extends Component {
 		}
 	}
 
+	componentDidUpdate(){
+		var element = document.getElementById(ls.get("active"));
+		if(element != null){
+			element.classList.add("isactive")
+		}
+	}
+	
+	onClick(arg){
+		var element = document.getElementById(ls.get("active"));
+		if(element != null){
+			element.classList.remove("isactive")
+		}
+		ls.set("active",arg)
+		// var element = document.getElementById(ls.get("active"));
+		// if(element != null){
+		// 	element.classList.add("isactive")
+		// }
+	// var element = document.getElementById(ls.get("active"));
+	// if(element != null){
+	// 	console.log("kanis")
+	// 	element[0].addClassList.add("isactive")
+	// }
+	// 	// var element = document.getElementById(1);
+	// 	// console.log(element);
+	// 	// // console.log(element)
+	// 	// console.log("ds")
+	// 	// console.log(arg)
+	// 	ls.set("active",arg)
+	// 	// element[0].classList.remove("isactive");
+	}
+
 	render() {
 		return (
 			<div className="sidenav" align="center">
@@ -33,7 +64,7 @@ class SideNavbar extends Component {
 					<img className="logo" src={logo} alt="Organisation"></img>
 					{this.state.loggedIn && (
 						<React.Fragment>
-							<a
+							<a className="isactive"
 								style={{ paddingTop: "15%" }}
 								href={
 									"/" +
@@ -42,7 +73,11 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/home"
 								}
-							>
+								onClick={(e) => {
+									this.onClick(1);
+								}}
+								>
+								<span id={1} >
 								<i
 									className="fa fa-home"
 									style={{
@@ -51,8 +86,9 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Home
+								</span>
 							</a>
-							<a
+							<a 
 								href={
 									"/" +
 									this.state.userType +
@@ -60,8 +96,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/predict"
 								}
+								onClick={(e) => {
+									this.onClick(2);
+								}}
 							>
 								{" "}
+								<span id={2}>
 								<i
 									className="fa fa-bar-chart"
 									style={{
@@ -70,6 +110,7 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Prediction
+								</span>
 							</a>
 							<a
 								href={
@@ -79,8 +120,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/graphs"
 								}
+								onClick={(e) => {
+									this.onClick(3);
+								}}
 							>
 								{" "}
+								<span id={3}>
 								<i
 									className="fa fa-line-chart"
 									style={{
@@ -89,6 +134,7 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Graphs
+								</span>
 							</a>
 							<a
 								href={
@@ -98,8 +144,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/weather"
 								}
+								onClick={(e) => {
+									this.onClick(4);
+								}}
 							>
 								{" "}
+								<span id={4}>
 								<i
 									className="fas fa-cloud-sun-rain"
 									style={{
@@ -108,6 +158,7 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Weather
+								</span>
 							</a>
 							<a
 								href={
@@ -117,8 +168,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/profile"
 								}
+								onClick={(e) => {
+									this.onClick(5);
+								}}
 							>
 								{" "}
+								<span id={5}>
 								<i
 									className="fa fa-user"
 									style={{
@@ -127,6 +182,7 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Profile
+								</span>
 							</a>
 							<a
 								href={
@@ -136,8 +192,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/users"
 								}
+								onClick={(e) => {
+									this.onClick(6);
+								}}
 							>
 								{" "}
+								<span id={6}>
 								<i
 									className="fa fa-users"
 									style={{
@@ -146,6 +206,7 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Users
+								</span>
 							</a>
 							<a
 								href={
@@ -155,8 +216,12 @@ class SideNavbar extends Component {
 									this.state.username +
 									"/query"
 								}
+								onClick={(e) => {
+									this.onClick(7);
+								}}
 							>
 								{" "}
+								<span id={8}>
 								<i
 									className="fa fa-envelope"
 									style={{
@@ -165,15 +230,18 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Customer Care
+								</span>
 							</a>
 							<a
 								href={"/login"}
 								onClick={(e) => {
 									ls.clear();
+									this.onClick(8);
 									window.location.href = "/login";
 								}}
 							>
 								{" "}
+								<span id={8}>
 								<i
 									className="fa fa-sign-out"
 									style={{
@@ -182,12 +250,19 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Logout
+								</span>
 							</a>
 						</React.Fragment>
 					)}
 					{!this.state.loggedIn && (
 						<React.Fragment>
-							<a style={{ paddingTop: "15%" }} href={"/home"}>
+							<a 
+								style={{ paddingTop: "15%" }} 
+								href={"/home"} 
+								onClick={(e) => {
+									this.onClick(9);
+								}}>
+								<span id={9}>
 								<i
 									className="fa fa-home"
 									style={{
@@ -196,9 +271,14 @@ class SideNavbar extends Component {
 									}}
 								></i>
 								Home
+								</span>
 							</a>
-							<a href={"/register"}>
+							<a href={"/register"}
+								onClick={(e) => {
+									this.onClick(10);
+								}}>
 								{" "}
+								<span id={10}>
 								<i
 									className="fas fa-user-plus"
 									style={{
@@ -207,9 +287,14 @@ class SideNavbar extends Component {
 									}}
 								></i>{" "}
 								Register
+								</span>
 							</a>
-							<a href={"/login"}>
+							<a href={"/login"}
+								onClick={(e) => {
+									this.onClick(11);
+								}}>
 								{" "}
+								<span id={11}>
 								<i
 									className="fa fa-sign-in"
 									style={{
@@ -218,6 +303,7 @@ class SideNavbar extends Component {
 									}}
 								></i>{" "}
 								Login
+								</span>
 							</a>
 						</React.Fragment>
 					)}

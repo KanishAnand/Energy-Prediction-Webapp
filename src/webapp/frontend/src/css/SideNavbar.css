@@ -25,6 +25,10 @@
 	padding-top: 20%;
 }
 
+.isactive {
+	color: #f1f1f1;
+}
+
 .logo {
 	height: 15%;
 	width: 55%;
