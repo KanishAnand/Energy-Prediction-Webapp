@@ -269,7 +269,7 @@ export default class RegisterUser extends Component {
                   >
                     <InputGroup.Text id="inputGroupPrepend">
                       <i
-                        class="fa fa-eye"
+                        className="fa fa-eye"
                         style={{
                           fontsize: "16px",
                           marginRight: "10px",
@@ -305,7 +305,7 @@ export default class RegisterUser extends Component {
                   >
                     <InputGroup.Text id="inputGroupPrepend">
                       <i
-                        class="fa fa-eye"
+                        className="fa fa-eye"
                         style={{
                           fontsize: "16px",
                           marginRight: "10px",
