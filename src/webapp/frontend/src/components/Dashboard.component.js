@@ -30,15 +30,21 @@ export default class Dashboard extends Component {
 		fetch(url)
 			.then((response) => response.json())
 			.then((data) => {
-				let batchRowValues = data.valueRanges[0].values;
+				let batchRowValues;
+				if (data.valueRanges != null) {
+					batchRowValues = data.valueRanges[0].values;
+				}
 
 				const rows = [];
-				for (let i = 1; i < batchRowValues.length; i++) {
-					let rowObject = {};
-					for (let j = 0; j < batchRowValues[i].length; j++) {
-						rowObject[batchRowValues[0][j]] = batchRowValues[i][j];
+				if (batchRowValues != null) {
+					for (let i = 1; i < batchRowValues.length; i++) {
+						let rowObject = {};
+						for (let j = 0; j < batchRowValues[i].length; j++) {
+							rowObject[batchRowValues[0][j]] =
+								batchRowValues[i][j];
+						}
+						rows.push(rowObject);
 					}
-					rows.push(rowObject);
 				}
 				// console.log(rows);
 
