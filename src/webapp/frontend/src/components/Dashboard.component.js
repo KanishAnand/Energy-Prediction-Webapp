@@ -103,7 +103,8 @@ export default class Dashboard extends Component {
 		return (
 			<Container>
 				{/* content area start */}
-				<Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
+				<br></br>
+				<Container className="container-fluid pr-5 pl-5 pb-5">
 					{/* row 1 - revenue */}
 					<h1 className="display-3 jumbotron" align="center">
 						Dashboard

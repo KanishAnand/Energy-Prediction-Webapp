@@ -461,7 +461,7 @@ export default class Profile extends Component {
 						</Form.Row>
 
 						{!this.state.isChanged && (
-							<Button variant={"light"}> Save Changes </Button>
+							<Button> Save Changes </Button>
 						)}
 
 						{this.state.isChanged && (
