@@ -26,35 +26,19 @@ class SideNavbar extends Component {
 		}
 	}
 
-	componentDidUpdate(){
+	componentDidUpdate() {
 		var element = document.getElementById(ls.get("active"));
-		if(element != null){
-			element.classList.add("isactive")
+		if (element != null) {
+			element.classList.add("isactive");
 		}
 	}
-	
-	onClick(arg){
+
+	onClick(arg) {
 		var element = document.getElementById(ls.get("active"));
-		if(element != null){
-			element.classList.remove("isactive")
+		if (element != null) {
+			element.classList.remove("isactive");
 		}
-		ls.set("active",arg)
-		// var element = document.getElementById(ls.get("active"));
-		// if(element != null){
-		// 	element.classList.add("isactive")
-		// }
-	// var element = document.getElementById(ls.get("active"));
-	// if(element != null){
-	// 	console.log("kanis")
-	// 	element[0].addClassList.add("isactive")
-	// }
-	// 	// var element = document.getElementById(1);
-	// 	// console.log(element);
-	// 	// // console.log(element)
-	// 	// console.log("ds")
-	// 	// console.log(arg)
-	// 	ls.set("active",arg)
-	// 	// element[0].classList.remove("isactive");
+		ls.set("active", arg);
 	}
 
 	render() {
@@ -64,7 +48,8 @@ class SideNavbar extends Component {
 					<img className="logo" src={logo} alt="Organisation"></img>
 					{this.state.loggedIn && (
 						<React.Fragment>
-							<a className="isactive"
+							<a
+								className="isactive"
 								style={{ paddingTop: "15%" }}
 								href={
 									"/" +
@@ -76,19 +61,19 @@ class SideNavbar extends Component {
 								onClick={(e) => {
 									this.onClick(1);
 								}}
-								>
-								<span id={1} >
-								<i
-									className="fa fa-home"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Home
+							>
+								<span id={1}>
+									<i
+										className="fa fa-home"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Home
 								</span>
 							</a>
-							<a 
+							<a
 								href={
 									"/" +
 									this.state.userType +
@@ -102,14 +87,14 @@ class SideNavbar extends Component {
 							>
 								{" "}
 								<span id={2}>
-								<i
-									className="fa fa-bar-chart"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Prediction
+									<i
+										className="fa fa-bar-chart"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Prediction
 								</span>
 							</a>
 							<a
@@ -126,14 +111,14 @@ class SideNavbar extends Component {
 							>
 								{" "}
 								<span id={3}>
-								<i
-									className="fa fa-line-chart"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Graphs
+									<i
+										className="fa fa-line-chart"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Graphs
 								</span>
 							</a>
 							<a
@@ -150,14 +135,14 @@ class SideNavbar extends Component {
 							>
 								{" "}
 								<span id={4}>
-								<i
-									className="fas fa-cloud-sun-rain"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Weather
+									<i
+										className="fas fa-cloud-sun-rain"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Weather
 								</span>
 							</a>
 							<a
@@ -174,14 +159,14 @@ class SideNavbar extends Component {
 							>
 								{" "}
 								<span id={5}>
-								<i
-									className="fa fa-user"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Profile
+									<i
+										className="fa fa-user"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Profile
 								</span>
 							</a>
 							<a
@@ -198,14 +183,14 @@ class SideNavbar extends Component {
 							>
 								{" "}
 								<span id={6}>
-								<i
-									className="fa fa-users"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Users
+									<i
+										className="fa fa-users"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Users
 								</span>
 							</a>
 							<a
@@ -221,88 +206,93 @@ class SideNavbar extends Component {
 								}}
 							>
 								{" "}
-								<span id={8}>
-								<i
-									className="fa fa-envelope"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Customer Care
+								<span id={7}>
+									<i
+										className="fa fa-envelope"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Customer Care
 								</span>
 							</a>
 							<a
 								href={"/login"}
 								onClick={(e) => {
 									ls.clear();
-									this.onClick(8);
+									this.onClick(11);
 									window.location.href = "/login";
 								}}
 							>
 								{" "}
 								<span id={8}>
-								<i
-									className="fa fa-sign-out"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Logout
+									<i
+										className="fa fa-sign-out"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Logout
 								</span>
 							</a>
 						</React.Fragment>
 					)}
 					{!this.state.loggedIn && (
 						<React.Fragment>
-							<a 
-								style={{ paddingTop: "15%" }} 
-								href={"/home"} 
+							<a
+								style={{ paddingTop: "15%" }}
+								href={"/home"}
 								onClick={(e) => {
-									this.onClick(9);
-								}}>
-								<span id={9}>
-								<i
-									className="fa fa-home"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>
-								Home
+									this.onClick(1);
+								}}
+							>
+								<span id={1}>
+									<i
+										className="fa fa-home"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>
+									Home
 								</span>
 							</a>
-							<a href={"/register"}
+							<a
+								href={"/register"}
 								onClick={(e) => {
 									this.onClick(10);
-								}}>
+								}}
+							>
 								{" "}
 								<span id={10}>
-								<i
-									className="fas fa-user-plus"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>{" "}
-								Register
+									<i
+										className="fas fa-user-plus"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>{" "}
+									Register
 								</span>
 							</a>
-							<a href={"/login"}
+							<a
+								href={"/login"}
 								onClick={(e) => {
 									this.onClick(11);
-								}}>
+								}}
+							>
 								{" "}
 								<span id={11}>
-								<i
-									className="fa fa-sign-in"
-									style={{
-										fontsize: "16px",
-										marginRight: "10px",
-									}}
-								></i>{" "}
-								Login
+									<i
+										className="fa fa-sign-in"
+										style={{
+											fontsize: "16px",
+											marginRight: "10px",
+										}}
+									></i>{" "}
+									Login
 								</span>
 							</a>
 						</React.Fragment>
