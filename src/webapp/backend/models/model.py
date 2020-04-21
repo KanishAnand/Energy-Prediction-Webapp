@@ -137,15 +137,16 @@ def getData(From, To):
         if dayTime.replace(minute=0) == To.replace(minute=0):
             if (To - dayTime).seconds // 60 != 0:
                 erg = getHourData(dayTime, ldata, Temp)
-                erg['yhat'] = erg['yhat'] * ((To - dayTime).seconds // 60) / 60
+                erg['yhat'] = round(
+                    erg['yhat'] * ((To - dayTime).seconds // 60) / 60, 2)
                 data.append(erg)
             break
         elif dayTime != dayTime.replace(minute=0):
             newDate = dayTime.replace(minute=0)
             erg = getHourData(newDate, ldata, Temp)
             newDate += timedelta(hours=1)
-            erg['yhat'] = erg['yhat'] * \
-                ((newDate - dayTime).seconds // 60) / 60
+            erg['yhat'] = round(erg['yhat'] *
+                                ((newDate - dayTime).seconds // 60) / 60, 2)
             data.append(erg)
             dayTime = newDate
         else:
