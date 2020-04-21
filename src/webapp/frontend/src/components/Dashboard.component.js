@@ -102,25 +102,6 @@ export default class Dashboard extends Component {
 	render() {
 		return (
 			<Container>
-				{/* static navbar - top */}
-				{/* <Nav className="navbar navbar-expand-lg fixed-top is-white is-dark-text">
-              <Container className="navbar-brand h1 mb-0 text-large font-medium">
-                Energy Consumption Dashboard
-              </Container>
-              <Container className="navbar-nav ml-auto">
-                <Container className="user-detail-section">
-                  <span className="pr-2">Hi, Sean</span>
-                  <span className="img-container">
-                    <img
-										src={UserImg}
-										className="rounded-circle"
-										alt="user"
-									/>
-                  </span>
-                </Container>
-              </Container>
-            </Nav> */}
-
 				{/* content area start */}
 				<Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
 					{/* row 1 - revenue */}
