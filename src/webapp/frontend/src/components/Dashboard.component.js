@@ -77,6 +77,7 @@ export default class Dashboard extends Component {
 	};
 
 	componentDidMount() {
+		ls.set("active", 1);
 		if (this.props.match.params.id) {
 			if (
 				ls.get("username") !== this.props.match.params.id ||

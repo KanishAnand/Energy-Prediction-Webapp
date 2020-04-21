@@ -221,7 +221,7 @@ class SideNavbar extends Component {
 								href={"/login"}
 								onClick={(e) => {
 									ls.clear();
-									this.onClick(8);
+									this.onClick(11);
 									window.location.href = "/login";
 								}}
 							>
@@ -245,10 +245,10 @@ class SideNavbar extends Component {
 								style={{ paddingTop: "15%" }}
 								href={"/home"}
 								onClick={(e) => {
-									this.onClick(9);
+									this.onClick(1);
 								}}
 							>
-								<span id={9}>
+								<span id={1}>
 									<i
 										className="fa fa-home"
 										style={{
