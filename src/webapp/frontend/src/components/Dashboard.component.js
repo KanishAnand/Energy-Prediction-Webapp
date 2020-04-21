@@ -105,6 +105,9 @@ export default class Dashboard extends Component {
 				{/* content area start */}
 				<Container className="container-fluid pr-5 pl-5 pt-5 pb-5">
 					{/* row 1 - revenue */}
+					<h1 className="display-3 jumbotron" align="center">
+						Dashboard
+					</h1>
 					<Container className="row">
 						<Container className="col-lg-3 col-sm-6 is-light-text mb-4">
 							<Container className="card grid-card is-card-dark">
@@ -187,7 +190,7 @@ export default class Dashboard extends Component {
 					</Container>
 
 					{/* row 3 - orders trend */}
-					<Container className="row" style={{ minHeight: "600px" }}>
+					<Container className="row" style={{ minHeight: "550px" }}>
 						<Container className="col-md-6 mb-4">
 							<Container className="card is-card-dark chart-card">
 								<Container className="chart-container large full-height">
