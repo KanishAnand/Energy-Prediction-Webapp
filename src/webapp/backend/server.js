@@ -24,10 +24,12 @@ connection.once("open", function () {
 
 const userRoutes = require("./routes/user");
 const modelRoutes = require("./routes/model");
+const task = require("./models/notify");
 
 app.use("/user", userRoutes);
 app.use("/model", modelRoutes);
 
 app.listen(PORT, function () {
+  task.start();
   console.log("Server is running on port: " + PORT);
 });
