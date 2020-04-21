@@ -98,7 +98,7 @@ def formatData(From, data):
     return output
 
 
-def getEnergy(dayTime, Temp, min=60):
+def getEnergy(dayTime, Temp):
     key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
     if Temp == {}:
         temp = 90
@@ -109,8 +109,7 @@ def getEnergy(dayTime, Temp, min=60):
     param = pd.DataFrame([dayTime], columns=['ds'])
     param['temp'] = temp
     val = model.predict(param).to_dict()
-    yhat = np.exp(float(val['yhat'][0]))
-    yhat = round(yhat * min / 60, 2)
+    yhat = round(np.exp(float(val['yhat'][0])), 2)
     data = {"dateTime": dayTime, "yhat": yhat}
     return data
 
@@ -137,13 +136,17 @@ def getData(From, To):
     while True:
         if dayTime.replace(minute=0) == To.replace(minute=0):
             if (To - dayTime).seconds // 60 != 0:
-                data.append(getEnergy(dayTime, Temp,
-                                      (To - dayTime).seconds // 60))
+                erg = getHourData(dayTime, ldata, Temp)
+                erg['yhat'] = erg['yhat'] * ((To - dayTime).seconds // 60) / 60
+                data.append(erg)
             break
         elif dayTime != dayTime.replace(minute=0):
-            newDate = dayTime.replace(minute=0) + timedelta(hours=1)
-            data.append(getEnergy(dayTime, Temp,
-                                  (newDate - dayTime).seconds // 60))
+            newDate = dayTime.replace(minute=0)
+            erg = getHourData(newDate, ldata, Temp)
+            newDate += timedelta(hours=1)
+            erg['yhat'] = erg['yhat'] * \
+                ((newDate - dayTime).seconds // 60) / 60
+            data.append(erg)
             dayTime = newDate
         else:
             data.append(getHourData(dayTime, ldata, Temp))
