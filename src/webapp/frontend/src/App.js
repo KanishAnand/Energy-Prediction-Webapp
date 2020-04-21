@@ -16,7 +16,7 @@ import { SideNavbar } from "./components/SideNavbar.component";
 function App() {
 	return (
 		<Router>
-			<div className="row" style={{ height: "100%" }}>
+			<div className="row" style={{ height: "100%", width: "100%" }}>
 				<div className="col-md-2" style={{ padding: "0" }}>
 					<SideNavbar></SideNavbar>
 				</div>
