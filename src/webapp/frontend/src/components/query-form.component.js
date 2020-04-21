@@ -30,9 +30,6 @@ export default class QueryForm extends Component {
   }
 
   HandleAlert = () => {
-    setTimeout(() => {
-      this.setState({ message: "", type: "light" });
-    }, 10000);
     return (
       <React.Fragment>
         {this.state.message !== "" && (
@@ -61,6 +58,10 @@ export default class QueryForm extends Component {
           text: "",
         }}
         onSubmit={(values, actions) => {
+          this.setState({
+            message: "Submitting Form!!",
+            type: "warning",
+          });
           axios
             .post("http://localhost:4000/user/form", {
               subject: values.subject,
