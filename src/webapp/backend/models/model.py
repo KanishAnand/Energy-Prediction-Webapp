@@ -98,7 +98,7 @@ def formatData(From, data):
     return output
 
 
-def getEnergy(dayTime, Temp, min=60):
+def getEnergy(dayTime, Temp):
     key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
     if Temp == {}:
         temp = 90
@@ -109,8 +109,7 @@ def getEnergy(dayTime, Temp, min=60):
     param = pd.DataFrame([dayTime], columns=['ds'])
     param['temp'] = temp
     val = model.predict(param).to_dict()
-    yhat = np.exp(float(val['yhat'][0]))
-    yhat = round(yhat * min / 60, 2)
+    yhat = round(np.exp(float(val['yhat'][0])), 2)
     data = {"dateTime": dayTime, "yhat": yhat}
     return data
 
