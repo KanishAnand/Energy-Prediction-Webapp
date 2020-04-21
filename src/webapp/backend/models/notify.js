@@ -4,8 +4,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "akshatgoyalak23@gmail.com",
-    pass: "akshatak23@",
+    user: "",
+    pass: "",
   },
 });
 
@@ -47,7 +47,7 @@ const notify = () => {
             return "No user interested in notification!!";
           }
           let mailOptions = {
-            from: "akshatgoyalak23@gmail.com",
+            from: "",
             to: to,
             subject: "today's expected energy consumption",
             text:
