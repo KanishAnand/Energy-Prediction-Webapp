@@ -9,7 +9,7 @@ import USARegion from "fusionmaps/maps/es/fusioncharts.usaregion";
 import ReactFC from "react-fusioncharts";
 import "./charts-theme.js";
 
-import config from "./config";
+import config from "../config";
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, USARegion);
 
