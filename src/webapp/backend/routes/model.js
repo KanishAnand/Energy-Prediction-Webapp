@@ -1,11 +1,11 @@
 const router = require("express").Router();
+const { spawn } = require("child_process");
 
 // returns predicted energy value for given time range
 router.route("/predict").post(function (req, res) {
   try {
-    const { spawn } = require("child_process");
     const process = spawn("python3", [
-      "./routes/model.py",
+      "./models/model.py",
       "predict",
       req.body.fromDate,
       req.body.fromTime,
@@ -25,9 +25,8 @@ router.route("/predict").post(function (req, res) {
 // returns graph of the predicted energy values for given time range
 router.route("/graph").post(function (req, res) {
   try {
-    const { spawn } = require("child_process");
     const process = spawn("python3", [
-      "./routes/model.py",
+      "./models/model.py",
       "graph",
       req.body.fromDate,
       req.body.fromTime,

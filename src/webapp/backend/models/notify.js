@@ -1,11 +1,11 @@
-const axios = require("axios");
+const { spawn } = require("child_process");
 const User = require("./user");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "",
-    pass: "",
+    user: "akshatgoyalak23@gmail.com",
+    pass: "akshatak23@",
   },
 });
 
@@ -18,19 +18,23 @@ const notify = () => {
     date.getMonth().toString() +
     "-" +
     date.getDate().toString();
-  axios
-    .post("http://localhost:4000/model/predict", {
-      fromDate: date,
-      fromTime: "00:00",
-      toDate: date,
-      toTime: "23:59",
-    })
-    .then((data) => {
+  try {
+    const process = spawn("python3", [
+      "./models/model.py",
+      "predict",
+      date,
+      "00:00",
+      date,
+      "23:59",
+    ]);
+    process.stdout.on("data", (data) => {
+      let output = require("./data.json");
+      delete require.cache[require.resolve("./data.json")];
       User.find({ notification: true })
         .then((users) => {
           let total = 0;
-          for (let i in data.data) {
-            total += data.data[i]["yhat"];
+          for (let i in output) {
+            total += output[i]["yhat"];
           }
           let to = "";
           for (let i = 0; i < users.length; i++) {
@@ -43,7 +47,7 @@ const notify = () => {
             return "No user interested in notification!!";
           }
           let mailOptions = {
-            from: "",
+            from: "akshatgoyalak23@gmail.com",
             to: to,
             subject: "today's expected energy consumption",
             text:
@@ -93,10 +97,10 @@ const notify = () => {
         .catch((err) => {
           return err.message;
         });
-    })
-    .catch((err) => {
-      return err.message;
     });
+  } catch (err) {
+    return err.message;
+  }
 };
 
 // send notification at a fixed time
