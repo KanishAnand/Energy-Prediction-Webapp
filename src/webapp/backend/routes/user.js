@@ -22,6 +22,7 @@ router.route("/").get(function (req, res) {
 
 // Adds a new user
 router.route("/add").post(function (req, res) {
+  console.log(req.body)
   let user = new User(req.body);
   user
     .save()
@@ -29,6 +30,7 @@ router.route("/add").post(function (req, res) {
       res.status(200).json(user);
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).json(err);
     });
 });
