@@ -69,6 +69,7 @@ export default class Predict extends Component {
       row.push(<td key={"energy" + i}>{this.state.data[i]["yhat"]}</td>);
       body.push(<tr key={i}>{row}</tr>);
     }
+    total = total.toFixed(2);
     row = [];
     row.push(<td key={"ttotal"}>{"Total"}</td>);
     row.push(<td key={"tenergy"}>{total}</td>);
