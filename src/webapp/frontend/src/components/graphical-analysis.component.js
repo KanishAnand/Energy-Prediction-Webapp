@@ -53,10 +53,11 @@ export default class Graphs extends Component {
     );
   };
 
-  fetchData = () => {
+  fetchData = (token) => {
     axios
       .post("http://localhost:4000/model/load/hour-data", {
         username: this.props.match.params.id,
+        token: token,
       })
       .then((res) => {
         let data = res.data.data;
@@ -115,7 +116,7 @@ export default class Graphs extends Component {
               })
               .then((res) => {
                 let interval = setInterval(() => {
-                  this.fetchData();
+                  this.fetchData(res.data.token);
                 }, 6000);
                 this.setState({ interval: interval });
               })

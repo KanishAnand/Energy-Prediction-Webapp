@@ -27,10 +27,12 @@ def savePredictData(ldata):
 
 def saveUserData(data, format):
 	try:
-		requests.post(url = "http://localhost:4000/model/add/" + format +"-data", json = {'username': sys.argv[6], 'data': data})
-		return
+		ret = requests.post(url = "http://localhost:4000/model/add/" + format +"-data", json = {'username': sys.argv[6], 'data': data, 'token': sys.argv[7]}).json()
+		if "message" in ret and ret.message == "STOP":
+			return False
+		return True
 	except:
-		return
+		return True
 
 def loadTemp():
 	try:
@@ -131,6 +133,7 @@ def getData(From, To, format = "hour"):
 	Temp = getTemp()
 	ldata = loadPredictData()
 	data = []
+	status = True
 	start_time = datetime.now()
 	if From.replace(minute=0) == To.replace(minute=0):
 		if (To - From).seconds // 60 != 0:
@@ -154,9 +157,11 @@ def getData(From, To, format = "hour"):
 			time_delta = datetime.now() - start_time
 			if time_delta.total_seconds() >= saveTime:
 				if format == "day":
-					saveUserData(hourToDayData(From, data), format)
+					status = saveUserData(hourToDayData(From, data), format)
 				else:
-					saveUserData(data, format)
+					status = saveUserData(data, format)
+				if status == False:
+					return status
 				start_time = datetime.now()
 		if (To - dayTime).seconds // 60 != 0:
 			erg = getHourData(dayTime, ldata, Temp)
@@ -165,9 +170,9 @@ def getData(From, To, format = "hour"):
 			data.append(erg)
 	if format == "day":
 		data = hourToDayData(From, data)
-	saveUserData(data, format)
+	status = saveUserData(data, format)
 	savePredictData(ldata)
-	return
+	return status
 
 
 def predict():
@@ -175,8 +180,11 @@ def predict():
 	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
 	if From > To:
 		From, To = To, From
-	getData(From, To, "day")
-	print("Energy prediction from " + sys.argv[2] + " " + sys.argv[3] + " to " + sys.argv[4] + " " + sys.argv[5] + " for user " + sys.argv[6]  + " completed!!")
+	status = getData(From, To, "day")
+	if status:
+		print("Energy prediction completed!!")
+	else:
+		print("Energy prediction not completed!!")
 	return
 
 
@@ -185,7 +193,11 @@ def graph():
 	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
 	if From > To:
 		From, To = To, From
-	getData(From, To, "hour")
+	status = getData(From, To, "hour")
+	if status:
+		print("Energy prediction completed!!")
+	else:
+		print("Energy prediction not completed!!")
 	return
 
 

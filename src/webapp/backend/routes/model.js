@@ -9,29 +9,49 @@ let graph_status = {};
 
 // returns predicted energy value for given time range
 router.route("/predict").post(function (req, res) {
-  try {
-    predict_status[req.body.username] = false;
-    res.status(200).json("Prediction process has started!!");
-    const process = spawn("python3", [
-      "./models/model.py",
-      "predict",
-      req.body.fromDate,
-      req.body.fromTime,
-      req.body.toDate,
-      req.body.toTime,
-      req.body.username,
-    ]);
-    process.stdout.on("data", (data) => {
-      predict_status[req.body.username] = true;
+  Data.deleteMany({ dataType: "user-day-" + req.body.username })
+    .then((resp) => {
+      let token = Date.now().toString();
+      predict_status[req.body.username] = [token, false];
+      res.status(200).json({ token: token });
+      const process = spawn("python3", [
+        "./models/model.py",
+        "predict",
+        req.body.fromDate,
+        req.body.fromTime,
+        req.body.toDate,
+        req.body.toTime,
+        req.body.username,
+        token,
+      ]);
+      process.stdout.on("data", (data) => {
+        if (
+          predict_status[req.body.username] !== undefined &&
+          predict_status[req.body.username][0] == token
+        ) {
+          predict_status[req.body.username][1] = true;
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
     });
-  } catch (err) {
-    res.status(404).json(err);
-  }
 });
 
 // Gets all the data
 router.route("/").get(function (req, res) {
   Data.find(function (err, data) {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(200).json(data);
+    }
+  });
+});
+
+// Gets all the data
+router.route("/d").get(function (req, res) {
+  Data.deleteMany(function (err, data) {
     if (err) {
       res.status(400).json(err);
     } else {
@@ -193,7 +213,7 @@ router.route("/load/day-data").post(function (req, res) {
       }
       res
         .status(200)
-        .json({ data: pred, end: predict_status[req.body.username] });
+        .json({ data: pred, end: predict_status[req.body.username][1] });
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -202,6 +222,13 @@ router.route("/load/day-data").post(function (req, res) {
 
 // saves the user's demanded predicted daywise energy data
 router.route("/add/day-data").post(function (req, res) {
+  if (
+    predict_status[req.body.username] === undefined ||
+    predict_status[req.body.username][0] !== req.body.token
+  ) {
+    res.status(400).json({ message: "STOP" });
+    return;
+  }
   const pred = req.body.data;
   const type = "user-day-" + req.body.username;
   let data = [];
@@ -250,7 +277,7 @@ router.route("/load/hour-data").post(function (req, res) {
       }
       res
         .status(200)
-        .json({ data: pred, end: graph_status[req.body.username] });
+        .json({ data: pred, end: graph_status[req.body.username][1] });
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -259,6 +286,13 @@ router.route("/load/hour-data").post(function (req, res) {
 
 // saves the user's demanded predicted hourwise energy data
 router.route("/add/hour-data").post(function (req, res) {
+  if (
+    graph_status[req.body.username] === undefined ||
+    graph_status[req.body.username][0] !== req.body.token
+  ) {
+    res.status(400).json({ message: "STOP" });
+    return;
+  }
   const pred = req.body.data;
   const type = "user-hour-" + req.body.username;
   let data = [];
@@ -291,24 +325,33 @@ router.route("/add/hour-data").post(function (req, res) {
 
 // returns data for the graph of the predicted energy values for given time range
 router.route("/graph").post(function (req, res) {
-  try {
-    graph_status[req.body.username] = false;
-    res.status(200).json("Prediction process has started!!");
-    const process = spawn("python3", [
-      "./models/model.py",
-      "graph",
-      req.body.fromDate,
-      req.body.fromTime,
-      req.body.toDate,
-      req.body.toTime,
-      req.body.username,
-    ]);
-    process.stdout.on("data", (data) => {
-      graph_status[req.body.username] = true;
+  Data.deleteMany({ dataType: "user-hour-" + req.body.username })
+    .then((resp) => {
+      let token = Date.now().toString();
+      graph_status[req.body.username] = [token, false];
+      res.status(200).json({ token: token });
+      const process = spawn("python3", [
+        "./models/model.py",
+        "graph",
+        req.body.fromDate,
+        req.body.fromTime,
+        req.body.toDate,
+        req.body.toTime,
+        req.body.username,
+        token,
+      ]);
+      process.stdout.on("data", (data) => {
+        if (
+          graph_status[req.body.username] !== undefined &&
+          graph_status[req.body.username][0] == token
+        ) {
+          graph_status[req.body.username][1] = true;
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
     });
-  } catch (err) {
-    res.status(404).json(err);
-  }
 });
 
 module.exports = router;
