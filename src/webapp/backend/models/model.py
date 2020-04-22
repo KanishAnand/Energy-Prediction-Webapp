@@ -9,6 +9,7 @@ import os.path
 
 tempURL = "http://api.openweathermap.org/data/2.5/forecast?id=1269843&appid=95e286bae5647877dbb924f3779736a8&units=imperial"
 
+saveTime = 10
 
 def loadPredictData():
 	try:
@@ -52,7 +53,6 @@ def getTemp():
 			return Temp
 		r = requests.get(url = tempURL)
 		data = r.json()
-		Temp = {}
 		for ind in range(len(data['list'])):
 			dayTime = datetime.strptime(
 				data['list'][ind]['dt_txt'], '%Y-%m-%d %H:%M:%S')
@@ -152,7 +152,7 @@ def getData(From, To, format = "hour"):
 			data.append(getHourData(dayTime, ldata, Temp))
 			dayTime += timedelta(hours=1)
 			time_delta = datetime.now() - start_time
-			if time_delta.total_seconds() >= 10:
+			if time_delta.total_seconds() >= saveTime:
 				if format == "day":
 					saveUserData(hourToDayData(From, data), format)
 				else:

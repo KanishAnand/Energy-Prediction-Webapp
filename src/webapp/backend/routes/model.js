@@ -160,13 +160,19 @@ router.route("/add/predict-data").post(function (req, res) {
       });
     }
   }
-  Data.collection.insertMany(data, function (err, docs) {
-    if (err) {
+  Data.deleteMany({ $or: [{ dataType: "act" }, { dataType: "avg" }] })
+    .then((resp) => {
+      Data.collection.insertMany(data, function (err, docs) {
+        if (err) {
+          res.status(400).json(err);
+        } else {
+          res.status(200).json(docs);
+        }
+      });
+    })
+    .catch((err) => {
       res.status(400).json(err);
-    } else {
-      res.status(200).json(docs);
-    }
-  });
+    });
 });
 
 // returns list of date, predicted daywise energy data to the user

@@ -117,7 +117,7 @@ const clean_data = () => {
   let month = date.getMonth();
   let year = date.getFullYear();
   Data.deleteMany({
-    $or: [{ dataType: "act" }, { dataType: "avg" }],
+    $or: [{ dataType: "act" }, { dataType: "avg" }, { dataType: "temp" }],
     $or: [
       { $and: [{ year: year }, { month: { $lte: month } }] },
       { $and: [{ year: { $lt: year } }] },
