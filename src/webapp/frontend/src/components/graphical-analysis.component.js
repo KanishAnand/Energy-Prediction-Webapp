@@ -18,7 +18,8 @@ export default class Graphs extends Component {
     this.state = {
       message: "",
       type: "light",
-      graph: "",
+      interval: null,
+      data: [],
     };
   }
 
@@ -52,6 +53,31 @@ export default class Graphs extends Component {
     );
   };
 
+  fetchData = () => {
+    axios
+      .post("http://localhost:4000/model/load/hour-data", {
+        username: this.props.match.params.id,
+      })
+      .then((res) => {
+        let data = res.data.data;
+        if (res.data.end === true) {
+          clearInterval(this.state.interval);
+          this.setState({
+            message: "Graph Made Successfully!!",
+            type: "success",
+            interval: null,
+            data: data,
+          });
+        } else {
+          this.setState({ data: data });
+        }
+      })
+      .catch((err) => {
+        clearInterval(this.state.interval);
+        this.setState({ message: err.message, type: "danger", interval: null });
+      });
+  };
+
   View = () => {
     return (
       <Formik
@@ -76,7 +102,8 @@ export default class Graphs extends Component {
             this.setState({
               message: "Please wait for some time!!",
               type: "warning",
-              graph: "",
+              interval: null,
+              data: [],
             });
             axios
               .post("http://localhost:4000/model/graph", {
@@ -84,19 +111,22 @@ export default class Graphs extends Component {
                 fromTime: values.fromTime,
                 toDate: values.toDate,
                 toTime: values.toTime,
+                username: this.props.match.params.id,
               })
               .then((res) => {
-                this.setState({
-                  message: "Graph Made Successfully!!",
-                  type: "success",
-                  graph: res.data,
-                });
+                let interval = setInterval(() => {
+                  this.fetchData();
+                }, 6000);
+                this.setState({ interval: interval });
               })
               .catch((err) => {
+                if (this.state.interval != null) {
+                  clearInterval(this.state.interval);
+                }
                 this.setState({
                   message: err.message,
                   type: "danger",
-                  graph: "",
+                  interval: null,
                 });
               })
               .finally(() => {
@@ -225,15 +255,6 @@ export default class Graphs extends Component {
           Graphical Analysis For Predicted Values
         </h1>
         <this.View />
-        <br />
-        <br />
-        {this.state.graph !== "" && (
-          <img
-            key={Date.now()}
-            src={"http://localhost:4000/" + this.state.graph + "?" + Date.now()}
-            alt="Graph"
-          />
-        )}
       </div>
     );
   }

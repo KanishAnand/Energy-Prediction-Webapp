@@ -18,6 +18,7 @@ export default class Predict extends Component {
     this.state = {
       message: "",
       type: "light",
+      interval: null,
       data: [],
     };
   }
@@ -77,9 +78,34 @@ export default class Predict extends Component {
     table.push(<tbody key="body">{body}</tbody>);
     return (
       <Table striped bordered hover variant="light">
-        {this.state.data !== null && this.state.data.length !== 0 && table}
+        {this.state.data.length !== 0 && table}
       </Table>
     );
+  };
+
+  fetchData = () => {
+    axios
+      .post("http://localhost:4000/model/load/day-data", {
+        username: this.props.match.params.id,
+      })
+      .then((res) => {
+        let data = res.data.data;
+        if (res.data.end === true) {
+          clearInterval(this.state.interval);
+          this.setState({
+            message: "Energy Prediction Completed Successfully!",
+            type: "success",
+            interval: null,
+            data: data,
+          });
+        } else {
+          this.setState({ data: data });
+        }
+      })
+      .catch((err) => {
+        clearInterval(this.state.interval);
+        this.setState({ message: err.message, type: "danger", interval: null });
+      });
   };
 
   View = () => {
@@ -103,9 +129,13 @@ export default class Predict extends Component {
             actions.setFieldError("toTime", "Invalid Time!");
             actions.setSubmitting(false);
           } else {
+            if (this.state.interval != null) {
+              clearInterval(this.state.interval);
+            }
             this.setState({
               message: "Please wait for some time!!",
               type: "warning",
+              interval: null,
               data: [],
             });
             axios
@@ -114,16 +144,23 @@ export default class Predict extends Component {
                 fromTime: values.fromTime,
                 toDate: values.toDate,
                 toTime: values.toTime,
+                username: this.props.match.params.id,
               })
               .then((res) => {
-                this.setState({
-                  message: "Energy Prediction Completed Successfully!",
-                  type: "success",
-                  data: res.data,
-                });
+                let interval = setInterval(() => {
+                  this.fetchData();
+                }, 6000);
+                this.setState({ interval: interval });
               })
               .catch((err) => {
-                this.setState({ message: err.message, type: "danger" });
+                if (this.state.interval != null) {
+                  clearInterval(this.state.interval);
+                }
+                this.setState({
+                  message: err.message,
+                  type: "danger",
+                  interval: null,
+                });
               })
               .finally(() => {
                 actions.setSubmitting(false);

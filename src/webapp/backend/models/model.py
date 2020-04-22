@@ -4,56 +4,53 @@ import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
 import json
+import requests
 import os.path
 
-URL = "http://api.openweathermap.org/data/2.5/forecast?id=1269843&appid=95e286bae5647877dbb924f3779736a8&units=imperial"
+tempURL = "http://api.openweathermap.org/data/2.5/forecast?id=1269843&appid=95e286bae5647877dbb924f3779736a8&units=imperial"
 
 
-def saveData(d, ld, Temp, data):
-	if 'avg' not in ld:
-		ld['avg'] = {}
-	if d[1] not in ld['avg']:
-		ld['avg'][d[1]] = {d[0]: {d[2]: {d[3]: data['yhat']}}}
-	elif d[0] not in ld['avg'][d[1]]:
-		ld['avg'][d[1]][d[0]] = {d[2]: {d[3]: data['yhat']}}
-	elif d[2] not in ld['avg'][d[1]][d[0]]:
-		ld['avg'][d[1]][d[0]][d[2]] = {d[3]: data['yhat']}
-	else:
-		ld['avg'][d[1]][d[0]][d[2]][d[3]] = data['yhat']
-	if data['dateTime'].strftime('%Y-%m-%d %H') in Temp:
-		if 'act' not in ld:
-			ld['act'] = {}
-		if d[1] not in ld['act']:
-			ld['act'][d[1]] = {d[0]: {d[2]: {d[3]: data['yhat']}}}
-		elif d[0] not in ld['act'][d[1]]:
-			ld['act'][d[1]][d[0]] = {d[2]: {d[3]: data['yhat']}}
-		elif d[2] not in ld['act'][d[1]][d[0]]:
-			ld['act'][d[1]][d[0]][d[2]] = {d[3]: data['yhat']}
-		else:
-			ld['act'][d[1]][d[0]][d[2]][d[3]] = data['yhat']
+def loadPredictData():
+	try:
+		ldata = requests.post(url = "http://localhost:4000/model/load/predict-data", json = {}).json()
+		return ldata
+	except:
+		return {}
 
+def savePredictData(ldata):
+	try:
+		requests.post(url = "http://localhost:4000/model/add/predict-data", json = ldata)
+		return
+	except:
+		return
 
-def loadData():
-	if os.path.exists('./models/ldata.json'):
-		with open("./models/ldata.json", "r") as f:
-			return json.load(f)
-	return {}
-
+def saveUserData(data, format):
+	try:
+		requests.post(url = "http://localhost:4000/model/add/" + format +"-data", json = {'username': sys.argv[6], 'data': data})
+		return
+	except:
+		return
 
 def loadTemp():
-	if os.path.exists('./models/temp.json'):
-		with open("./models/temp.json", "r") as f:
-			return json.load(f)
-	return {}
+	try:
+		temp = requests.post(url = "http://localhost:4000/model/load/temp", json = {}).json()
+		return temp
+	except:
+		return {}
 
+def saveTemp(temp):
+	try:
+		requests.post(url = "http://localhost:4000/model/add/temp", json = temp)
+		return
+	except:
+		return
 
 def getTemp():
 	Temp = loadTemp()
 	try:
 		if datetime.today().strftime('%Y-%m-%d %H') in Temp:
 			return Temp
-		import requests
-		r = requests.get(url=URL)
+		r = requests.get(url = tempURL)
 		data = r.json()
 		Temp = {}
 		for ind in range(len(data['list'])):
@@ -74,14 +71,13 @@ def getTemp():
 				avg[key] = (Temp[i], 1)
 		for i in avg:
 			Temp[i] = round(avg[i][0] / avg[i][1], 2)
-		with open("./models/temp.json", "w") as f:
-			json.dump(Temp, f)
+		saveTemp(Temp)
 		return Temp
 	except:
 		return Temp
 
 
-def formatData(From, data):
+def hourToDayData(From, data):
 	output = []
 	date = From
 	value = 0.0
@@ -100,12 +96,12 @@ def formatData(From, data):
 
 def getEnergy(dayTime, Temp):
 	key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
-	if Temp == {}:
-		temp = 90
-	elif key in Temp:
+	if key in Temp:
 		temp = Temp[key]
-	else:
+	elif key.split(' ')[1] in Temp:
 		temp = Temp[key.split(' ')[1]]
+	else:
+		temp = 90
 	param = pd.DataFrame([dayTime], columns=['ds'])
 	param['temp'] = temp
 	val = model.predict(param).to_dict()
@@ -114,47 +110,64 @@ def getEnergy(dayTime, Temp):
 	return data
 
 
-def getHourData(date, ld, Temp):
-	d = str(date.strftime('%Y-%m-%d-%H'))
-	d = d.split("-")
-	if date.strftime('%Y-%m-%d %H') in Temp and 'act' in ld:
-		if d[1] in ld['act'] and d[0] in ld['act'][d[1]] and d[2] in ld['act'][d[1]][d[0]] and d[3] in ld['act'][d[1]][d[0]][d[2]]:
-			return {'dateTime': date, 'yhat': ld['act'][d[1]][d[0]][d[2]][d[3]]}
-	elif date.strftime('%Y-%m-%d %H') not in Temp and 'avg' in ld:
-		if d[1] in ld['avg'] and d[0] in ld['avg'][d[1]] and d[2] in ld['avg'][d[1]][d[0]] and d[3] in ld['avg'][d[1]][d[0]][d[2]]:
-			return {'dateTime': date, 'yhat': ld['avg'][d[1]][d[0]][d[2]][d[3]]}
-	data = getEnergy(date, Temp)
-	saveData(d, ld, Temp, data)
+def getHourData(dayTime, ldata, Temp):
+	date = str(dayTime.strftime('%Y-%m-%d %H'))
+	if date in Temp and 'act' in ldata and date in ldata['act']:
+		return {'dateTime': dayTime, 'yhat': ldata['act'][date]}
+	elif date not in Temp and 'avg' in ldata and date in ldata['avg']:
+		return {'dateTime': dayTime, 'yhat': ldata['avg'][date]}
+	data = getEnergy(dayTime, Temp)
+	if 'avg' not in ldata:
+		ldata['avg'] = {}
+	ldata['avg'][date] = data['yhat']
+	if date in Temp:
+		if 'act' not in ldata:
+			ldata['act'] = {}
+		ldata['act'][date] = data['yhat']
 	return data
 
 
-def getData(From, To):
+def getData(From, To, format = "hour"):
 	Temp = getTemp()
-	ldata = loadData()
+	ldata = loadPredictData()
 	data = []
-	dayTime = From
-	while True:
-		if dayTime.replace(minute=0) == To.replace(minute=0):
-			if (To - dayTime).seconds // 60 != 0:
-				erg = getHourData(dayTime, ldata, Temp)
-				erg['yhat'] = round(
-					erg['yhat'] * ((To - dayTime).seconds // 60) / 60, 2)
-				data.append(erg)
-			break
-		elif dayTime != dayTime.replace(minute=0):
-			newDate = dayTime.replace(minute=0)
-			erg = getHourData(newDate, ldata, Temp)
-			newDate += timedelta(hours=1)
-			erg['yhat'] = round(erg['yhat'] *
-								((newDate - dayTime).seconds // 60) / 60, 2)
+	start_time = datetime.now()
+	if From.replace(minute=0) == To.replace(minute=0):
+		if (To - From).seconds // 60 != 0:
+			erg = getHourData(From, ldata, Temp)
+			erg['yhat'] = round(
+				erg['yhat'] * ((To - From).seconds // 60) / 60, 2)
 			data.append(erg)
-			dayTime = newDate
-		else:
+	else:
+		dayTime = From
+		newDate = dayTime.replace(minute=0)
+		erg = getHourData(newDate, ldata, Temp)
+		newDate += timedelta(hours=1)
+		erg['yhat'] = round(erg['yhat'] *
+							((newDate - dayTime).seconds // 60) / 60, 2)
+		data.append(erg)
+		dayTime = newDate
+		newDate = To.replace(minute=0)
+		while dayTime < newDate:
 			data.append(getHourData(dayTime, ldata, Temp))
 			dayTime += timedelta(hours=1)
-	with open("./models/ldata.json", "w") as f:
-		json.dump(ldata, f)
-	return data
+			time_delta = datetime.now() - start_time
+			if time_delta.total_seconds() >= 10:
+				if format == "day":
+					saveUserData(hourToDayData(From, data), format)
+				else:
+					saveUserData(data, format)
+				start_time = datetime.now()
+		if (To - dayTime).seconds // 60 != 0:
+			erg = getHourData(dayTime, ldata, Temp)
+			erg['yhat'] = round(
+				erg['yhat'] * ((To - dayTime).seconds // 60) / 60, 2)
+			data.append(erg)
+	if format == "day":
+		data = hourToDayData(From, data)
+	saveUserData(data, format)
+	savePredictData(ldata)
+	return
 
 
 def predict():
@@ -162,40 +175,17 @@ def predict():
 	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
 	if From > To:
 		From, To = To, From
-	data = formatData(From, getData(From, To))
-	fileName = "data" + datetime.today().strftime('%S.%f')[:-3] + '.json'
-	with open("./models/" + fileName, "w") as f:
-		json.dump(data, f)
-	print(fileName)
+	getData(From, To, "day")
+	print("Energy prediction from " + sys.argv[2] + " " + sys.argv[3] + " to " + sys.argv[4] + " " + sys.argv[5] + " for user " + sys.argv[6]  + " completed!!")
 	return
 
 
-def plotGraph(x, y):
-	import matplotlib.pyplot as plt
-	fig, ax = plt.subplots(figsize=(11, 5))
-	ax.plot(x, y)
-	plt.xlabel('DateTime')
-	plt.ylabel('Predicted Value (kWh)')
-	plt.title('Graphical Analysis')
-	ax.xaxis_date()
-	fig.autofmt_xdate()
-	fileName = 'graph' + datetime.today().strftime('%S.%f')[:-3] + '.png'
-	plt.savefig("./images/" + fileName)
-	plt.close()
-	return fileName
-
-
-def getGraph():
+def graph():
 	From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
 	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
 	if From > To:
 		From, To = To, From
-	data = getData(From, To)
-	x, y = [], []
-	for i in data:
-		x.append(i['dateTime'])
-		y.append(i['yhat'])
-	print(plotGraph(x, y))
+	getData(From, To, "hour")
 	return
 
 
@@ -205,7 +195,7 @@ if __name__ == "__main__":
 		if sys.argv[1] == "predict":
 			predict()
 		elif sys.argv[1] == "graph":
-			getGraph()
+			graph()
 		else:
 			print("Error: " + sys.argv[1] + " method not allowed!")
 		sys.stdout.flush()

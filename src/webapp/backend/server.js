@@ -8,7 +8,6 @@ const PORT = 4000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("./images"));
 
 // Connection to mongodb
 mongoose.set("useNewUrlParser", true);
@@ -24,7 +23,7 @@ connection.once("open", function () {
 
 const userRoutes = require("./routes/user");
 const modelRoutes = require("./routes/model");
-const task = require("./models/notify");
+const task = require("./models/task");
 
 app.use("/user", userRoutes);
 app.use("/model", modelRoutes);
