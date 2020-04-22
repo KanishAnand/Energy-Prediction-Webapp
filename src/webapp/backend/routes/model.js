@@ -49,17 +49,6 @@ router.route("/").get(function (req, res) {
   });
 });
 
-// Gets all the data
-router.route("/d").get(function (req, res) {
-  Data.deleteMany(function (err, data) {
-    if (err) {
-      res.status(400).json(err);
-    } else {
-      res.status(200).json(data);
-    }
-  });
-});
-
 const str = (val) => {
   if (val < 10) return "0" + val.toString();
   return val;
