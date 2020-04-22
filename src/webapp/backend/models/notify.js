@@ -1,4 +1,5 @@
 const { spawn } = require("child_process");
+const fs = require("fs");
 const User = require("./user");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -28,8 +29,10 @@ const notify = () => {
       "23:59",
     ]);
     process.stdout.on("data", (data) => {
-      let output = require("./data.json");
-      delete require.cache[require.resolve("./data.json")];
+      let fileName = data.toString().split("\n")[0];
+      let output = require("./" + fileName);
+      delete require.cache[require.resolve("./" + fileName)];
+      fs.unlinkSync("./models/" + fileName);
       User.find({ notification: true })
         .then((users) => {
           let total = 0;

@@ -29,6 +29,10 @@ router.route("/add").post(function (req, res) {
       res.status(200).json(user);
     })
     .catch((err) => {
+<<<<<<< HEAD
+=======
+      console.log(err);
+>>>>>>> feb1a37796ddbebcfccd811890a6f96c4e09ed0c
       res.status(400).json(err);
     });
 });
