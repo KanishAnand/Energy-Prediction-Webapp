@@ -17,7 +17,6 @@ mongoose.set("useUnifiedTopology", true);
 mongoose.connect("mongodb://127.0.0.1:27017/");
 const connection = mongoose.connection;
 connection.once("open", function () {
-  // connection.dropDatabase();
   console.log("MongoDB database connection established succesfully.");
 });
 
