@@ -2,10 +2,8 @@ import sys
 import pickle
 import pandas as pd
 from datetime import datetime, timedelta
-import numpy as np
 import json
 import requests
-import os.path
 
 tempURL = "http://api.openweathermap.org/data/2.5/forecast?id=1269843&appid=95e286bae5647877dbb924f3779736a8&units=imperial"
 

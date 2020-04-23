@@ -8,7 +8,6 @@ let status = {};
 
 // returns predicted energy value for given time range
 router.route("/predict").post(function (req, res) {
-<<<<<<< HEAD
   Data.deleteMany({ dataType: "user-" + req.body.username })
     .then((resp) => {
       let token = Date.now().toString();
@@ -35,181 +34,152 @@ router.route("/predict").post(function (req, res) {
     .catch((err) => {
       res.status(400).json(err);
     });
-=======
-	Data.deleteMany({ dataType: "user-day-" + req.body.username })
-		.then((resp) => {
-			let token = Date.now().toString();
-			predict_status[req.body.username] = [token, false];
-			res.status(200).json({ token: token });
-			const process = spawn("python3", [
-				"./models/model.py",
-				"predict",
-				req.body.fromDate,
-				req.body.fromTime,
-				req.body.toDate,
-				req.body.toTime,
-				req.body.username,
-				token,
-			]);
-			process.stdout.on("data", (data) => {
-				if (
-					predict_status[req.body.username] !== undefined &&
-					predict_status[req.body.username][0] == token
-				) {
-					predict_status[req.body.username][1] = true;
-				}
-			});
-		})
-		.catch((err) => {
-			res.status(400).json(err);
-		});
->>>>>>> 336c1def5ef385470f8510adf19effcf5031fc85
 });
 
 // Gets all the data
 router.route("/").get(function (req, res) {
-	Data.find(function (err, data) {
-		if (err) {
-			res.status(400).json(err);
-		} else {
-			res.status(200).json(data);
-		}
-	});
+  Data.find(function (err, data) {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(200).json(data);
+    }
+  });
 });
 
 const str = (val) => {
-	if (val < 10) return "0" + val.toString();
-	return val;
+  if (val < 10) return "0" + val.toString();
+  return val;
 };
 
 const int = (val) => {
-	return parseInt(val);
+  return parseInt(val);
 };
 
 // returns date-temperature dictionary
 router.route("/load/temp").post(function (req, res) {
-	Data.find({ dataType: "temp" })
-		.then((data) => {
-			let temp = {};
-			for (let i in data) {
-				if (data[i].year !== undefined) {
-					temp[
-						str(data[i].year) +
-							"-" +
-							str(data[i].month) +
-							"-" +
-							str(data[i].day) +
-							" " +
-							str(data[i].hour)
-					] = data[i].value;
-				} else {
-					temp[str(data[i].hour)] = data[i].value;
-				}
-			}
-			res.status(200).json(temp);
-		})
-		.catch((err) => {
-			res.status(400).json(err);
-		});
+  Data.find({ dataType: "temp" })
+    .then((data) => {
+      let temp = {};
+      for (let i in data) {
+        if (data[i].year !== undefined) {
+          temp[
+            str(data[i].year) +
+              "-" +
+              str(data[i].month) +
+              "-" +
+              str(data[i].day) +
+              " " +
+              str(data[i].hour)
+          ] = data[i].value;
+        } else {
+          temp[str(data[i].hour)] = data[i].value;
+        }
+      }
+      res.status(200).json(temp);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 // saves temperature data
 router.route("/add/temp").post(function (req, res) {
-	const temp = req.body;
-	let data = [];
-	for (let i in temp) {
-		if (i.split(" ").length === 2) {
-			const hour = i.split(" ")[1];
-			const date = i.split(" ")[0].split("-");
-			data.push({
-				dataType: "temp",
-				year: int(date[0]),
-				month: int(date[1]),
-				day: int(date[2]),
-				hour: int(hour),
-				value: temp[i],
-			});
-		} else {
-			data.push({
-				dataType: "temp",
-				hour: int(i),
-				value: temp[i],
-			});
-		}
-	}
-	Data.deleteMany({ dataType: "temp" })
-		.then((resp) => {
-			Data.collection.insertMany(data, function (err, docs) {
-				if (err) {
-					res.status(400).json(err);
-				} else {
-					res.status(200).json(docs);
-				}
-			});
-		})
-		.catch((err) => {
-			res.status(400).json(err);
-		});
+  const temp = req.body;
+  let data = [];
+  for (let i in temp) {
+    if (i.split(" ").length === 2) {
+      const hour = i.split(" ")[1];
+      const date = i.split(" ")[0].split("-");
+      data.push({
+        dataType: "temp",
+        year: int(date[0]),
+        month: int(date[1]),
+        day: int(date[2]),
+        hour: int(hour),
+        value: temp[i],
+      });
+    } else {
+      data.push({
+        dataType: "temp",
+        hour: int(i),
+        value: temp[i],
+      });
+    }
+  }
+  Data.deleteMany({ dataType: "temp" })
+    .then((resp) => {
+      Data.collection.insertMany(data, function (err, docs) {
+        if (err) {
+          res.status(400).json(err);
+        } else {
+          res.status(200).json(docs);
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 // returns date - cached predicted energy data dictionary
 router.route("/load/predict-data").post(function (req, res) {
-	Data.find({ $or: [{ dataType: "act" }, { dataType: "avg" }] })
-		.then((data) => {
-			let pred = {};
-			for (let i in data) {
-				if (pred[data[i].dataType] === undefined) {
-					pred[data[i].dataType] = {};
-				}
-				pred[data[i].dataType][
-					str(data[i].year) +
-						"-" +
-						str(data[i].month) +
-						"-" +
-						str(data[i].day) +
-						" " +
-						str(data[i].hour)
-				] = data[i].value;
-			}
-			res.status(200).json(pred);
-		})
-		.catch((err) => {
-			res.status(400).json(err);
-		});
+  Data.find({ $or: [{ dataType: "act" }, { dataType: "avg" }] })
+    .then((data) => {
+      let pred = {};
+      for (let i in data) {
+        if (pred[data[i].dataType] === undefined) {
+          pred[data[i].dataType] = {};
+        }
+        pred[data[i].dataType][
+          str(data[i].year) +
+            "-" +
+            str(data[i].month) +
+            "-" +
+            str(data[i].day) +
+            " " +
+            str(data[i].hour)
+        ] = data[i].value;
+      }
+      res.status(200).json(pred);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 // caching the predicted energy data
 router.route("/add/predict-data").post(function (req, res) {
-	const pred = req.body;
-	let data = [];
-	for (let type in pred) {
-		for (let key in pred[type]) {
-			let date = key.split(" ")[0];
-			date = date.split("-");
-			let hour = key.split(" ")[1];
-			data.push({
-				dataType: type,
-				year: int(date[0]),
-				month: int(date[1]),
-				day: int(date[2]),
-				hour: int(hour),
-				value: pred[type][key],
-			});
-		}
-	}
-	Data.deleteMany({ $or: [{ dataType: "act" }, { dataType: "avg" }] })
-		.then((resp) => {
-			Data.collection.insertMany(data, function (err, docs) {
-				if (err) {
-					res.status(400).json(err);
-				} else {
-					res.status(200).json(docs);
-				}
-			});
-		})
-		.catch((err) => {
-			res.status(400).json(err);
-		});
+  const pred = req.body;
+  let data = [];
+  for (let type in pred) {
+    for (let key in pred[type]) {
+      let date = key.split(" ")[0];
+      date = date.split("-");
+      let hour = key.split(" ")[1];
+      data.push({
+        dataType: type,
+        year: int(date[0]),
+        month: int(date[1]),
+        day: int(date[2]),
+        hour: int(hour),
+        value: pred[type][key],
+      });
+    }
+  }
+  Data.deleteMany({ $or: [{ dataType: "act" }, { dataType: "avg" }] })
+    .then((resp) => {
+      Data.collection.insertMany(data, function (err, docs) {
+        if (err) {
+          res.status(400).json(err);
+        } else {
+          res.status(200).json(docs);
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 // returns list of date, predicted daywise energy data to the user
@@ -296,6 +266,5 @@ router.route("/add/hour-data").post(function (req, res) {
       res.status(400).json(err);
     });
 });
-
 
 module.exports = router;
