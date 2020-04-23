@@ -314,6 +314,8 @@ export default class Graphs extends Component {
 							chart: {
 								caption: "Prediced Energy Consumption Data",
 								numberSuffix: "Kw/hr",
+								exportEnabled: "1",
+								exportFileName: "Predicted Energy Consumption",
 							},
 							data: [
 								{
