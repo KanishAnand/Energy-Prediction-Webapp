@@ -97,6 +97,7 @@ def hourToDayData(From, data):
 
 
 def getEnergy(dayTime, Temp):
+	print("dfs")
 	key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
 	if key in Temp:
 		temp = Temp[key]

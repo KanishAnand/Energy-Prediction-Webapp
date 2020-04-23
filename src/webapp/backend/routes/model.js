@@ -133,16 +133,16 @@ router.route("/load/predict-data").post(function (req, res) {
         if (pred[data[i].dataType] === undefined) {
           pred[data[i].dataType] = {};
         }
+        pred[data[i].dataType][
+          str(data[i].year) +
+            "-" +
+            str(data[i].month) +
+            "-" +
+            str(data[i].day) +
+            " " +
+            str(data[i].hour)
+        ] = data[i].value;
       }
-      pred[data[i].dataType][
-        str(data[i].year) +
-          "-" +
-          str(data[i].month) +
-          "-" +
-          str(data[i].day) +
-          " " +
-          str(data[i].hour)
-      ] = data[i].value;
       res.status(200).json(pred);
     })
     .catch((err) => {
