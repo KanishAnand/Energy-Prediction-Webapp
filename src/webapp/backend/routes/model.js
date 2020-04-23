@@ -47,6 +47,17 @@ router.route("/").get(function (req, res) {
   });
 });
 
+// Gets all the data
+router.route("/d").get(function (req, res) {
+  Data.deleteMany(function (err, data) {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(200).json(data);
+    }
+  });
+});
+
 const str = (val) => {
   if (val < 10) return "0" + val.toString();
   return val;
@@ -184,6 +195,13 @@ router.route("/add/predict-data").post(function (req, res) {
 
 // returns list of date, predicted daywise energy data to the user
 router.route("/load/day-data").post(function (req, res) {
+  if (
+    status[req.body.username] === undefined ||
+    status[req.body.username][0] !== req.body.token
+  ) {
+    res.status(200).json({ data: [], end: false });
+    return;
+  }
   Data.find({ dataType: "user-" + req.body.username })
     .then((data) => {
       let pred = [];
@@ -205,6 +223,13 @@ router.route("/load/day-data").post(function (req, res) {
 
 // returns list of date, predicted energy hourwise data to the user
 router.route("/load/hour-data").post(function (req, res) {
+  if (
+    status[req.body.username] === undefined ||
+    status[req.body.username][0] !== req.body.token
+  ) {
+    res.status(200).json({ data: [], end: false });
+    return;
+  }
   Data.find({ dataType: "user-" + req.body.username })
     .then((data) => {
       let pred = [];

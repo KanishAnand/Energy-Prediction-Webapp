@@ -1,6 +1,7 @@
 import sys
 import pickle
 import pandas as pd
+import numpy as np
 from datetime import datetime, timedelta
 import json
 import requests
@@ -95,27 +96,27 @@ def hourToDayData(From, data):
 
 
 def getEnergy(dayTime, Temp):
-	key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
-	if key in Temp:
-		temp = Temp[key]
-	elif key.split(' ')[1] in Temp:
-		temp = Temp[key.split(' ')[1]]
+	date, temp = dayTime.strftime('%Y-%m-%d %H'), 0
+	if date in Temp:
+		temp = Temp[date]
+	elif date.split(' ')[1] in Temp:
+		temp = Temp[date.split(' ')[1]]
 	else:
 		temp = 90
 	param = pd.DataFrame([dayTime], columns=['ds'])
 	param['temp'] = temp
 	val = model.predict(param).to_dict()
 	yhat = round(np.exp(float(val['yhat'][0])), 2)
-	data = {"dateTime": dayTime, "yhat": yhat}
+	data = {"dateTime": date, "yhat": yhat}
 	return data
 
 
 def getHourData(dayTime, ldata, Temp):
 	date = str(dayTime.strftime('%Y-%m-%d %H'))
 	if date in Temp and 'act' in ldata and date in ldata['act']:
-		return {'dateTime': dayTime, 'yhat': ldata['act'][date]}
+		return {'dateTime': date, 'yhat': ldata['act'][date]}
 	elif date not in Temp and 'avg' in ldata and date in ldata['avg']:
-		return {'dateTime': dayTime, 'yhat': ldata['avg'][date]}
+		return {'dateTime': date, 'yhat': ldata['avg'][date]}
 	data = getEnergy(dayTime, Temp)
 	if 'avg' not in ldata:
 		ldata['avg'] = {}

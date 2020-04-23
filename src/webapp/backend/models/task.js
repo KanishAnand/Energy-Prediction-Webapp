@@ -12,7 +12,8 @@ const transporter = nodemailer.createTransport({
 
 // sends notification to all the users
 const notify = () => {
-  let date = new Date(Date.now());
+  let token = Date.now();
+  let date = new Date(token);
   date =
     date.getFullYear().toString() +
     "-" +
@@ -22,23 +23,23 @@ const notify = () => {
   try {
     const process = spawn("python3", [
       "./models/model.py",
-      "predict",
       date,
       "00:00",
       date,
       "23:59",
       "prediction-team",
+      token.toString(),
     ]);
     process.stdout.on("data", (data) => {
       User.find({ notification: true })
         .then((users) => {
-          Data.find({ dataType: "user-day-" + "prediction-team" })
+          Data.find({ dataType: "user-" + "prediction-team" })
             .then((data) => {
               let total = 0;
               for (let i in data) {
                 total += data[i].value;
               }
-              total = total.toFixed(2);
+              total = Math.round(total * 100) / 100;
               let to = "";
               for (let i = 0; i < users.length; i++) {
                 if (i) {
