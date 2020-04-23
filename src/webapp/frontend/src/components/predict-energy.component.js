@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ls from "local-storage";
 import axios from "axios";
 import { Form, Button, Alert, InputGroup, Table, Col } from "react-bootstrap";
+import { CSVLink } from "react-csv";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -11,6 +12,11 @@ const schema = yup.object({
   toDate: yup.date().required("Please Enter the Date"),
   toTime: yup.string().required("Please Enter the Time"),
 });
+
+const headers = [
+  { label: "DateTime", key: "date" },
+  { label: "Energy (kWh)", key: "yhat" },
+];
 
 export default class Predict extends Component {
   constructor(props) {
@@ -53,6 +59,45 @@ export default class Predict extends Component {
     );
   };
 
+  Download = () => {
+    return (
+      <div>
+        {this.state.type === "success" && (
+          <CSVLink
+            data={this.state.data}
+            headers={headers}
+            filename={"data.csv"}
+            className="btn btn-primary"
+            target="_blank"
+          >
+            Download
+          </CSVLink>
+        )}
+      </div>
+    );
+  };
+
+  hourToDay = (data) => {
+    if (data.length === 0) {
+      return [];
+    }
+    let arr = [];
+    let date = data[0].date.split(" ")[0];
+    let val = data[0].yhat;
+    for (let i = 1; i < data.length; i++) {
+      if (data[i].date.split(" ")[0] === date) {
+        val += data[i].yhat;
+      } else {
+        val = Math.round(val * 100) / 100;
+        arr.push({ date: date, yhat: val });
+        date = data[i].date.split(" ")[0];
+        val = data[i].yhat;
+      }
+    }
+    arr.push({ date: date, yhat: Math.round(val * 100) / 100 });
+    return arr;
+  };
+
   Data = () => {
     let table = [];
     let body = [];
@@ -62,18 +107,19 @@ export default class Predict extends Component {
     body.push(<tr key={0}>{row}</tr>);
     table.push(<thead key="head">{body}</thead>);
     body = [];
+    let data = this.hourToDay(this.state.data);
     let total = 0;
-    for (let i in this.state.data) {
+    for (let i in data) {
       row = [];
-      let val = this.state.data[i]["yhat"];
+      let val = data[i]["yhat"];
       val = Math.round(val * 100) / 100;
       total += val;
-      row.push(<td key={"date" + i}>{this.state.data[i]["date"]}</td>);
+      row.push(<td key={"date" + i}>{data[i]["date"]}</td>);
       row.push(<td key={"energy" + i}>{val}</td>);
       body.push(<tr key={i}>{row}</tr>);
     }
-    total = Math.round(total * 100) / 100;
     row = [];
+    total = Math.round(total * 100) / 100;
     row.push(<td key={"ttotal"}>{"Total"}</td>);
     row.push(<td key={"tenergy"}>{total}</td>);
     body.push(<tr key={"tbody"}>{row}</tr>);
@@ -87,12 +133,11 @@ export default class Predict extends Component {
 
   fetchData = (token) => {
     axios
-      .post("http://localhost:4000/model/load/day-data", {
+      .post("http://localhost:4000/model/load/hour-data", {
         username: this.props.match.params.id,
         token: token,
       })
       .then((res) => {
-        console.log(res.data.data);
         let data = res.data.data;
         if (res.data.end === true) {
           clearInterval(this.state.interval);
@@ -299,6 +344,8 @@ export default class Predict extends Component {
         <br />
         <br />
         <this.Data />
+        <br />
+        <this.Download />
       </div>
     );
   }
