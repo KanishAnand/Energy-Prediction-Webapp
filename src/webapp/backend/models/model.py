@@ -184,7 +184,7 @@ def predict():
 
 
 if __name__ == "__main__":
-	with open('./model.pkl', 'rb') as f:
+	with open('./models/model.pkl', 'rb') as f:
 		model = pickle.load(f)
 		predict()
 		sys.stdout.flush()
