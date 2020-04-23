@@ -25,9 +25,9 @@ def savePredictData(ldata):
 	except:
 		return
 
-def saveUserData(data, format):
+def saveUserData(data):
 	try:
-		ret = requests.post(url = "http://localhost:4000/model/add/" + format +"-data", json = {'username': sys.argv[6], 'data': data, 'token': sys.argv[7]}).json()
+		ret = requests.post(url = "http://localhost:4000/model/add/hour-data", json = {'username': sys.argv[5], 'data': data, 'token': sys.argv[6]}).json()
 		if "message" in ret and ret.message == "STOP":
 			return False
 		return True
@@ -97,7 +97,6 @@ def hourToDayData(From, data):
 
 
 def getEnergy(dayTime, Temp):
-	print("dfs")
 	key, temp = dayTime.strftime('%Y-%m-%d %H'), 0
 	if key in Temp:
 		temp = Temp[key]
@@ -130,7 +129,7 @@ def getHourData(dayTime, ldata, Temp):
 	return data
 
 
-def getData(From, To, format = "hour"):
+def getData(From, To):
 	Temp = getTemp()
 	ldata = loadPredictData()
 	data = []
@@ -157,10 +156,7 @@ def getData(From, To, format = "hour"):
 			dayTime += timedelta(hours=1)
 			time_delta = datetime.now() - start_time
 			if time_delta.total_seconds() >= saveTime:
-				if format == "day":
-					status = saveUserData(hourToDayData(From, data), format)
-				else:
-					status = saveUserData(data, format)
+				status = saveUserData(data)
 				if status == False:
 					return status
 				start_time = datetime.now()
@@ -169,32 +165,17 @@ def getData(From, To, format = "hour"):
 			erg['yhat'] = round(
 				erg['yhat'] * ((To - dayTime).seconds // 60) / 60, 2)
 			data.append(erg)
-	if format == "day":
-		data = hourToDayData(From, data)
-	status = saveUserData(data, format)
+	status = saveUserData(data)
 	savePredictData(ldata)
 	return status
 
 
 def predict():
-	From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
-	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
+	From = datetime.strptime(sys.argv[1] + " " + sys.argv[2], '%Y-%m-%d %H:%M')
+	To = datetime.strptime(sys.argv[3] + " " + sys.argv[4], '%Y-%m-%d %H:%M')
 	if From > To:
 		From, To = To, From
-	status = getData(From, To, "day")
-	if status:
-		print("Energy prediction completed!!")
-	else:
-		print("Energy prediction not completed!!")
-	return
-
-
-def graph():
-	From = datetime.strptime(sys.argv[2] + " " + sys.argv[3], '%Y-%m-%d %H:%M')
-	To = datetime.strptime(sys.argv[4] + " " + sys.argv[5], '%Y-%m-%d %H:%M')
-	if From > To:
-		From, To = To, From
-	status = getData(From, To, "hour")
+	status = getData(From, To)
 	if status:
 		print("Energy prediction completed!!")
 	else:
@@ -203,12 +184,7 @@ def graph():
 
 
 if __name__ == "__main__":
-	with open('./models/model.pkl', 'rb') as f:
+	with open('./model.pkl', 'rb') as f:
 		model = pickle.load(f)
-		if sys.argv[1] == "predict":
-			predict()
-		elif sys.argv[1] == "graph":
-			graph()
-		else:
-			print("Error: " + sys.argv[1] + " method not allowed!")
+		predict()
 		sys.stdout.flush()

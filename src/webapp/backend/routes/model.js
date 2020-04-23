@@ -4,19 +4,17 @@ const { spawn } = require("child_process");
 
 // dictionary of all users requesting for prediction
 // value true if prediction done, otherwise false
-let predict_status = {};
-let graph_status = {};
+let status = {};
 
 // returns predicted energy value for given time range
 router.route("/predict").post(function (req, res) {
-  Data.deleteMany({ dataType: "user-day-" + req.body.username })
+  Data.deleteMany({ dataType: "user-" + req.body.username })
     .then((resp) => {
       let token = Date.now().toString();
-      predict_status[req.body.username] = [token, false];
+      status[req.body.username] = [token, false];
       res.status(200).json({ token: token });
       const process = spawn("python3", [
         "./models/model.py",
-        "predict",
         req.body.fromDate,
         req.body.fromTime,
         req.body.toDate,
@@ -26,10 +24,10 @@ router.route("/predict").post(function (req, res) {
       ]);
       process.stdout.on("data", (data) => {
         if (
-          predict_status[req.body.username] !== undefined &&
-          predict_status[req.body.username][0] == token
+          status[req.body.username] !== undefined &&
+          status[req.body.username][0] == token
         ) {
-          predict_status[req.body.username][1] = true;
+          status[req.body.username][1] = true;
         }
       });
     })
@@ -186,60 +184,19 @@ router.route("/add/predict-data").post(function (req, res) {
 
 // returns list of date, predicted daywise energy data to the user
 router.route("/load/day-data").post(function (req, res) {
-  Data.find({ dataType: "user-day-" + req.body.username })
+  Data.find({ dataType: "user-" + req.body.username })
     .then((data) => {
       let pred = [];
       for (let i in data) {
-        pred.push({
-          date:
-            str(data[i].year) +
-            "-" +
-            str(data[i].month) +
-            "-" +
-            str(data[i].day),
-          yhat: data[i].value,
-        });
-      }
-      res
-        .status(200)
-        .json({ data: pred, end: predict_status[req.body.username][1] });
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
-});
-
-// saves the user's demanded predicted daywise energy data
-router.route("/add/day-data").post(function (req, res) {
-  if (
-    predict_status[req.body.username] === undefined ||
-    predict_status[req.body.username][0] !== req.body.token
-  ) {
-    res.status(400).json({ message: "STOP" });
-    return;
-  }
-  const pred = req.body.data;
-  const type = "user-day-" + req.body.username;
-  let data = [];
-  for (let i in pred) {
-    let date = pred[i]["date"].split("-");
-    data.push({
-      dataType: type,
-      year: int(date[0]),
-      month: int(date[1]),
-      day: int(date[2]),
-      value: pred[i]["yhat"],
-    });
-  }
-  Data.deleteMany({ dataType: type })
-    .then((resp) => {
-      Data.collection.insertMany(data, function (err, docs) {
-        if (err) {
-          res.status(400).json(err);
+        let date =
+          str(data[i].year) + "-" + str(data[i].month) + "-" + str(data[i].day);
+        if (pred.length !== 0 && pred[pred.length - 1].date === date) {
+          pred[pred.length - 1].yhat += data[i].value;
         } else {
-          res.status(200).json(docs);
+          pred.push({ date: date, yhat: data[i].value });
         }
-      });
+      }
+      res.status(200).json({ data: pred, end: status[req.body.username][1] });
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -248,7 +205,7 @@ router.route("/add/day-data").post(function (req, res) {
 
 // returns list of date, predicted energy hourwise data to the user
 router.route("/load/hour-data").post(function (req, res) {
-  Data.find({ dataType: "user-hour-" + req.body.username })
+  Data.find({ dataType: "user-" + req.body.username })
     .then((data) => {
       let pred = [];
       for (let i in data) {
@@ -264,9 +221,7 @@ router.route("/load/hour-data").post(function (req, res) {
           yhat: data[i].value,
         });
       }
-      res
-        .status(200)
-        .json({ data: pred, end: graph_status[req.body.username][1] });
+      res.status(200).json({ data: pred, end: status[req.body.username][1] });
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -276,14 +231,14 @@ router.route("/load/hour-data").post(function (req, res) {
 // saves the user's demanded predicted hourwise energy data
 router.route("/add/hour-data").post(function (req, res) {
   if (
-    graph_status[req.body.username] === undefined ||
-    graph_status[req.body.username][0] !== req.body.token
+    status[req.body.username] === undefined ||
+    status[req.body.username][0] !== req.body.token
   ) {
-    res.status(400).json({ message: "STOP" });
+    res.status(200).json({ message: "STOP" });
     return;
   }
   const pred = req.body.data;
-  const type = "user-hour-" + req.body.username;
+  const type = "user-" + req.body.username;
   let data = [];
   for (let i in pred) {
     let date = pred[i]["dateTime"].split(" ")[0].split("-");
@@ -304,37 +259,6 @@ router.route("/add/hour-data").post(function (req, res) {
           res.status(400).json(err);
         } else {
           res.status(200).json(docs);
-        }
-      });
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
-});
-
-// returns data for the graph of the predicted energy values for given time range
-router.route("/graph").post(function (req, res) {
-  Data.deleteMany({ dataType: "user-hour-" + req.body.username })
-    .then((resp) => {
-      let token = Date.now().toString();
-      graph_status[req.body.username] = [token, false];
-      res.status(200).json({ token: token });
-      const process = spawn("python3", [
-        "./models/model.py",
-        "graph",
-        req.body.fromDate,
-        req.body.fromTime,
-        req.body.toDate,
-        req.body.toTime,
-        req.body.username,
-        token,
-      ]);
-      process.stdout.on("data", (data) => {
-        if (
-          graph_status[req.body.username] !== undefined &&
-          graph_status[req.body.username][0] == token
-        ) {
-          graph_status[req.body.username][1] = true;
         }
       });
     })
