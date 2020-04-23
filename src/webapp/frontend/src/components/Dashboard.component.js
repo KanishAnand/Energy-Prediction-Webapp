@@ -7,7 +7,6 @@ import Charts from "fusioncharts/fusioncharts.charts";
 import Maps from "fusioncharts/fusioncharts.maps";
 import USARegion from "fusionmaps/maps/es/fusioncharts.usaregion";
 import ReactFC from "react-fusioncharts";
-import "./charts-theme.js";
 
 import config from "../config";
 
