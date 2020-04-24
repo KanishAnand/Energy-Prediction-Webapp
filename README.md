@@ -3,7 +3,7 @@
 ## Team 12
 
 ### INDRIYN DATA ANALYTICS PRIVATE LIMITED                                                     
-#### POC : Siva Prasad Tekumudi  siva@indriyn.com
+#### POC: Siva Prasad Tekumudi  siva@indriyn.com
 
 ## Title-Demand Forecasting of Air Conditioning for Commercial Complex
 
