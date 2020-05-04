@@ -3,3 +3,5 @@ This is a energy prediction webapp which uses Facebook's Prophet Algorithm to pr
 * src/model contains code to train machine learning models.
 * src/webapp contains code of MERN based webapp.
 
+![img](images/webapp.png)
+
